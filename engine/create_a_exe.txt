@@ -1,0 +1,11 @@
+Install the cxfreeze lib:
+pip install cxfreeze
+
+run at cmd:
+cxfreeze "script_name".py
+
+If get error in the end like this:
+No module named "module_name"
+proceed adding the import of the module required inside the script.
+
+:) 

@@ -1,0 +1,16 @@
+{
+    "amalisyType": {"linear": true, "nonlinear": false},
+    "material": {
+        "tag1: {materialType": {"isotropic": true, "orthotropic": false, "anisotropic": false},
+        "materialProperties": {}},
+        "tag2": {"materialType": {"isotropic": true, "orthotropic": false, "anisotropic": false},
+        "materialProperties": {}}
+    },
+    "sectionType": {"I": true, "tubular": false, "C": false, "U":false, "rack": false, "angle": false},
+    "sectionProperties": {},
+    "meshType": {"rectangle": true, "triangle": false},
+    "meshProperties": {},
+    "boundaryConditions": {},
+    "loadType": {"bending": true, "normal": false},
+    "loadProperties": {}
+}

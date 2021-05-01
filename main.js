@@ -28,18 +28,23 @@ function createWindow () {
         alert(err)
       }
       var analysiData = {
-        analysiType: null,
-        materialType: null,
-        materialProps: null,
-        geometryType: null,
-        geometryProps: null,
-        meshType: null,
-        meshProps: null,
-        boundaryConditionsType: null,
-        boundaryConditionsProps: null,
-        loadType: null,
-        loadProps: null
-      }
+        amalisyType: {linear: true, nonlinear: false},
+        material: [
+          {materialType: {isotropic: true, orthotropic: false, anisotropic: false},
+          materialTag: "mat1",
+          materialProperties: {}},
+          {materialType: {isotropic: true, orthotropic: false, anisotropic: false},
+          materialTag: "mat2",
+          materialProperties: {}}
+        ],
+        sectionType: {I: true, tubular: false, C: false, U:false, rack: false, angle: false},
+        sectionProperties: {},
+        meshType: {rectangle: true, triangle: false},
+        meshProperties: {},
+        boundaryConditions: {},
+        loadType: {bending: true, normal: false},
+        loadProperties: {}
+        }
       fs.writeFileSync(path.join(dir, 'analysiData.json'), JSON.stringify(analysiData))
     })
   }

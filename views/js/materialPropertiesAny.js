@@ -2,7 +2,7 @@ const { ipcRenderer } = require('electron')
 const fs = require('fs')
 const path = require('path')
 
-
+alert(localStorage.getItem('selected-material'))
 const applybutton = document.getElementById('apply')
 applybutton.addEventListener('click', setMaterialProperties)
 
