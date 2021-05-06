@@ -18,36 +18,7 @@ function createWindow () {
   win.on('ready-to-show', () => {
     win.show()
   })
-  const fs = require('fs')
-  const path = require('path')
-  const dir = path.join(app.getPath('userData'), 'data')
-
-  if  (!fs.existsSync(dir)){
-    fs.mkdir(dir, (err) => {
-      if (err) {
-        alert(err)
-      }
-      var analysiData = {
-        amalisyType: {linear: true, nonlinear: false},
-        material: [
-          {materialType: {isotropic: true, orthotropic: false, anisotropic: false},
-          materialTag: "mat1",
-          materialProperties: {}},
-          {materialType: {isotropic: true, orthotropic: false, anisotropic: false},
-          materialTag: "mat2",
-          materialProperties: {}}
-        ],
-        sectionType: {I: true, tubular: false, C: false, U:false, rack: false, angle: false},
-        sectionProperties: {},
-        meshType: {rectangle: true, triangle: false},
-        meshProperties: {},
-        boundaryConditions: {},
-        loadType: {bending: true, normal: false},
-        loadProperties: {}
-        }
-      fs.writeFileSync(path.join(dir, 'analysiData.json'), JSON.stringify(analysiData))
-    })
-  }
+  createModel()
 }
 
 app.whenReady().then(createWindow)
@@ -92,3 +63,30 @@ ipcMain.on('get-user-data', (event) => {
 ipcMain.on('create-dialog', (event, args) => {
   dialog.showErrorBox(args.title, args.description)
 })
+
+
+function createModel() {
+  const fs = require('fs')
+  const path = require('path')
+  const dir = path.join(app.getPath('userData'), 'data')
+
+  if  (!fs.existsSync(dir)){
+    fs.mkdir(dir, (err) => {
+      if (err) {
+        alert(err)
+      }
+      var model = {
+        amalisyType: {linear: true, nonlinear: false},
+        materials: [],
+        sectionType: {I: true, tubular: false, C: false, U:false, rack: false, angle: false},
+        sectionProperties: {},
+        meshType: {rectangle: true, triangle: false},
+        meshProperties: {},
+        boundaryConditions: {},
+        loadType: {bending: true, normal: false},
+        loadProperties: {}
+        }
+      fs.writeFileSync(path.join(dir, 'model.json'), JSON.stringify(model))
+    })
+  }
+}

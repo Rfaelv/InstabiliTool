@@ -1,0 +1,159 @@
+const { ipcRenderer } = require('electron')
+const fs = require('fs')
+const path = require('path')
+
+setTitle()
+
+document.getElementById('add')
+    .addEventListener('click', add)
+document.getElementById('edit')
+    .addEventListener('click', edit)
+document.getElementById('delete')
+    .addEventListener('click', del)
+document.getElementById('ok')
+    .addEventListener('click', finalize)
+
+window.addEventListener('load', refreshData)
+window.addEventListener('focus', refreshData)
+
+function add() {
+    openInputPropertieWindow()
+}
+
+function edit() {
+    if (document.querySelector('input[name="materialList"]:checked')) {
+        localStorage.setItem('selected-material', document.querySelector('input[name="materialList"]:checked').value)
+        openInputPropertieWindow()
+    }       
+}
+
+function del() {
+    if (document.querySelector('input[name="materialList"]:checked')) {
+        removeMaterial(document.getElementsByName('selected')[0].textContent)
+        const list = document.getElementById('list')
+        list.removeChild(document.querySelector('input[name="materialList"]:checked'))
+        list.removeChild(document.getElementsByName('selected')[0])
+    }     
+}
+
+function finalize() {
+    ipcRenderer.send('delete-current-window')
+}
+function refreshData() {
+    generateList()
+}
+
+function generateList() {
+    var tagList = []
+    // const materialData = [{tag:'Pultrudado', materialType: {isotropic: true, orthotropic: false, anisotropic: false},}, {tag:'Pultrudado2',materialType: {isotropic: true, orthotropic: false, anisotropic: false}}, {tag:'Pultrudado3',materialType: {isotropic: true, orthotropic: false, anisotropic: false}}]
+
+    const model = readModel()
+    const materialData = model.materials
+
+    document.getElementById('list').innerHTML = ''
+
+    for (var i in materialData) {
+        if (materialData[i].materialType[localStorage.getItem('current-material-type')]) {
+            const tag = materialData[i].tag
+            var radio = document.createElement('input')
+            radio.setAttribute('type', "radio")
+            radio.setAttribute('class', "form-check-input")
+            radio.setAttribute('id', tag)
+            radio.setAttribute('name', 'materialList')
+            radio.setAttribute('value', tag)
+            radio.onchange = select
+
+            var label = document.createElement('label')
+            label.setAttribute('class', 'materialTag')
+            label.setAttribute('for', tag)
+            label.setAttribute('name', 'non-selected')
+
+            var materialTag = document.createTextNode(tag)
+
+            label.appendChild(materialTag)
+
+            document.getElementById('list').appendChild(radio)
+            document.getElementById('list').appendChild(label)
+
+            tagList.push([radio, label])
+        }
+        function select() {
+            for (let i in tagList) {
+                if (tagList[i][0].checked) {
+                    tagList[i][1].setAttribute('name', 'selected')
+
+                } else {
+                    tagList[i][1].setAttribute('name', 'non-selected')
+
+                }
+            }
+        }
+    }
+}
+
+function setTitle() {
+    const title = document.getElementsByTagName('title')
+    var text = null
+    if (localStorage.getItem('current-material-type') == 'isotropic') {
+        text = document.createTextNode('Material isotrópico')
+
+    } else if (localStorage.getItem('current-material-type') == 'orthotropic') {
+        text = document.createTextNode('Material ortotrópico')
+
+    } else if (localStorage.getItem('current-material-type') == 'anisotropic') {
+        text = document.createTextNode('Material anisotrópico')
+        
+    }
+    title[0].appendChild(text)
+}
+
+function openInputPropertieWindow() {
+    if (localStorage.getItem('current-material-type') == 'isotropic') {
+        ipcRenderer.send('create-window', {
+            width:200,
+            height:250,
+            path:'views/html/materialPropertiesIso.html'
+        })
+
+    } else if (localStorage.getItem('current-material-type') == 'orthotropic') {
+        ipcRenderer.send('create-window', {
+            width:210,
+            height:420,
+            path:'views/html/materialPropertiesOrth.html'
+        })
+
+    } else if (localStorage.getItem('current-material-type') == 'anisotropic') {
+        ipcRenderer.send('create-window', {
+            width:820,
+            height:350,
+            path:'views/html/materialPropertiesAny.html'
+        })
+    }
+}
+
+function removeMaterial(materialTag) {
+    var model = readModel()
+    for (let i in model.materials) {
+        if (model.materials[i].tag == materialTag) {
+            model.materials.splice(i, 1)
+            writeModel(model)
+            return
+        }
+    }
+}
+
+function writeModel(model) {
+    const userDataPath = ipcRenderer.sendSync('get-user-data')
+    fs.writeFileSync(path.join(userDataPath, 'data/model.json'), JSON.stringify(model), function(err) {
+        ipcRenderer.send('create-dialog', {title: 'Erro', description: err})
+    })
+}
+
+function readModel() {
+    const userDataPath = ipcRenderer.sendSync('get-user-data')
+    const jsonData = fs.readFileSync(path.join(userDataPath, 'data/model.json'), 'utf8', function(err) {
+        ipcRenderer.send('create-dialog', {title: 'Erro', description: err})
+    })
+    var model = JSON.parse(jsonData)
+    return model
+}

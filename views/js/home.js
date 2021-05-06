@@ -42,20 +42,17 @@ function materialProps() {
     const materialType = document.getElementsByName('material')
 
     if (materialType[0].checked) {
-        var path = 'views/html/isotropicMaterialList.html'
         localStorage.setItem('current-material-type', 'isotropic')
     } else if (materialType[1].checked) {
-        var path = 'views/html/orthotropicMaterialList.html'
         localStorage.setItem('current-material-type', 'orthotropic')
     } else {
-        var path = 'views/html/anysotropicMaterialList.html'
-        localStorage.setItem('current-material-type', 'anysotropic')
+        localStorage.setItem('current-material-type', 'anisotropic')
     }
 
     ipcRenderer.send('create-window', {
-        width:380,
-        height:310,
-        path:path
+        width:370,
+        height:250,
+        path:'views/html/materialList.html'
     })
 }
 

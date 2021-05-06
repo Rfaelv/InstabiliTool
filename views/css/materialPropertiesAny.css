@@ -59,6 +59,9 @@ label {
 #dens {
     padding-right: 7px;
 }
+#name {
+    width: 120px;
+}
 button {
     width: 80px;
     color: var(--bg);
