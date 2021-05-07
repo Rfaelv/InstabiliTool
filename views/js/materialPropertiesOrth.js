@@ -1,6 +1,7 @@
 const { ipcRenderer } = require('electron')
 const fs = require('fs')
 const path = require('path')
+const {writeData, readData} = require('../../modules/writeAndReadData')
 var currentTag = null
 
 const applybutton = document.getElementById('apply')
@@ -28,7 +29,7 @@ function setMaterialProperties() {
             return
 
         } else if (key == 'name') {
-            const model = readModel()
+            const model = readData('model.json')
 
             for (material of model.materials) {
                 if (props.name.value == material.tag) {
@@ -41,7 +42,7 @@ function setMaterialProperties() {
         }
     }
 
-    var model = readModel()
+    var model = readData('model.json')
     model.materials.push({
         tag: props.name.value,
         materialType: {isotropic: false, orthotropic: true, anisotropic: false},
@@ -59,7 +60,7 @@ function setMaterialProperties() {
         }
     })
 
-    writeModel(model)
+    writeData(model, 'model.json')
     ipcRenderer.send('delete-current-window')
 }
 
@@ -90,14 +91,14 @@ function replaceMaterialProperties() {
             dens: parseFloat(props.dens.value.replace(',', '.'))
         }
     }
-    var model = readModel()
+    var model = readData('model.json')
     for (let i in model.materials) {
         if (currentTag == model.materials[i].tag) {
             model.materials.splice(i, 1, material)
         }
     }
 
-    writeModel(model)
+    writeData(model, 'model.json')
     ipcRenderer.send('delete-current-window')
 }
 
@@ -107,7 +108,7 @@ function cancel() {
 
 function fillFields() {
     const currentTag = localStorage.getItem('selected-material')
-    const model = readModel()
+    const model = readData('model.json')
     for (material of model.materials) {
         if (material.tag == currentTag) {
             document.getElementById('elasticModulex').value = material.materialProperties.Ex
@@ -125,22 +126,6 @@ function fillFields() {
             return
         }
     }
-}
-
-function writeModel(model) {
-    const userDataPath = ipcRenderer.sendSync('get-user-data')
-    fs.writeFileSync(path.join(userDataPath, 'data/model.json'), JSON.stringify(model), function(err) {
-        ipcRenderer.send('create-dialog', {title: 'Erro', description: err})
-    })
-}
-
-function readModel() {
-    const userDataPath = ipcRenderer.sendSync('get-user-data')
-    const jsonData = fs.readFileSync(path.join(userDataPath, 'data/model.json'), 'utf8', function(err) {
-        ipcRenderer.send('create-dialog', {title: 'Erro', description: err})
-    })
-    var model = JSON.parse(jsonData)
-    return model
 }
 
 function getInput() {

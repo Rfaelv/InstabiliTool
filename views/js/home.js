@@ -1,4 +1,5 @@
 const { ipcRenderer } = require('electron')
+const {readData, writeData} = require('../../modules/writeAndReadData')
 const fs = require('fs')
 const path = require('path')
 
@@ -146,15 +147,15 @@ function load() {
 
 
 function setAnalysiType() {
-    const userDataPath = ipcRenderer.sendSync('get-user-data')
-    const jsonData = fs.readFileSync(path.join(userDataPath, 'data/analysiData.json'), 'utf8')
-    var analysiData = JSON.parse(jsonData)
+    var model = readData('model.json')
 
     if (analysiType[0].checked) { 
-        analysiData.analysiType = 'linear'
+        model.analysiType.linear = true
+        model.analysiType.nonlinear = false
     } else {
-        analysiData.analysiType = 'nlinear'
+        model.analysiType.nonlinear = true
+        model.analysiType.linear = false
     }
 
-    fs.writeFileSync(path.join(userDataPath, 'data/analysiData.json'), JSON.stringify(analysiData))
+    writeData(model, 'model.json')
 }

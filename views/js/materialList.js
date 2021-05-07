@@ -1,6 +1,7 @@
 const { ipcRenderer } = require('electron')
 const fs = require('fs')
 const path = require('path')
+const {writeData, readData} = require('../../modules/writeAndReadData')
 
 setTitle()
 
@@ -45,9 +46,8 @@ function refreshData() {
 
 function generateList() {
     var tagList = []
-    // const materialData = [{tag:'Pultrudado', materialType: {isotropic: true, orthotropic: false, anisotropic: false},}, {tag:'Pultrudado2',materialType: {isotropic: true, orthotropic: false, anisotropic: false}}, {tag:'Pultrudado3',materialType: {isotropic: true, orthotropic: false, anisotropic: false}}]
 
-    const model = readModel()
+    const model = readData('model.json')
     const materialData = model.materials
 
     document.getElementById('list').innerHTML = ''
@@ -132,28 +132,12 @@ function openInputPropertieWindow() {
 }
 
 function removeMaterial(materialTag) {
-    var model = readModel()
+    var model = readData('model.json')
     for (let i in model.materials) {
         if (model.materials[i].tag == materialTag) {
             model.materials.splice(i, 1)
-            writeModel(model)
+            writeData(model, 'model.json')
             return
         }
     }
-}
-
-function writeModel(model) {
-    const userDataPath = ipcRenderer.sendSync('get-user-data')
-    fs.writeFileSync(path.join(userDataPath, 'data/model.json'), JSON.stringify(model), function(err) {
-        ipcRenderer.send('create-dialog', {title: 'Erro', description: err})
-    })
-}
-
-function readModel() {
-    const userDataPath = ipcRenderer.sendSync('get-user-data')
-    const jsonData = fs.readFileSync(path.join(userDataPath, 'data/model.json'), 'utf8', function(err) {
-        ipcRenderer.send('create-dialog', {title: 'Erro', description: err})
-    })
-    var model = JSON.parse(jsonData)
-    return model
 }

@@ -1,6 +1,7 @@
 const { ipcRenderer, dialog } = require('electron')
 const fs = require('fs')
 const path = require('path')
+const { writeData, readData } = require('../../modules/writeAndReadData')
 
 
 const applybutton = document.getElementById('apply')
@@ -15,25 +16,29 @@ document.getElementById('d').focus()
 function setGeometry() {
     const input = document.getElementsByName('input')
 
-    for (let i = 0; i < input.length; i++) {
-        if (input[i].value == '') {
+    for (label of input) {
+        if (label.value == '') {
             ipcRenderer.send('create-dialog', {title: 'Erro', description: 'Preencha todos os campos.'})
-            input[i].focus()
+            label.focus()
             return
         }
     }
 
-    const userDataPath = ipcRenderer.sendSync('get-user-data')
-    const jsonData = fs.readFileSync(path.join(userDataPath, 'data/analysiData.json'), 'utf8')
-    var analysiData = JSON.parse(jsonData)
-    analysiData.geometryProps = {
+    var model = readData('model.json')
+    for (key in model.sectionType) {
+        if (key == 'angle') {
+            model.sectionType[key] = true
+        } else {
+            model.sectionType[key] = false
+        }
+    }
+    model.sectionProperties = {
         d: parseFloat(input[0].value.replace(',', '.')),
         b: parseFloat(input[1].value.replace(',', '.')),
         t: parseFloat(input[2].value.replace(',', '.')),
         L: parseFloat(input[3].value.replace(',', '.'))
     }
-    analysiData.geometryType = 'cantoneira'
-    fs.writeFileSync(path.join(userDataPath, 'data/analysiData.json'), JSON.stringify(analysiData))
+    writeData(model, 'model.json')
     ipcRenderer.send('delete-current-window')
 }
 

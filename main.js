@@ -66,6 +66,17 @@ ipcMain.on('create-dialog', (event, args) => {
 
 
 function createModel() {
+  var model = {
+    analysiType: {linear: true, nonlinear: false},
+    materials: [],
+    sectionType: {I: true, tubular: false, C: false, C2:false, rack: false, angle: false},
+    sectionProperties: {},
+    meshType: {rectangle: true, triangle: false},
+    meshProperties: {},
+    boundaryConditions: {},
+    loadType: {bending: true, normal: false},
+    loadProperties: {}
+    }
   const fs = require('fs')
   const path = require('path')
   const dir = path.join(app.getPath('userData'), 'data')
@@ -73,20 +84,11 @@ function createModel() {
   if  (!fs.existsSync(dir)){
     fs.mkdir(dir, (err) => {
       if (err) {
-        alert(err)
+        dialog.showErrorBox('Erro', err)
       }
-      var model = {
-        amalisyType: {linear: true, nonlinear: false},
-        materials: [],
-        sectionType: {I: true, tubular: false, C: false, U:false, rack: false, angle: false},
-        sectionProperties: {},
-        meshType: {rectangle: true, triangle: false},
-        meshProperties: {},
-        boundaryConditions: {},
-        loadType: {bending: true, normal: false},
-        loadProperties: {}
-        }
       fs.writeFileSync(path.join(dir, 'model.json'), JSON.stringify(model))
     })
+  } else {
+    fs.writeFileSync(path.join(dir, 'model.json'), JSON.stringify(model))
   }
 }
