@@ -51,10 +51,10 @@ function setMaterialProperties() {
             Ez: parseFloat(props.Ez.value.replace(',', '.')),
             vxy: parseFloat(props.vxy.value.replace(',', '.')),
             vyz: parseFloat(props.vyz.value.replace(',', '.')),
-            vzx: parseFloat(props.vzx.value.replace(',', '.')),
+            vxz: parseFloat(props.vxz.value.replace(',', '.')),
             Gxy: parseFloat(props.Gxy.value.replace(',', '.')),
             Gyz: parseFloat(props.Gyz.value.replace(',', '.')),
-            Gzx: parseFloat(props.Gzx.value.replace(',', '.')),
+            Gxz: parseFloat(props.Gxz.value.replace(',', '.')),
             dens: parseFloat(props.dens.value.replace(',', '.'))
         }
     })
@@ -83,10 +83,10 @@ function replaceMaterialProperties() {
             Ez: parseFloat(props.Ez.value.replace(',', '.')),
             vxy: parseFloat(props.vxy.value.replace(',', '.')),
             vyz: parseFloat(props.vyz.value.replace(',', '.')),
-            vzx: parseFloat(props.vzx.value.replace(',', '.')),
+            vxz: parseFloat(props.vxz.value.replace(',', '.')),
             Gxy: parseFloat(props.Gxy.value.replace(',', '.')),
             Gyz: parseFloat(props.Gyz.value.replace(',', '.')),
-            Gzx: parseFloat(props.Gzx.value.replace(',', '.')),
+            Gxz: parseFloat(props.Gxz.value.replace(',', '.')),
             dens: parseFloat(props.dens.value.replace(',', '.'))
         }
     }
@@ -115,10 +115,10 @@ function fillFields() {
             document.getElementById('elasticModulez').value = material.materialProperties.Ez
             document.getElementById('poissonxy').value = material.materialProperties.vxy
             document.getElementById('poissonyz').value = material.materialProperties.vyz
-            document.getElementById('poissonzx').value = material.materialProperties.vzx
+            document.getElementById('poissonxz').value = material.materialProperties.vxz
             document.getElementById('Gxy').value = material.materialProperties.Gxy
             document.getElementById('Gyz').value = material.materialProperties.Gyz
-            document.getElementById('Gzx').value = material.materialProperties.Gzx
+            document.getElementById('Gxz').value = material.materialProperties.Gxz
             document.getElementById('density').value = material.materialProperties.dens
             document.getElementById('name').value = material.tag
 
@@ -150,10 +150,10 @@ function getInput() {
     props.Ez = document.getElementById('elasticModulez')
     props.vxy = document.getElementById('poissonxy')
     props.vyz = document.getElementById('poissonyz')
-    props.vzx = document.getElementById('poissonzx')
+    props.vxz = document.getElementById('poissonxz')
     props.Gxy = document.getElementById('Gxy')
     props.Gyz = document.getElementById('Gyz')
-    props.Gzx = document.getElementById('Gzx')
+    props.Gxz = document.getElementById('Gxz')
     props.dens = document.getElementById('density')
     props.name = document.getElementById('name')
 
