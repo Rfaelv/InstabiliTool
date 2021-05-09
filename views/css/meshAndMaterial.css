@@ -39,7 +39,7 @@ html {
 body {
     margin-top: 20px;
     padding: 10px;
-    height: 80%;
+    height: 87%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -47,13 +47,51 @@ body {
 div {
     display: flex;
     flex-direction: row;
+    /* justify-content: flex-end; */
+}
+div#buttons {
     justify-content: flex-end;
+}
+#inputDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 60%;
+}
+div#img {
+    width: 120px;
+    align-items: center;
+    justify-content: center;
 }
 label {
     padding-right: 10px;
 }
 label#radioLabel {
     padding-right: 50px;
+}
+select {
+    max-width: 130px;
+    min-width: 80px;
+    border: none;
+    border: solid #E2E6EA;
+    border-width: thin;
+    border-radius: 2px;
+    transition: 0.3s;
+    padding-left: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-family: 'Segoe UI';
+    font-size: small;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+select:focus {
+    outline: thin dotted;
+    outline: 0px auto -webkit-focus-ring-color;
+    outline-offset: 0px;
+    border-color: var(--secundary);
+    box-shadow: 0 0 1px 0 var(--secundary);
 }
 button {
     width: 80px;

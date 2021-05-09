@@ -26,7 +26,7 @@ document.getElementsByClassName('geometryIcon')[5]
     .addEventListener('click', function() {geometry('cantoneira')})
 
 const buttonDiscretize = document.getElementById('discretização')
-buttonDiscretize.addEventListener('click', mesh)
+buttonDiscretize.addEventListener('click', meshAndMaterial)
 
 const buttonboundaryConditions = document.getElementById('condiçãoContorno')
 buttonboundaryConditions.addEventListener('click', boundaryConditions)
@@ -100,11 +100,11 @@ function geometry(type) {
 }
 
 
-function mesh() {
+function meshAndMaterial() {
     ipcRenderer.send('create-window', {
-        width: 300,
-        height: 240,
-        path: 'views/html/mesh.html'
+        width: 350,
+        height: 420,
+        path: 'views/html/meshAndMaterial.html'
     })
 
     const meshShape = document.getElementsByName('discretize')

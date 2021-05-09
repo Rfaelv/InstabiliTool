@@ -1,10 +1,10 @@
-class MaterialProperties:
-    def __init__(self, mapdl, id):
+class Material:
+    def __init__(self, mapdl):
         self.mapdl = mapdl
-        self.id = id
         self.mapdl.run("/PREP7")
 
-    def setMaterialProperties(self, materialType, materialProperties):
+    def setMaterialProperties(self, materialID, materialType, materialProperties):
+        self.id = materialID
         self.materialType = materialType
         self.materialProperties = materialProperties
 
