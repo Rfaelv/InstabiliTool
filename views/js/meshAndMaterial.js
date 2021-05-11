@@ -38,7 +38,7 @@ function setMeshAndMaterialAssignment() {
     }
     model.sectionProperties.materialAssignment = materialAssignmentList
     writeData(model, 'model.json')
-    // ipcRenderer.send('delete-current-window')
+    ipcRenderer.send('delete-current-window')
 }
 
 

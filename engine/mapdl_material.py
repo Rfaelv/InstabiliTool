@@ -3,7 +3,7 @@ class Material:
         self.mapdl = mapdl
         self.mapdl.run("/PREP7")
 
-    def setMaterialProperties(self, materialID, materialType, materialProperties):
+    def createMaterial(self, materialID, materialType, materialProperties):
         self.id = materialID
         self.materialType = materialType
         self.materialProperties = materialProperties

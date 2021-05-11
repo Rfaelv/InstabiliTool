@@ -26,7 +26,7 @@ document.getElementsByClassName('geometryIcon')[5]
     .addEventListener('click', function() {geometry('cantoneira')})
 
 const buttonDiscretize = document.getElementById('discretização')
-buttonDiscretize.addEventListener('click', meshAndMaterial)
+buttonDiscretize.addEventListener('click', meshAndMaterialAssignment)
 
 const buttonboundaryConditions = document.getElementById('condiçãoContorno')
 buttonboundaryConditions.addEventListener('click', boundaryConditions)
@@ -100,7 +100,7 @@ function geometry(type) {
 }
 
 
-function meshAndMaterial() {
+function meshAndMaterialAssignment() {
     ipcRenderer.send('create-window', {
         width: 350,
         height: 420,
@@ -129,12 +129,12 @@ function load() {
     const loadType = document.getElementsByName('load')
     
     if (loadType[0].checked) {
-        var width = 300
-        var height = 300
+        var width = 450
+        var height = 350
         var path = 'views/html/bendingMoment.html'
     } else {
-        var width =300
-        var height = 300
+        var width =380
+        var height = 350
         var path = 'views/html/axialForce.html'
     }
 

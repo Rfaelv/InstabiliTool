@@ -1,11 +1,30 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br"  data-theme='special'>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Força axial</title>
+    <link rel="stylesheet" href="../css/axialForce.css">
 </head>
 <body>
-    
+    <label style="padding-bottom: 10px;">Local de aplicação da carga</label>
+    <div>
+        <img src="../../assets/icons/local-aplicação-carga-normal.png" alt="" height="170px">
+        <div id='container'>
+            <div>
+                <label for="">x</label>
+                <input type="number" id='x'>
+            </div>
+            <div>
+                <label for="">y</label>
+                <input type="number" id='y'>
+            </div>
+        </div>
+    </div>
+    <div id='buttons'>
+        <button id='apply'>Apply</button>
+        <button id='cancel'>Cancel</button>
+    </div>
+    <script src="../js/axialForce.js"></script>
 </body>
 </html>

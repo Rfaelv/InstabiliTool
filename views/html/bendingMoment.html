@@ -1,11 +1,37 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-theme='special'>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Momento fletor</title>
+    <link rel="stylesheet" href="../css/bendingMoment.css">
 </head>
 <body>
-    
+    <label style="padding-bottom: 10px;">Tipo de flexão</label>
+    <div style="justify-content: space-around;">
+        
+        <div style="justify-content: space-between;">
+            <label class="container" id='radioLabel'>Flexão de 4 pontos
+                <input type="radio" name='flexao' checked>
+                <span class="checkmark"></span>
+            </label><br>
+            <label class="container">Flexão de 3 pontos
+                <input type="radio" name='flexao'>
+                <span class="checkmark"></span>
+            </label>
+        </div>
+    </div>
+    <div id='container'>
+        <img id='image-flexao' src="../../assets/icons/flexao-4-pontos.png" alt="" height="70px">
+        <div id='input'>
+            <label for="">Lshear</label>
+            <input type="numbre" id='Lshear'>
+        </div>
+    </div>
+    <div id='buttons'>
+        <button id='apply'>Apply</button>
+        <button id='cancel'>Cancel</button>
+    </div>
+    <script src="../js/bendingMoment.js"></script>
 </body>
 </html>
