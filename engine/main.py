@@ -12,15 +12,15 @@ from model import Model
 
 # BACKBONE
 
-mapdl = Mapdl('pathToLaunch')
+mapdl = Mapdl('path-to-launch-mapdl')
 model = Model('path-to-model.json')
 mapdl.initialize()
 mapdl.createMaterial(model.materialList())
 mapdl.createFiniteElement() # Verificar se será neecessário criar um elemento para cada material
 mapdl.createProfile(model.section())
 mapdl.open_gui()
-# mapdl.createMesh(model.mesh)
-# mapdl.setBoundaryConditions(model.boundaryConditions)
-# mapdl.setLoad(model.load)
+# mapdl.createMesh(model.mesh())
+# mapdl.setBoundaryConditions(model.boundaryConditions())
+# mapdl.setLoad(model.load())
 # mapdl.runStaticAnalysi()
 # mapdl.runLinearBuckingAnalysi()

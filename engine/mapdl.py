@@ -1,7 +1,12 @@
 from ansys.mapdl.core import launch_mapdl
 from mapdl_material import Material
 from mapdl_finiteElement import FiniteElement
-from mapdl_geomerty_I import IProfile
+from mapdl_geometry_I import IProfile
+from mapdl_geometry_tubular import TubularProfile
+from mapdl_geometry_C import CProfile
+from mapdl_geometry_C2 import C2Profile
+from mapdl_geometry_rack import RackProfile
+from mapdl_geometry_angle import AngleProfile
 import sys
 
 class Mapdl:
@@ -30,23 +35,38 @@ class Mapdl:
     
     def createProfile(self, profileProps):
         self.sectionType = profileProps[0]
-        print('creatingProfile')
         if self.sectionType["I"]:
-            print('seção I')
             self.Iprofile = IProfile(self.mapdl, profileProps[1])
             self.Iprofile.createSection()
             self.Iprofile.createProfile(profileProps[2], profileProps[3])
 
         elif self.sectionType["tubular"]:
-            return
+            self.tubularProfile = TubularProfile(self.mapdl, profileProps[1])
+            self.tubularProfile.createSection()
+            self.tubularProfile.createProfile(profileProps[2], profileProps[3])
+
         elif self.sectionType["C"]:
-            return
+            self.CProfile = CProfile(self.mapdl, profileProps[1])
+            self.CProfile.createSection()
+            self.CProfile.createProfile(profileProps[2], profileProps[3])
+
         elif self.sectionType["C2"]:
-            return
+            self.C2Profile = C2Profile(self.mapdl, profileProps[1])
+            self.C2Profile.createSection()
+            self.C2Profile.createProfile(profileProps[2], profileProps[3])
+
         elif self.sectionType["rack"]:
-            return
+            self.RackProfile = RackProfile(self.mapdl, profileProps[1])
+            self.RackProfile.createSection()
+            self.RackProfile.createProfile(profileProps[2], profileProps[3])
+
         elif self.sectionType["angle"]:
-            return
+            self.AngleProfile = AngleProfile(self.mapdl, profileProps[1])
+            self.AngleProfile.createSection()
+            self.AngleProfile.createProfile(profileProps[2], profileProps[3])
     
+    def createMesh(self, meshData):
+        return
+
     def open_gui(self):
         self.mapdl.open_gui()
