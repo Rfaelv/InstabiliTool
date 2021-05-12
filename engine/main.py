@@ -18,6 +18,7 @@ mapdl.initialize()
 mapdl.createMaterial(model.materialList())
 mapdl.createFiniteElement() # Verificar se será neecessário criar um elemento para cada material
 mapdl.createProfile(model.section())
+mapdl.setMaterial()
 mapdl.open_gui()
 # mapdl.createMesh(model.mesh())
 # mapdl.setBoundaryConditions(model.boundaryConditions())

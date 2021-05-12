@@ -34,7 +34,7 @@ function setMeshAndMaterialAssignment() {
     }
     var materialAssignmentList = []
     for (select of selects) {
-        materialAssignmentList.push(select.options[select.selectedIndex].value)
+        materialAssignmentList.push(parseInt(select.options[select.selectedIndex].value))
     }
     model.sectionProperties.materialAssignment = materialAssignmentList
     writeData(model, 'model.json')
@@ -86,15 +86,18 @@ function configMaterialInput() {
             select2.setAttribute('class', 'materialAssignment')
             select3.setAttribute('class', 'materialAssignment')
 
-            for (let i in model.materials) {
+            for (let i = 0; i < model.materials.length; i++) {
                 var opt1 = document.createElement("option")
-                opt1.value = model.materials[i].tag
+                // opt1.value = model.materials[i].tag
+                opt1.value = i + 1
                 opt1.text = model.materials[i].tag
                 var opt2 = document.createElement("option")
-                opt2.value = model.materials[i].tag
+                // opt2.value = model.materials[i].tag
+                opt2.value = i + 1
                 opt2.text = model.materials[i].tag
                 var opt3 = document.createElement("option")
-                opt3.value = model.materials[i].tag
+                // opt3.value = model.materials[i].tag
+                opt3.value = i + 1
                 opt3.text = model.materials[i].tag
                 select1.add(opt1, select1.options[i])
                 select2.add(opt2, select2.options[i])

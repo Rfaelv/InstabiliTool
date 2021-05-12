@@ -9,6 +9,7 @@ from mapdl_geometry_rack import RackProfile
 from mapdl_geometry_angle import AngleProfile
 import sys
 
+
 class Mapdl:
     def __init__(self, path):
         self.pathToLaunch = path
@@ -19,14 +20,15 @@ class Mapdl:
         except:
             print('ERROR-launch_mapdl')
             sys.exit()
-        
+                
     def getInstance(self):
         return self.mapdl
 
     def createMaterial(self, materialList):
+        self.materialList = materialList
         self.material = Material(self.mapdl)
 
-        for i, material in enumerate(materialList):
+        for i, material in enumerate(self.materialList):
             self.material.createMaterial(i + 1, material["materialType"], material["materialProperties"])
     
     def createFiniteElement(self):
@@ -65,6 +67,25 @@ class Mapdl:
             self.AngleProfile.createSection()
             self.AngleProfile.createProfile(profileProps[2], profileProps[3])
     
+    def setMaterial(self):
+        if self.sectionType["I"]:
+            self.Iprofile.setMaterial()
+
+        elif self.sectionType["tubular"]:
+            self.tubularProfile.setMaterial()
+
+        elif self.sectionType["C"]:
+            self.CProfile.setMaterial()
+
+        elif self.sectionType["C2"]:
+            self.C2Profile.setMaterial()
+
+        elif self.sectionType["rack"]:
+            self.RackProfile.setMaterial()
+
+        elif self.sectionType["angle"]:
+            self.AngleProfile.setMaterial()
+
     def createMesh(self, meshData):
         return
 

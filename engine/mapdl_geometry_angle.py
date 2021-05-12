@@ -8,14 +8,16 @@ class AngleProfile:
         self.bw = self.d - self.t/2
         self.bf = self.b - self.t/2
 
+        self.materialAssignment = sectionProps["materialAssignment"]
+
     def createSection(self):
-        self.mapdl.sectype(1, "SHELL", "", "flange")
+        self.mapdl.sectype(1, "SHELL", "", "web")
         self.mapdl.secoffset("MID")
         self.mapdl.secdata(self.t, 1)
-        self.mapdl.sectype(2, "SHELL", "", "web")
+        self.mapdl.sectype(2, "SHELL", "", "flange")
         self.mapdl.secoffset("MID")
         self.mapdl.secdata(self.t, 2)
-
+        
     def createProfile(self, loadType, loadProps):
         if loadType['bending']:
             if loadProps['points'] == 3:
@@ -76,3 +78,12 @@ class AngleProfile:
 
             self.mapdl.a(1, 2, 102, 101)
             self.mapdl.a(2, 3, 103, 102)
+
+    def setMaterial(self):
+        self.mapdl.asel("ALL")
+        self.mapdl.asel("S", "LOC", "X", 0)
+        self.mapdl.aatt(self.materialAssignment[1], 1, 1, 0, 1)
+
+        self.mapdl.asel("ALL")
+        self.mapdl.asel("S", "LOC", "Y", 0)
+        self.mapdl.aatt(self.materialAssignment[0], 2, 1, 0, 2)   

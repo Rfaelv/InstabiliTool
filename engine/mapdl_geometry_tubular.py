@@ -8,6 +8,8 @@ class TubularProfile:
         self.bw = self.d - self.t
         self.bf = self.b - self.t
 
+        self.materialAssignment = sectionProps["materialAssignment"]
+
     def createSection(self):
         self.mapdl.sectype(1, "SHELL", "", "flange")
         self.mapdl.secoffset("MID")
@@ -96,3 +98,14 @@ class TubularProfile:
             self.mapdl.a(2, 3, 103, 102)
             self.mapdl.a(3, 4, 104, 103)
             self.mapdl.a(4, 1, 101, 104)
+
+    def setMaterial(self):
+        self.mapdl.asel("ALL")
+        self.mapdl.asel("S", "LOC", "Y", 0)
+        self.mapdl.asel("A", "LOC", "Y", self.bw)
+        self.mapdl.aatt(self.materialAssignment[0], 1, 1, 0, 1) 
+
+        self.mapdl.asel("ALL")
+        self.mapdl.asel("S", "LOC", "X", 0)
+        self.mapdl.asel("A", "LOC", "X", self.bf)
+        self.mapdl.aatt(self.materialAssignment[1], 2, 1, 0, 2)

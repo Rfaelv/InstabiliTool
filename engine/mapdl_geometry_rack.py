@@ -18,6 +18,8 @@ class RackProfile:
         self.ys_cg = self.ys - self.t / 2
         self.yi_cg = self.yi - self.t / 2
 
+        self.materialAssignment = sectionProps["materialAssignment"]
+
     def createSection(self):
         self.mapdl.sectype(1, "SHELL", "", "flangeS")
         self.mapdl.secoffset("MID")
@@ -164,3 +166,16 @@ class RackProfile:
             self.mapdl.a(5, 6, 106, 105)
             self.mapdl.a(6, 7, 107, 106)
             self.mapdl.a(7, 8, 108, 107)
+
+    def setMaterial(self):
+        self.mapdl.asel("ALL")
+        self.mapdl.asel("S", "LOC", "Y", self.bw/2, self.bw)
+        self.mapdl.aatt(self.materialAssignment[0], 1, 1, 0, 1)
+
+        self.mapdl.asel("ALL")
+        self.mapdl.asel("S", "LOC", "Y", 0, self.bw/2)
+        self.mapdl.aatt(self.materialAssignment[2], 3, 1, 0, 3)
+
+        self.mapdl.asel("ALL")
+        self.mapdl.asel("S", "LOC", "X", 0)
+        self.mapdl.aatt(self.materialAssignment[1], 2, 1, 0, 2)

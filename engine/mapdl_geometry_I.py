@@ -10,6 +10,8 @@ class IProfile:
         self.L = sectionProps['L']
         self.bw = self.d - self.tfi/2 - self.tfs/2
 
+        self.materialAssignment = sectionProps["materialAssignment"]
+
     def createSection(self):
         self.mapdl.sectype(1, "SHELL", "", "flangeS")
         self.mapdl.secoffset("MID")
@@ -124,4 +126,16 @@ class IProfile:
             self.mapdl.a(4, 5, 105, 104)
             self.mapdl.a(4, 6, 106, 104)
             self.mapdl.a(1, 4, 104, 101)
+        
+    def setMaterial(self):
+        self.mapdl.asel("ALL")
+        self.mapdl.asel("S", "LOC", "Y", self.bw)
+        self.mapdl.aatt(self.materialAssignment[0], 1, 1, 0, 1)
 
+        self.mapdl.asel("ALL")
+        self.mapdl.asel("S", "LOC", "Y", 0)
+        self.mapdl.aatt(self.materialAssignment[2], 3, 1, 0, 3)
+
+        self.mapdl.asel("ALL")
+        self.mapdl.asel("S", "LOC", "X", 0)
+        self.mapdl.aatt(self.materialAssignment[1], 2, 1, 0, 2)

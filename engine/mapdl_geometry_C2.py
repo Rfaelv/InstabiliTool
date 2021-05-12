@@ -14,6 +14,8 @@ class C2Profile:
         self.zs_cg = self.zs - self.t / 2
         self.zi_cg = self.zi - self.t / 2
 
+        self.materialAssignment = sectionProps["materialAssignment"]
+
     def createSection(self):
         self.mapdl.sectype(1, "SHELL", "", "flangeS")
         self.mapdl.secoffset("MID")
@@ -130,3 +132,16 @@ class C2Profile:
             self.mapdl.a(3, 4, 104, 103)
             self.mapdl.a(4, 5, 105, 104)
             self.mapdl.a(5, 6, 106, 105)
+
+    def setMaterial(self):
+        self.mapdl.asel("ALL")
+        self.mapdl.asel("S", "LOC", "Y", self.bw/2, self.bw)
+        self.mapdl.aatt(self.materialAssignment[0], 1, 1, 0, 1)
+
+        self.mapdl.asel("ALL")
+        self.mapdl.asel("S", "LOC", "Y", 0, self.bw/2)
+        self.mapdl.aatt(self.materialAssignment[2], 3, 1, 0, 3)
+
+        self.mapdl.asel("ALL")
+        self.mapdl.asel("S", "LOC", "X", 0)
+        self.mapdl.aatt(self.materialAssignment[1], 2, 1, 0, 2)

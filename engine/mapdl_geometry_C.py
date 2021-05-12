@@ -10,6 +10,8 @@ class CProfile:
         self.bfs_cg = self.bfs - self.t / 2
         self.bfi_cg = self.bfi - self.t / 2
 
+        self.materialAssignment = sectionProps["materialAssignment"]
+
     def createSection(self):
         self.mapdl.sectype(1, "SHELL", "", "flangeS")
         self.mapdl.secoffset("MID")
@@ -96,3 +98,16 @@ class CProfile:
             self.mapdl.a(1, 2, 102, 101)
             self.mapdl.a(2, 3, 103, 102)
             self.mapdl.a(3, 4, 104, 103)
+
+    def setMaterial(self):
+        self.mapdl.asel("ALL")
+        self.mapdl.asel("S", "LOC", "Y", self.bw/2, self.bw)
+        self.mapdl.aatt(self.materialAssignment[0], 1, 1, 0, 1)
+
+        self.mapdl.asel("ALL")
+        self.mapdl.asel("S", "LOC", "Y", 0, self.bw/2)
+        self.mapdl.aatt(self.materialAssignment[2], 3, 1, 0, 3)
+
+        self.mapdl.asel("ALL")
+        self.mapdl.asel("S", "LOC", "X", 0)
+        self.mapdl.aatt(self.materialAssignment[1], 2, 1, 0, 2)
