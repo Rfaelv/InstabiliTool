@@ -2,7 +2,7 @@ class TubularProfile:
     def __init__(self, mapdl, sectionProps):
         self.mapdl = mapdl
         self.d = sectionProps['d']
-        self.b = sectionProps['bf']
+        self.b = sectionProps['b']
         self.t = sectionProps['t']
         self.L = sectionProps['L']
         self.bw = self.d - self.t

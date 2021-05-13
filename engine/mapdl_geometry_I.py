@@ -139,3 +139,53 @@ class IProfile:
         self.mapdl.asel("ALL")
         self.mapdl.asel("S", "LOC", "X", 0)
         self.mapdl.aatt(self.materialAssignment[1], 2, 1, 0, 2)
+    
+    def setBoundaryConditions(self, boundaryConditions):
+        if boundaryConditions['personalized']:
+            return
+        else:
+            if boundaryConditions['S-S']:
+                self.mapdl.nsel("S", "LOC", "Z", 0)
+                self.mapdl.d("ALL", "UX", 0)
+                self.mapdl.d("ALL", "UY", 0)
+                self.mapdl.d("ALL", "UZ", 0)
+                self.mapdl.nsel("S", "LOC", "Z", self.L)
+                self.mapdl.d("ALL", "UX", 0)
+                self.mapdl.d("ALL", "UY", 0)
+
+            elif boundaryConditions['C-F']:
+                self.mapdl.nsel("S", "LOC", "Z", 0)
+                self.mapdl.d("ALL", "UX", 0)
+                self.mapdl.d("ALL", "UY", 0)
+                self.mapdl.d("ALL", "UZ", 0)
+                self.mapdl.d("ALL", "ROTX", 0)
+                self.mapdl.d("ALL", "ROTY", 0)
+                self.mapdl.d("ALL", "ROTZ", 0)
+
+            elif boundaryConditions['C-C']:
+                self.mapdl.nsel("S", "LOC", "Z", 0)
+                self.mapdl.d("ALL", "UX", 0)
+                self.mapdl.d("ALL", "UY", 0)
+                self.mapdl.d("ALL", "UZ", 0)
+                self.mapdl.d("ALL", "ROTX", 0)
+                self.mapdl.d("ALL", "ROTY", 0)
+                self.mapdl.d("ALL", "ROTZ", 0)
+                self.mapdl.nsel("S", "LOC", "Z", self.L)
+                self.mapdl.d("ALL", "UX", 0)
+                self.mapdl.d("ALL", "UY", 0)
+                # self.mapdl.d("ALL", "UZ", 0)
+                self.mapdl.d("ALL", "ROTX", 0)
+                self.mapdl.d("ALL", "ROTY", 0)
+                self.mapdl.d("ALL", "ROTZ", 0)
+
+            elif boundaryConditions['C-S']:
+                self.mapdl.nsel("S", "LOC", "Z", 0)
+                self.mapdl.d("ALL", "UX", 0)
+                self.mapdl.d("ALL", "UY", 0)
+                self.mapdl.d("ALL", "UZ", 0)
+                self.mapdl.d("ALL", "ROTX", 0)
+                self.mapdl.d("ALL", "ROTY", 0)
+                self.mapdl.d("ALL", "ROTZ", 0)
+                self.mapdl.nsel("S", "LOC", "Z", self.L)
+                self.mapdl.d("ALL", "UX", 0)
+                self.mapdl.d("ALL", "UY", 0)

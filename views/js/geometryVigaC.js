@@ -33,10 +33,9 @@ function setGeometry() {
     }
     model.sectionProperties = {
         d: parseFloat(input[0].value.replace(',', '.')),
-        bfs: parseFloat(input[1].value.replace(',', '.')),
-        bfi: parseFloat(input[2].value.replace(',', '.')),
-        t: parseFloat(input[3].value.replace(',', '.')),
-        L: parseFloat(input[4].value.replace(',', '.'))
+        b: parseFloat(input[1].value.replace(',', '.')),
+        t: parseFloat(input[2].value.replace(',', '.')),
+        L: parseFloat(input[3].value.replace(',', '.'))
     }
     writeData(model, 'model.json')
     ipcRenderer.send('delete-current-window')

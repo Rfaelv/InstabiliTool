@@ -22,7 +22,7 @@ class Model():
                 self.model["loadProperties"]]
 
     def mesh(self):
-        return
+        return self.model["meshProperties"]
 
     def boundaryConditions(self):
         return

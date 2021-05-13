@@ -87,7 +87,30 @@ class Mapdl:
             self.AngleProfile.setMaterial()
 
     def createMesh(self, meshData):
-        return
+        self.mapdl.mshkey(meshData["method"])
+        self.mapdl.aesize("ALL", meshData["elementSize"])
+        self.mapdl.asel("ALL")
+        self.mapdl.amesh("ALL")
+        # self.mapdl.finish()
+    def setBoundaryConditions(self, boundaryConditions):
+        self.mapdl.run("/SOLU")
+        if self.sectionType["I"]:
+            self.Iprofile.setBoundaryConditions(boundaryConditions)
+
+        elif self.sectionType["tubular"]:
+            self.tubularProfile.setBoundaryConditions(boundaryConditions)
+
+        elif self.sectionType["C"]:
+            self.CProfile.setBoundaryConditions(boundaryConditions)
+
+        elif self.sectionType["C2"]:
+            self.C2Profile.setBoundaryConditions(boundaryConditions)
+
+        elif self.sectionType["rack"]:
+            self.RackProfile.setBoundaryConditions(boundaryConditions)
+
+        elif self.sectionType["angle"]:
+            self.AngleProfile.setBoundaryConditions(boundaryConditions)
 
     def open_gui(self):
         self.mapdl.open_gui()

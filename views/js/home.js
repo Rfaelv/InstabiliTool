@@ -86,7 +86,7 @@ function geometry(type) {
     } else if (type == 'vigaRack') {
         ipcRenderer.send('create-window', {
             width: 390,
-            height: 375,
+            height: 320,
             path: 'views/html/geometryVigaRack.html'
         })
     } else {

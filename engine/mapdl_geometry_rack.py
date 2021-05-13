@@ -2,21 +2,15 @@ class RackProfile:
     def __init__(self, mapdl, sectionProps):
         self.mapdl = mapdl
         self.d = sectionProps['d']
-        self.bfs = sectionProps['bfs']
-        self.bfi = sectionProps['bfi']
+        self.b = sectionProps['b']
         self.t = sectionProps['t']
-        self.zs = sectionProps['zs']
-        self.zi = sectionProps['zi']
-        self.ys = sectionProps['ys']
-        self.yi = sectionProps['yi']
+        self.z = sectionProps['z']
+        self.y = sectionProps['y']
         self.L = sectionProps['L']
         self.bw = self.d - self.t
-        self.bfs_cg = self.bfs - self.t
-        self.bfi_cg = self.bfi - self.t
-        self.zs_cg = self.zs - self.t
-        self.zi_cg = self.zi - self.t
-        self.ys_cg = self.ys - self.t / 2
-        self.yi_cg = self.yi - self.t / 2
+        self.bf = self.b - self.t
+        self.zf = self.z - self.t
+        self.yf = self.y - self.t / 2
 
         self.materialAssignment = sectionProps["materialAssignment"]
 
@@ -34,32 +28,32 @@ class RackProfile:
     def createProfile(self, loadType, loadProps):
         if loadType['bending']:
             if loadProps['points'] == 3:
-                self.mapdl.k(1, self.bfi_cg + self.yi_cg, self.zi_cg, 0)
-                self.mapdl.k(2, self.bfi_cg, self.zi_cg, 0)
-                self.mapdl.k(3, self.bfi_cg, 0, 0)
+                self.mapdl.k(1, self.bf + self.yf, self.zf, 0)
+                self.mapdl.k(2, self.bf, self.zf, 0)
+                self.mapdl.k(3, self.bf, 0, 0)
                 self.mapdl.k(4, 0, 0, 0)
                 self.mapdl.k(5, 0, self.bw, 0)
-                self.mapdl.k(6, self.bfs_cg, self.bw, 0)
-                self.mapdl.k(7, self.bfs_cg, self.bw - self.zs_cg, 0)
-                self.mapdl.k(8, self.bfs_cg + self.ys_cg, self.bw - self.zs_cg, 0)
+                self.mapdl.k(6, self.bf, self.bw, 0)
+                self.mapdl.k(7, self.bf, self.bw - self.zf, 0)
+                self.mapdl.k(8, self.bf + self.yf, self.bw - self.zf, 0)
 
-                self.mapdl.k(101, self.bfi_cg + self.yi_cg, self.zi_cg, self.L/2)
-                self.mapdl.k(102, self.bfi_cg, self.zi_cg, self.L/2)
-                self.mapdl.k(103, self.bfi_cg, 0, self.L/2)
+                self.mapdl.k(101, self.bf + self.yf, self.zf, self.L/2)
+                self.mapdl.k(102, self.bf, self.zf, self.L/2)
+                self.mapdl.k(103, self.bf, 0, self.L/2)
                 self.mapdl.k(104, 0, 0, self.L/2)
                 self.mapdl.k(105, 0, self.bw, self.L/2)
-                self.mapdl.k(106, self.bfs_cg, self.bw, self.L/2)
-                self.mapdl.k(107, self.bfs_cg, self.bw - self.zs_cg, self.L/2)
-                self.mapdl.k(108, self.bfs_cg + self.ys_cg, self.bw - self.zs_cg, self.L/2)
+                self.mapdl.k(106, self.bf, self.bw, self.L/2)
+                self.mapdl.k(107, self.bf, self.bw - self.zf, self.L/2)
+                self.mapdl.k(108, self.bf + self.yf, self.bw - self.zf, self.L/2)
 
-                self.mapdl.k(201, self.bfi_cg + self.yi_cg, self.zi_cg, self.L)
-                self.mapdl.k(202, self.bfi_cg, self.zi_cg, self.L)
-                self.mapdl.k(203, self.bfi_cg, 0, self.L)
+                self.mapdl.k(201, self.bf + self.yf, self.zf, self.L)
+                self.mapdl.k(202, self.bf, self.zf, self.L)
+                self.mapdl.k(203, self.bf, 0, self.L)
                 self.mapdl.k(204, 0, 0, self.L)
                 self.mapdl.k(205, 0, self.bw, self.L)
-                self.mapdl.k(206, self.bfs_cg, self.bw, self.L)
-                self.mapdl.k(207, self.bfs_cg, self.bw - self.zs_cg, self.L)
-                self.mapdl.k(208, self.bfs_cg + self.ys_cg, self.bw - self.zs_cg, self.L)
+                self.mapdl.k(206, self.bf, self.bw, self.L)
+                self.mapdl.k(207, self.bf, self.bw - self.zf, self.L)
+                self.mapdl.k(208, self.bf + self.yf, self.bw - self.zf, self.L)
 
                 self.mapdl.a(1, 2, 102, 101)
                 self.mapdl.a(2, 3, 103, 102)
@@ -80,41 +74,41 @@ class RackProfile:
             else:
                 self.Lshear = loadProps['Lshear']
 
-                self.mapdl.k(1, self.bfi_cg + self.yi_cg, self.zi_cg, 0)
-                self.mapdl.k(2, self.bfi_cg, self.zi_cg, 0)
-                self.mapdl.k(3, self.bfi_cg, 0, 0)
+                self.mapdl.k(1, self.bf + self.yf, self.zf, 0)
+                self.mapdl.k(2, self.bf, self.zf, 0)
+                self.mapdl.k(3, self.bf, 0, 0)
                 self.mapdl.k(4, 0, 0, 0)
                 self.mapdl.k(5, 0, self.bw, 0)
-                self.mapdl.k(6, self.bfs_cg, self.bw, 0)
-                self.mapdl.k(7, self.bfs_cg, self.bw - self.zs_cg, 0)
-                self.mapdl.k(8, self.bfs_cg + self.ys_cg, self.bw - self.zs_cg, 0)
+                self.mapdl.k(6, self.bf, self.bw, 0)
+                self.mapdl.k(7, self.bf, self.bw - self.zf, 0)
+                self.mapdl.k(8, self.bf + self.yf, self.bw - self.zf, 0)
 
-                self.mapdl.k(101, self.bfi_cg + self.yi_cg, self.zi_cg, self.Lshear)
-                self.mapdl.k(102, self.bfi_cg, self.zi_cg, self.Lshear)
-                self.mapdl.k(103, self.bfi_cg, 0, self.Lshear)
+                self.mapdl.k(101, self.bf + self.yf, self.zf, self.Lshear)
+                self.mapdl.k(102, self.bf, self.zf, self.Lshear)
+                self.mapdl.k(103, self.bf, 0, self.Lshear)
                 self.mapdl.k(104, 0, 0, self.Lshear)
                 self.mapdl.k(105, 0, self.bw, self.Lshear)
-                self.mapdl.k(106, self.bfs_cg, self.bw, self.Lshear)
-                self.mapdl.k(107, self.bfs_cg, self.bw - self.zs_cg, self.Lshear)
-                self.mapdl.k(108, self.bfs_cg + self.ys_cg, self.bw - self.zs_cg, self.Lshear)
+                self.mapdl.k(106, self.bf, self.bw, self.Lshear)
+                self.mapdl.k(107, self.bf, self.bw - self.zf, self.Lshear)
+                self.mapdl.k(108, self.bf + self.yf, self.bw - self.zf, self.Lshear)
 
-                self.mapdl.k(201, self.bfi_cg + self.yi_cg, self.zi_cg, self.L - self.Lshear)
-                self.mapdl.k(202, self.bfi_cg, self.zi_cg, self.L - self.Lshear)
-                self.mapdl.k(203, self.bfi_cg, 0, self.L - self.Lshear)
+                self.mapdl.k(201, self.bf + self.yf, self.zf, self.L - self.Lshear)
+                self.mapdl.k(202, self.bf, self.zf, self.L - self.Lshear)
+                self.mapdl.k(203, self.bf, 0, self.L - self.Lshear)
                 self.mapdl.k(204, 0, 0, self.L - self.Lshear)
                 self.mapdl.k(205, 0, self.bw, self.L - self.Lshear)
-                self.mapdl.k(206, self.bfs_cg, self.bw, self.L - self.Lshear)
-                self.mapdl.k(207, self.bfs_cg, self.bw - self.zs_cg, self.L - self.Lshear)
-                self.mapdl.k(208, self.bfs_cg + self.ys_cg, self.bw - self.zs_cg, self.L - self.Lshear)
+                self.mapdl.k(206, self.bf, self.bw, self.L - self.Lshear)
+                self.mapdl.k(207, self.bf, self.bw - self.zf, self.L - self.Lshear)
+                self.mapdl.k(208, self.bf + self.yf, self.bw - self.zf, self.L - self.Lshear)
 
-                self.mapdl.k(301, self.bfi_cg + self.yi_cg, self.zi_cg, self.L)
-                self.mapdl.k(302, self.bfi_cg, self.zi_cg, self.L)
-                self.mapdl.k(303, self.bfi_cg, 0, self.L)
+                self.mapdl.k(301, self.bf + self.yf, self.zf, self.L)
+                self.mapdl.k(302, self.bf, self.zf, self.L)
+                self.mapdl.k(303, self.bf, 0, self.L)
                 self.mapdl.k(304, 0, 0, self.L)
                 self.mapdl.k(305, 0, self.bw, self.L)
-                self.mapdl.k(306, self.bfs_cg, self.bw, self.L)
-                self.mapdl.k(307, self.bfs_cg, self.bw - self.zs_cg, self.L)
-                self.mapdl.k(308, self.bfs_cg + self.ys_cg, self.bw - self.zs_cg, self.L)
+                self.mapdl.k(306, self.bf, self.bw, self.L)
+                self.mapdl.k(307, self.bf, self.bw - self.zf, self.L)
+                self.mapdl.k(308, self.bf + self.yf, self.bw - self.zf, self.L)
 
                 self.mapdl.a(1, 2, 102, 101)
                 self.mapdl.a(2, 3, 103, 102)
@@ -141,23 +135,23 @@ class RackProfile:
                 self.mapdl.a(207, 208, 308, 307)
 
         else:
-            self.mapdl.k(1, self.bfi_cg + self.yi_cg, self.zi_cg, 0)
-            self.mapdl.k(2, self.bfi_cg, self.zi_cg, 0)
-            self.mapdl.k(3, self.bfi_cg, 0, 0)
+            self.mapdl.k(1, self.bf + self.yf, self.zf, 0)
+            self.mapdl.k(2, self.bf, self.zf, 0)
+            self.mapdl.k(3, self.bf, 0, 0)
             self.mapdl.k(4, 0, 0, 0)
             self.mapdl.k(5, 0, self.bw, 0)
-            self.mapdl.k(6, self.bfs_cg, self.bw, 0)
-            self.mapdl.k(7, self.bfs_cg, self.bw - self.zs_cg, 0)
-            self.mapdl.k(8, self.bfs_cg + self.ys_cg, self.bw - self.zs_cg, 0)
+            self.mapdl.k(6, self.bf, self.bw, 0)
+            self.mapdl.k(7, self.bf, self.bw - self.zf, 0)
+            self.mapdl.k(8, self.bf + self.yf, self.bw - self.zf, 0)
 
-            self.mapdl.k(101, self.bfi_cg + self.yi_cg, self.zi_cg, self.L)
-            self.mapdl.k(102, self.bfi_cg, self.zi_cg, self.L)
-            self.mapdl.k(103, self.bfi_cg, 0, self.L)
+            self.mapdl.k(101, self.bf + self.yf, self.zf, self.L)
+            self.mapdl.k(102, self.bf, self.zf, self.L)
+            self.mapdl.k(103, self.bf, 0, self.L)
             self.mapdl.k(104, 0, 0, self.L)
             self.mapdl.k(105, 0, self.bw, self.L)
-            self.mapdl.k(106, self.bfs_cg, self.bw, self.L)
-            self.mapdl.k(107, self.bfs_cg, self.bw - self.zs_cg, self.L)
-            self.mapdl.k(108, self.bfs_cg + self.ys_cg, self.bw - self.zs_cg, self.L)
+            self.mapdl.k(106, self.bf, self.bw, self.L)
+            self.mapdl.k(107, self.bf, self.bw - self.zf, self.L)
+            self.mapdl.k(108, self.bf + self.yf, self.bw - self.zf, self.L)
 
             self.mapdl.a(1, 2, 102, 101)
             self.mapdl.a(2, 3, 103, 102)

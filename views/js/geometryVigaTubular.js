@@ -34,7 +34,7 @@ function setGeometry() {
     }
     model.sectionProperties = {
         d: parseFloat(input[0].value.replace(',', '.')),
-        bf: parseFloat(input[1].value.replace(',', '.')),
+        b: parseFloat(input[1].value.replace(',', '.')),
         t: parseFloat(input[2].value.replace(',', '.')),
         L: parseFloat(input[3].value.replace(',', '.'))
     }
