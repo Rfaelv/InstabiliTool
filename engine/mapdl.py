@@ -7,6 +7,7 @@ from mapdl_geometry_C import CProfile
 from mapdl_geometry_C2 import C2Profile
 from mapdl_geometry_rack import RackProfile
 from mapdl_geometry_angle import AngleProfile
+from mapdl_geometry_plate import PlateProfile
 import sys
 
 
@@ -66,6 +67,11 @@ class Mapdl:
             self.AngleProfile = AngleProfile(self.mapdl, profileProps[1])
             self.AngleProfile.createSection()
             self.AngleProfile.createProfile(profileProps[2], profileProps[3])
+        
+        elif self.sectionType["plate"]:
+            self.PlateProfile = PlateProfile(self.mapdl, profileProps[1])
+            self.PlateProfile.createSection()
+            self.PlateProfile.createProfile(profileProps[2], profileProps[3])
     
     def setMaterial(self):
         if self.sectionType["I"]:
@@ -85,6 +91,9 @@ class Mapdl:
 
         elif self.sectionType["angle"]:
             self.AngleProfile.setMaterial()
+        
+        elif self.sectionType["plate"]:
+            self.PlateProfile.setMaterial()
 
     def createMesh(self, meshData):
         self.mapdl.mshkey(meshData["method"])
@@ -92,6 +101,7 @@ class Mapdl:
         self.mapdl.asel("ALL")
         self.mapdl.amesh("ALL")
         # self.mapdl.finish()
+
     def setBoundaryConditions(self, boundaryConditions):
         self.mapdl.run("/SOLU")
         if self.sectionType["I"]:
@@ -111,6 +121,9 @@ class Mapdl:
 
         elif self.sectionType["angle"]:
             self.AngleProfile.setBoundaryConditions(boundaryConditions)
+        
+        elif self.sectionType["plate"]:
+            self.PlateProfile.setBoundaryConditions(boundaryConditions)
 
     def open_gui(self):
         self.mapdl.open_gui()

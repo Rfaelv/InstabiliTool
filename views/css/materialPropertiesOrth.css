@@ -36,6 +36,14 @@ html {
     margin: 0;
     background-color: var(--primary);
 }
+html[lang='en'] {
+    --en-style: 'block';
+    --pt-style: 'none'
+}
+html[lang='pt-BR'] {
+    --en-style: 'none';
+    --pt-style: 'block'
+}
 body {
     margin-top: 20px;
     padding: 10px;
@@ -109,4 +117,10 @@ input:focus {
 input[type=number]::-webkit-inner-spin-button { 
     -webkit-appearance: none;
     
+}
+class.enLabels {
+    display: var(--en-style);
+}
+class.ptLabels {
+    display: var(--pt-style);
 }

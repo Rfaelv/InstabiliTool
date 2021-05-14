@@ -69,7 +69,7 @@ function createModel() {
   var model = {
     analysiType: {linear: true, nonlinear: false},
     materials: [],
-    sectionType: {I: false, tubular: false, C: false, C2:false, rack: false, angle: false},
+    sectionType: {I: false, tubular: false, C: false, C2:false, rack: false, angle: false, plate: false},
     sectionProperties: {},
     meshType: {rectangle: true, triangle: false},
     meshProperties: {},

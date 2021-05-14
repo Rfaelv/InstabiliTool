@@ -388,6 +388,34 @@ function configMaterialInput() {
             div.appendChild(divImg)
             div.appendChild(inputDiv)
 
+        } else if (model.sectionType.plate) {
+            const divImg = document.createElement('div')
+            divImg.setAttribute('id', 'img')
+            const img = document.createElement('img')
+            img.setAttribute('src', '../../assets/icons/plate-hover2.png')
+            img.setAttribute('height', '120px')
+            const inputDiv = document.createElement('div')
+            inputDiv.setAttribute('id', 'inputDiv')
+            const div1 = document.createElement('div')
+            const select1 = document.createElement('select')
+            select1.setAttribute('className', 'materialAssignment')
+
+            for (let i in model.materials) {
+                var opt1 = document.createElement("option")
+                opt1.value = model.materials[i].tag
+                opt1.text = model.materials[i].tag
+                select1.add(opt1, select1.options[i])
+            }
+
+            divImg.appendChild(img)
+
+            div1.appendChild(select1)
+
+            inputDiv.appendChild(div1)
+
+            div.appendChild(divImg)
+            div.appendChild(inputDiv)
+
         } else {
             var paragraph = document.createElement('p')
             const text = document.createTextNode(`Não é possível aplicar o material. Defina a geometria do perfil.`)

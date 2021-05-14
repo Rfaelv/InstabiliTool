@@ -25,6 +25,9 @@ document.getElementsByClassName('geometryIcon')[4]
 document.getElementsByClassName('geometryIcon')[5]
     .addEventListener('click', function() {geometry('cantoneira')})
 
+document.getElementsByClassName('geometryIcon')[6]
+    .addEventListener('click', function() {geometry('plate')})
+
 const buttonDiscretize = document.getElementById('discretização')
 buttonDiscretize.addEventListener('click', meshAndMaterialAssignment)
 
@@ -89,11 +92,17 @@ function geometry(type) {
             height: 320,
             path: 'views/html/geometryVigaRack.html'
         })
-    } else {
+    } else if (type == 'cantoneira') {
         ipcRenderer.send('create-window', {
             width: 390,
             height: 320,
             path: 'views/html/geometryCantoneira.html'
+        })
+    } else {
+        ipcRenderer.send('create-window', {
+            width: 390,
+            height: 320,
+            path: 'views/html/geometryPlate.html'
         })
     }
     
