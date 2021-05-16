@@ -49,7 +49,7 @@ ipcMain.on('create-window', (event, arg) => {
   })
   newWin.loadFile(arg.path)
   newWin.on('ready-to-show', () => {newWin.show()})
-  newWin.setMenu(null)
+  // newWin.setMenu(null)
 })
 
 ipcMain.on('delete-current-window', () => {

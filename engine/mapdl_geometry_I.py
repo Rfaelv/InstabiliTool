@@ -142,7 +142,63 @@ class IProfile:
     
     def setBoundaryConditions(self, boundaryConditions):
         if boundaryConditions['personalized']:
-            return
+            bc2 = boundaryConditions['2']
+            self.mapdl.nsel("S", "LOC", "X", 0)
+            self.mapdl.nsel("R", "LOC", "Z", 0)
+            self.mapdl.d("ALL", "UX", bc2[0])
+            self.mapdl.d("ALL", "UY", bc2[1])
+            self.mapdl.d("ALL", "UZ", bc2[2])
+            self.mapdl.d("ALL", "ROTX", bc2[3])
+            self.mapdl.d("ALL", "ROTY", bc2[4])
+            self.mapdl.d("ALL", "ROTZ", bc2[5])
+
+            self.mapdl.nsel("S", "LOC", "X", 0)
+            self.mapdl.nsel("R", "LOC", "Z", self.L)
+            self.mapdl.d("ALL", "UX", bc2[0])
+            self.mapdl.d("ALL", "UY", bc2[1])
+            self.mapdl.d("ALL", "UZ", bc2[2])
+            self.mapdl.d("ALL", "ROTX", bc2[3])
+            self.mapdl.d("ALL", "ROTY", bc2[4])
+            self.mapdl.d("ALL", "ROTZ", bc2[5])
+
+            bc1 = boundaryConditions['1']
+            self.mapdl.nsel("S", "LOC", "Z", 0)
+            self.mapdl.nsel("R", "LOC", "Y", self.bw)
+            self.mapdl.d("ALL", "UX", bc1[0])
+            self.mapdl.d("ALL", "UY", bc1[1])
+            self.mapdl.d("ALL", "UZ", bc1[2])
+            self.mapdl.d("ALL", "ROTX", bc1[3])
+            self.mapdl.d("ALL", "ROTY", bc1[4])
+            self.mapdl.d("ALL", "ROTZ", bc1[5])
+
+            self.mapdl.nsel("S", "LOC", "Z", self.L)
+            self.mapdl.nsel("R", "LOC", "Y", self.bw)
+            self.mapdl.d("ALL", "UX", bc1[0])
+            self.mapdl.d("ALL", "UY", bc1[1])
+            self.mapdl.d("ALL", "UZ", bc1[2])
+            self.mapdl.d("ALL", "ROTX", bc1[3])
+            self.mapdl.d("ALL", "ROTY", bc1[4])
+            self.mapdl.d("ALL", "ROTZ", bc1[5])
+
+            bc3 = boundaryConditions['3']
+            self.mapdl.nsel("S", "LOC", "Z", 0)
+            self.mapdl.nsel("R", "LOC", "Y", 0)
+            self.mapdl.d("ALL", "UX", bc3[0])
+            self.mapdl.d("ALL", "UY", bc3[1])
+            self.mapdl.d("ALL", "UZ", bc3[2])
+            self.mapdl.d("ALL", "ROTX", bc3[3])
+            self.mapdl.d("ALL", "ROTY", bc3[4])
+            self.mapdl.d("ALL", "ROTZ", bc3[5])
+
+            self.mapdl.nsel("S", "LOC", "Z", self.L)
+            self.mapdl.nsel("R", "LOC", "Y", 0)
+            self.mapdl.d("ALL", "UX", bc3[0])
+            self.mapdl.d("ALL", "UY", bc3[1])
+            self.mapdl.d("ALL", "UZ", bc3[2])
+            self.mapdl.d("ALL", "ROTX", bc3[3])
+            self.mapdl.d("ALL", "ROTY", bc3[4])
+            self.mapdl.d("ALL", "ROTZ", bc3[5])
+
         else:
             if boundaryConditions['S-S']:
                 self.mapdl.nsel("S", "LOC", "Z", 0)
@@ -173,7 +229,6 @@ class IProfile:
                 self.mapdl.nsel("S", "LOC", "Z", self.L)
                 self.mapdl.d("ALL", "UX", 0)
                 self.mapdl.d("ALL", "UY", 0)
-                # self.mapdl.d("ALL", "UZ", 0)
                 self.mapdl.d("ALL", "ROTX", 0)
                 self.mapdl.d("ALL", "ROTY", 0)
                 self.mapdl.d("ALL", "ROTZ", 0)

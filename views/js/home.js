@@ -126,11 +126,11 @@ function meshAndMaterialAssignment() {
 
 
 function boundaryConditions() {
-    const boundaryConditionsWin = new BrowserWindow({
-        width: 400,
-        height: 400,
-        parent: require('electron').remote.getCurrentWindow()
-    }) 
+    ipcRenderer.send('create-window', {
+        width: 350,
+        height: 350,
+        path: 'views/html/boundaryConditions.html'
+    })
 }
 
 
