@@ -62,3 +62,74 @@ class PlateProfile:
     def setMaterial(self):
         self.mapdl.asel("ALL")
         self.mapdl.aatt(self.materialAssignment[0], 1, 1, 0, 1) 
+
+    def setBoundaryConditions(self, boundaryConditions):
+        if boundaryConditions['personalized']:
+            bc1 = boundaryConditions['1']
+            self.mapdl.nsel("S", "LOC", "X", 0)
+            self.mapdl.nsel("R", "LOC", "Z", 0)
+            for key in bc1:
+                if bc1[key]:
+                    self.mapdl.d('ALL', key, 0)
+
+            self.mapdl.nsel("S", "LOC", "X", 0)
+            self.mapdl.nsel("R", "LOC", "Z", self.L)
+            for key in bc1:
+                if bc1[key] and key != 'UZ':
+                    self.mapdl.d('ALL', key, 0)
+            
+            if boundaryConditions['table'] != '':
+                for i, row in enumerate(boundaryConditions['table']):
+                    if i not in [0, 1]:
+                        self.mapdl.nsel('S', 'LOC', 'X', row[0])
+                        self.mapdl.nsel('R', 'LOC', 'Y', row[1])
+                        self.mapdl.nsel('R', 'LOC', 'Z', row[2])
+                        for j in range(6):
+                            if row[3 + j] in ['fixed', 'fixo']:
+                                self.mapdl.d('ALL', boundaryConditions['table'][1][3 + j], 0)
+
+        else:
+            if boundaryConditions['S-S']:
+                self.mapdl.nsel("S", "LOC", "Z", 0)
+                self.mapdl.d("ALL", "UX", 0)
+                self.mapdl.d("ALL", "UY", 0)
+                self.mapdl.d("ALL", "UZ", 0)
+                self.mapdl.nsel("S", "LOC", "Z", self.L)
+                self.mapdl.d("ALL", "UX", 0)
+                self.mapdl.d("ALL", "UY", 0)
+
+            elif boundaryConditions['C-F']:
+                self.mapdl.nsel("S", "LOC", "Z", 0)
+                self.mapdl.d("ALL", "UX", 0)
+                self.mapdl.d("ALL", "UY", 0)
+                self.mapdl.d("ALL", "UZ", 0)
+                self.mapdl.d("ALL", "ROTX", 0)
+                self.mapdl.d("ALL", "ROTY", 0)
+                self.mapdl.d("ALL", "ROTZ", 0)
+
+            elif boundaryConditions['C-C']:
+                self.mapdl.nsel("S", "LOC", "Z", 0)
+                self.mapdl.d("ALL", "UX", 0)
+                self.mapdl.d("ALL", "UY", 0)
+                self.mapdl.d("ALL", "UZ", 0)
+                self.mapdl.d("ALL", "ROTX", 0)
+                self.mapdl.d("ALL", "ROTY", 0)
+                self.mapdl.d("ALL", "ROTZ", 0)
+                self.mapdl.nsel("S", "LOC", "Z", self.L)
+                self.mapdl.d("ALL", "UX", 0)
+                self.mapdl.d("ALL", "UY", 0)
+                self.mapdl.d("ALL", "ROTX", 0)
+                self.mapdl.d("ALL", "ROTY", 0)
+                self.mapdl.d("ALL", "ROTZ", 0)
+
+            elif boundaryConditions['C-S']:
+                self.mapdl.nsel("S", "LOC", "Z", 0)
+                self.mapdl.d("ALL", "UX", 0)
+                self.mapdl.d("ALL", "UY", 0)
+                self.mapdl.d("ALL", "UZ", 0)
+                self.mapdl.d("ALL", "ROTX", 0)
+                self.mapdl.d("ALL", "ROTY", 0)
+                self.mapdl.d("ALL", "ROTZ", 0)
+                self.mapdl.nsel("S", "LOC", "Z", self.L)
+                self.mapdl.d("ALL", "UX", 0)
+                self.mapdl.d("ALL", "UY", 0)

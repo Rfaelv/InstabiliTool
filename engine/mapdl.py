@@ -100,6 +100,7 @@ class Mapdl:
         self.mapdl.aesize("ALL", meshData["elementSize"])
         self.mapdl.asel("ALL")
         self.mapdl.amesh("ALL")
+        self.mapdl.seltol(meshData["elementSize"]/2)
         # self.mapdl.finish()
 
     def setBoundaryConditions(self, boundaryConditions):

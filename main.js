@@ -9,8 +9,8 @@ function createWindow () {
     show: false,
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation:false
-      // enableRemoteModule: true
+      contextIsolation:false,
+      enableRemoteModule: true
     }
   })
   nativeTheme.themeSource = 'light'
@@ -44,7 +44,8 @@ ipcMain.on('create-window', (event, arg) => {
     minimizable: false,
     show: false,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      enableRemoteModule: true
     }
   })
   newWin.loadFile(arg.path)
@@ -63,7 +64,6 @@ ipcMain.on('get-user-data', (event) => {
 ipcMain.on('create-dialog', (event, args) => {
   dialog.showErrorBox(args.title, args.description)
 })
-
 
 function createModel() {
   var model = {

@@ -6,3 +6,5 @@ class FiniteElement():
         mapdl.keyopt(1, 8, 0)  
         mapdl.keyopt(1, 9, 0)  
         mapdl.keyopt(1, 10, 0)
+        mapdl.local(11, 0, 0, 0, 0, 0, 0, 0)
+        mapdl.esys(11)

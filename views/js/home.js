@@ -41,6 +41,15 @@ const analysiType = document.getElementsByName('type')
 analysiType[0].addEventListener('change', setAnalysiType)
 analysiType[1].addEventListener('change', setAnalysiType)
 
+document.getElementById('boundary')
+    .addEventListener('change', setSimpleBoundaryConditions)
+
+window.addEventListener('focus', () => {
+    if (localStorage.getItem('personalized-boundary-conditions') == 'y') {
+        document.getElementById('boundary').selectedIndex = 0
+    }
+})
+
 
 function materialProps() {
     const materialType = document.getElementsByName('material')
@@ -126,11 +135,19 @@ function meshAndMaterialAssignment() {
 
 
 function boundaryConditions() {
-    ipcRenderer.send('create-window', {
-        width: 350,
-        height: 350,
-        path: 'views/html/boundaryConditions.html'
-    })
+    const model = readData('model.json')
+
+    for (key in model.sectionType) {
+        if (model.sectionType[key]) {
+            ipcRenderer.send('create-window', {
+                width: 380,
+                height: 480,
+                path: 'views/html/boundaryConditions.html'
+            })
+            return
+        }
+    }
+    ipcRenderer.send('create-dialog', {title: 'Não há dados de seção', description: 'Defina a seção antes de continuar.'})  
 }
 
 
@@ -167,4 +184,18 @@ function setAnalysiType() {
     }
 
     writeData(model, 'model.json')
+}
+
+function setSimpleBoundaryConditions() {
+    const select = document.getElementById('boundary')
+    const currentValue = select.options[select.selectedIndex].value
+    if (currentValue != '') {
+        var model = readData('model.json')
+        model.boundaryConditions = {
+            personalized: false
+        }
+        model.boundaryConditions[currentValue] = true
+        writeData(model, 'model.json')
+        localStorage.setItem('personalized-boundary-conditions', 'n')
+    }
 }

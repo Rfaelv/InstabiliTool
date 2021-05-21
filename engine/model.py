@@ -7,7 +7,7 @@ class Model():
 
         # with open(self.pathToModel, 'r') as jfile:
 	    #     self.model = json.load(jfile)
-        self.model = {"analysiType":{"linear":True,"nonlinear":False},"materials":[{"tag":"mfh","materialType":{"isotropic":True,"orthotropic":False,"anisotropic":False},"materialProperties":{"E":565,"v":0.3,"dens":8}},{"tag":"45","materialType":{"isotropic":True,"orthotropic":False,"anisotropic":False},"materialProperties":{"E":87,"v":0.3,"dens":45}},{"tag":"3","materialType":{"isotropic":True,"orthotropic":False,"anisotropic":False},"materialProperties":{"E":525252,"v":0.3,"dens":52222}}],"sectionType":{"I":False,"tubular":False,"C":False,"C2":False,"rack":True,"angle":False},"sectionProperties":{"d":0.3,"b":0.2,"bfi":0.2,"t":0.01,"z":0.1,"zi":0.1,"y":0.1,"yi":0.1,"L":3,"materialAssignment":[1,2,3]},"meshType":{"rectangle":True,"triangle":False},"meshProperties":{"elementSize":0.01,"method":0},"boundaryConditions":{},"loadType":{"bending":True,"normal":False},"loadProperties":{"points":3}}
+        self.model = {"analysiType":{"linear":True,"nonlinear":False},"materials":[{"tag":"mat1","materialType":{"isotropic":True,"orthotropic":False,"anisotropic":False},"materialProperties":{"E":20000,"v":0.3,"dens":1800}}],"sectionType":{"I":True,"tubular":False,"C":False,"C2":False,"rack":False,"angle":False,"plate":False},"sectionProperties":{"d":0.3,"bfs":0.3,"bfi":0.3,"tw":0.01,"tfs":0.01,"tfi":0.01,"L":4,"materialAssignment":[1,1,1]},"meshType":{"rectangle":True,"triangle":False},"meshProperties":{"elementSize":0.01,"method":1},"boundaryConditions":{"1":{"UX":True,"UY":True,"UZ":True,"ROTX":False,"ROTY":False,"ROTZ":True},"2":{"UX":False,"UY":False,"UZ":False,"ROTX":False,"ROTY":False,"ROTZ":False},"3":{"UX":True,"UY":True,"UZ":True,"ROTX":False,"ROTY":False,"ROTZ":True},"personalized":True,"table":[["Coordinates",'none','none',"Restrinctions",'none','none','none','none','none'],["X","Y","Z","UX","UY","UZ","ROTX","ROTY","ROTZ"],[0.15,0.29,1,"fixed","free","free","free","free","free"],[-0.15,0.29,1,"fixed","free","free","free","free","free"],[0.15,0,1,"fixed","free","free","free","free","free"],[-0.15,0,1,"fixed","free","free","free","free","free"],[0.15,0.29,3,"fixed","free","free","free","free","free"],[-0.15,0.29,3,"fixed","free","free","free","free","free"],[0.15,0,3,"fixed","free","free","free","free","free"],[-0.15,0,3,"fixed","free","free","free","free","free"]]},"loadType":{"bending":True,"normal":False},"loadProperties":{"points":4,"Lshear":1}}
     
     def analysiType(self):
         return
@@ -25,7 +25,7 @@ class Model():
         return self.model["meshProperties"]
 
     def boundaryConditions(self):
-        return
+        return self.model['boundaryConditions']
 
     def load(self):
         return

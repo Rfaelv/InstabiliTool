@@ -37,7 +37,7 @@ html {
     background-color: var(--primary);
 }
 body {
-    margin-top: 20px;
+    margin-top: 5px;
     padding: 10px;
     height: 87%;
     display: flex;
@@ -53,8 +53,8 @@ div {
 div#buttons {
     justify-content: flex-end;
 }
-#img {
-
+#img2 {
+    padding: 0px;
 }
 #selects2 {
     display: flex;
@@ -84,6 +84,27 @@ table {
     width: 50%;
     align-items: center;
     justify-content: center;
+}
+#divimg2 {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-bottom: 20px;
+}
+#axes span {
+    /* align-items: center; */
+    /* justify-content: center; */
+    display: none;
+    z-index: 100;
+    padding: 0px;
+}
+#axes:hover span {
+    display: block; 
+    position: absolute; 
+    top: 45%; 
+    left: 50%; 
+    transform:translate(-50%, -50%);
+    border: 1px #b6b5b5 solid;
+    transition: 20ms;
 }
 label {
     padding-right: 10px;
@@ -146,8 +167,59 @@ button:focus {
     outline: 0px auto -webkit-focus-ring-color;
     outline-offset: 0px;
 }
+#downloadButton, #searchButton {
+    background-color: #edf0f3b6;
+    color: black;
+    border: solid #E2E6EA;
+    border-width: thin;
+    padding: 1px;
+    /* font-family: 'Segoe UI'; */
+    width: 80px;
+    height: 25px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+#downloadButton {
+    width: auto;
+    padding: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 22px;
+}
+#downloadButton:hover, #searchButton:hover {
+    background-color: #e2e6eabd;
+    border: solid #E2E6EA;
+    border-width: thin;
+}
+#downloadButton:active, #searchButton:active{
+    background-color: #E2E6EA;
+    /* border-color: dodgerblue; */
+    /* box-shadow: 0 0 3px 0 dodgerblue; */
+    transition: 0.1s;
+
+}
+#downloadButton:focus, #searchButton:focus{
+    outline: thin dotted;
+    outline: 0px auto -webkit-focus-ring-color;
+    outline-offset: 0px;
+}
+#inputTable {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+#downloadTable {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    /* justify-content: start; */
+    margin-bottom: 20px;
+}
 input {
-    width: 100px;
+    width: auto;
+    flex: 1;
     border: none;
     border: solid #E2E6EA;
     border-width: thin;

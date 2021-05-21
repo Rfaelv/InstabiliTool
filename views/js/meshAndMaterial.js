@@ -36,7 +36,7 @@ function setMeshAndMaterialAssignment() {
     for (select of selects) {
         materialAssignmentList.push(parseInt(select.options[select.selectedIndex].value))
     }
-    model.sectionProperties.materialAssignment = materialAssignmentList
+    model.sectionProperties.materialAssignment = materialAssignmentList.length == 0 ? [1,1,1] : aterialAssignmentList
     writeData(model, 'model.json')
     ipcRenderer.send('delete-current-window')
 }
