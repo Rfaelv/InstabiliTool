@@ -11,41 +11,41 @@
 <body>
     <div id=container1>
         <div style="flex: 0.25;">
-            <h3>&nbsp;&nbsp;&nbsp;Tipo de análise</h3>
+            <h3 style="padding-left: 10px;" class='text'></h3>
             <div id='analysiType'>
-                <label class="container">Linear
+                <label class="container text">
                     <input type="radio" name='type' checked="checked">
                     <span class="checkmark"></span>
                 </label><br>
-                <label class="container">Não linear
+                <label class="container text">
                     <input type="radio" name='type'>
                     <span class="checkmark"></span>
                 </label>
             </div>
         </div>
         <div style="flex: 0.7;">
-            <h3>&nbsp;&nbsp;&nbsp;Propriedades do material</h3>
+            <h3 style="padding-left: 10px;" class='text'></h3>
             <div id='materialProps'>
                 <div style="display: flex; flex-direction: row; justify-content: space-around;">
-                    <label class="container">Isotrópico&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="container text" style="padding-right: 25px;">
                         <input type="radio" name='material' checked="checked">
                         <span class="checkmark"></span>
                     </label>
-                    <label class="container">Ortotrópico&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="container text" style="padding-right: 25px;">
                         <input type="radio" name='material'>
                         <span class="checkmark"></span>
                     </label>
-                    <label class="container">Anisotrópico
+                    <label class="container text">
                         <input type="radio" name='material'>
                         <span class="checkmark"></span>
                     </label>
                 </div>
-                <button id='definirProps'>&nbsp;&nbsp;Definir propriedades</button>
+                <button id='definirProps' class="text"></button>
             </div>
         </div>
     </div>
     <div id='container2'>
-        <h3>&nbsp;&nbsp;&nbsp;Geometria</h3>
+        <h3 style="padding-left: 10px;" class='text'></h3>
         <div id='geometry'>
             <img class="geometryIcon" src="../../assets/icons/vigaI.png" alt="Viga I" height="60px">
             <img class="geometryIcon" src="../../assets/icons/vigaTubular.png" alt="Viga tubular" height="60px">
@@ -58,57 +58,59 @@
     </div>
     <div id='container3'>
         <div style="flex: 0.35;">
-            <h3>&nbsp;&nbsp;&nbsp;Malha e aplicação de material</h3>
+            <h3 style="padding-left: 10px;" class='text'></h3>
             <div id='discretization'>
                 <div style="display: flex; flex-direction: row; justify-content: space-around;">
-                    <label class="container">Triângulo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="container text" style="padding-right: 25px;">
                         <input type="radio" name='discretize' checked="checked">
                         <span class="checkmark"></span>
                     </label>
-                    <label class="container">Retângulo
+                    <label class="container text">
                         <input type="radio" name='discretize'>
                         <span class="checkmark"></span>
                     </label>
                 </div>
-                <button id='discretização'>Configurar</button>
+                <button id='discretização' class="text"></button>
             </div>
         </div>
         <div style="flex: 0.25;">
-            <h3>&nbsp;&nbsp;&nbsp;Condições de contorno</h3>
+            <h3 style="padding-left: 10px;" class='text'></h3>
             <div id='boundaryConditions'>
                 <div>
                     <select name="boundary" id="boundary">
                         <option value=""></option>
-                        <option value="S-S">S - S</option>
-                        <option value="C-F">C - F</option>
-                        <option value="C-C">C - C</option>
-                        <option value="C-S">C - S</option>
+                        <option value="S-S" class="text"></option>
+                        <option value="C-F" class="text"></option>
+                        <option value="C-C" class="text"></option>
+                        <option value="C-S" class="text"></option>
                     </select>
                 </div>
-                <button id='condiçãoContorno'>Personalizar</button>
+                <button id='condiçãoContorno' class="text"></button>
             </div>
         </div>
         <div style="flex: 0.35">
-            <h3>&nbsp;&nbsp;&nbsp;Carregamento</h3>
+            <h3 style="padding-left: 10px;" class='text'></h3>
             <div id='loading'>
                 <div style="display: flex; flex-direction: row; justify-content: space-around;">
-                    <label class="container">Momento fletor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="container text" style="padding-right: 20px;">
                         <input type="radio" name='load' checked="checked">
                         <span class="checkmark"></span>
                     </label>
-                    <label class="container">Axial
+                    <label class="container text">
                         <input type="radio" name='load'>
                         <span class="checkmark"></span>
                     </label>
                 </div>
-                <button id='carga'>Configurar</button>
+                <button id='carga' class="text"></button>
             </div>
         </div>
     </div>
     <div id='container4'>
-        <button id='special-button'>Iniciar análise</button>
-        <button id='special-button'>Ver resultados</button>
+        <button id='special-button' class="text"></button>
+        <button id='special-button' class="text"></button>
     </div>
+    <script>window.i18n = new(require('../../translations/i18n'));</script>
+    <script src="../js/translation/home.js"></script>
     <script src="../js/home-hoverEvent.js"></script>
     <script src="../js/home.js"></script>
 </body>

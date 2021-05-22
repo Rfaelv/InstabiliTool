@@ -1,4 +1,5 @@
-const { app, BrowserWindow, nativeTheme, ipcMain, dialog } = require('electron')
+const { app, BrowserWindow, nativeTheme, ipcMain, dialog, Menu } = require('electron')
+// var i18n = require(__dirname + '\\translations\\i18n')
 
 let win = null
 
@@ -13,6 +14,9 @@ function createWindow () {
       enableRemoteModule: true
     }
   })
+
+  // require('./menu/mainmenu')
+
   nativeTheme.themeSource = 'light'
   win.loadFile('views/html/home.html')
   win.on('ready-to-show', () => {
@@ -64,6 +68,10 @@ ipcMain.on('get-user-data', (event) => {
 ipcMain.on('create-dialog', (event, args) => {
   dialog.showErrorBox(args.title, args.description)
 })
+
+// ipcMain.on('get-i18n', (event) => {
+//   event.returnValue = i18n
+// })
 
 function createModel() {
   var model = {

@@ -11,6 +11,9 @@ applybutton.addEventListener('click', setMeshAndMaterialAssignment)
 const cancelbutton = document.getElementById('cancel')
 cancelbutton.addEventListener('click', cancel)
 
+document.getElementById('visualizeButton')
+    .addEventListener('click', openMeshVisualizer)
+
 document.getElementById('elementSize').focus()
 
 
@@ -422,5 +425,13 @@ function configMaterialInput() {
             paragraph.appendChild(text)
             div.appendChild(paragraph)
         }
+    }
+}
+
+function openMeshVisualizer() {
+    if (document.getElementById('elementSize').value != '') {
+        
+    } else {
+        ipcRenderer.send('create-dialog', {title: 'Erro', description: 'Defina o tamanho do elemento finito.'})
     }
 }
