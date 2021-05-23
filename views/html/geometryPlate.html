@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geometria - Chapa</title>
+    <title class="text"></title>
     <link rel="stylesheet" href="../css/geometryCantoneira.css">
 </head>
 <body>
@@ -24,9 +24,11 @@
         </div>
     </section>
     <div>
-        <button id='apply'>Apply</button>
-        <button id='cancel'>Cancel</button>
+        <button id='apply' class="text"></button>
+        <button id='cancel' class="text"></button>
     </div>
+    <script>window.i18n = new(require('../../translations/i18n'));</script>
+    <script src="../js/translation/geometryPlate.js"></script>
     <script src="../js/geometryPlate.js"></script>
 </body>
 </html>

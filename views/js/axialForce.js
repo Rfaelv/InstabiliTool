@@ -13,7 +13,7 @@ function setLoadCondition() {
     const x = document.getElementById('x')
     const y = document.getElementById('y')
     if (x.value == '' || y.value == '') {
-        ipcRenderer.send('create-dialog', {title: 'Erro', description: 'Preencha todos os campos.'})
+        ipcRenderer.send('create-dialog', {title: window.i18n.__('Fill in all fields.'), description: ''})
         if (x.value == '') {x.focus()} else {y.focus()}
         return
     }

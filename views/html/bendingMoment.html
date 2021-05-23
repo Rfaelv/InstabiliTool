@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Momento fletor</title>
+    <title class="text"></title>
     <link rel="stylesheet" href="../css/bendingMoment.css">
 </head>
 <body>
-    <label style="padding-bottom: 10px;">Tipo de flexão</label>
+    <label style="padding-bottom: 10px;" class="text"></label>
     <div style="justify-content: space-around;">
         
         <div style="justify-content: space-between;">
-            <label class="container" id='radioLabel'>Flexão de 4 pontos
+            <label class="container text" id='radioLabel'>
                 <input type="radio" name='flexao' checked>
                 <span class="checkmark"></span>
             </label><br>
-            <label class="container">Flexão de 3 pontos
+            <label class="container text">
                 <input type="radio" name='flexao'>
                 <span class="checkmark"></span>
             </label>
@@ -24,14 +24,16 @@
     <div id='container'>
         <img id='image-flexao' src="../../assets/icons/flexao-4-pontos.png" alt="" height="70px">
         <div id='input'>
-            <label for="">Lshear</label>
+            <label class="text"></label>
             <input type="numbre" id='Lshear'>
         </div>
     </div>
     <div id='buttons'>
-        <button id='apply'>Apply</button>
-        <button id='cancel'>Cancel</button>
+        <button id='apply' class="text"></button>
+        <button id='cancel' class="text"></button>
     </div>
+    <script>window.i18n = new(require('../../translations/i18n'));</script>
+    <script src="../js/translation/bendingMoment.js"></script>
     <script src="../js/bendingMoment.js"></script>
 </body>
 </html>

@@ -23,7 +23,7 @@ function setMeshAndMaterialAssignment() {
     const selects = document.getElementsByClassName('materialAssignment')
 
     if (elementSize.value == '' || (!elementMethod[0].checked && !elementMethod[1].checked)) {
-        ipcRenderer.send('create-dialog', {title: 'Erro', description: 'Preencha todos os campos.'})
+        ipcRenderer.send('create-dialog', {title: window.i18n.__('Fill in all fields.'), description: ''})
         if (elementSize.value == '') {
             elementSize.focus()
         }
@@ -55,12 +55,12 @@ function configMaterialInput() {
 
     if(model.materials.length == 0) {
         var paragraph = document.createElement('p')
-        const text = document.createTextNode('Crie pelo menos um material para adicionar ao perfil.')
+        const text = document.createTextNode(window.i18n.__('Create at least one material to add to profile.'))
         paragraph.appendChild(text)
         div.appendChild(paragraph)
     } else if(model.materials.length == 1) {
         var paragraph = document.createElement('p')
-        const text = document.createTextNode(`${model.materials[0].tag} será utilizado para todo o perfil. Para utilizar mais de um material no perfil, crie outros e retorne aqui.`)
+        const text = document.createTextNode(`${model.materials[0].tag} ${window.i18n.__('will be used for whole profile. To use more then one material in the profile, create others materials and come back to here.')}`)
         paragraph.appendChild(text)
         div.appendChild(paragraph)
 
@@ -421,7 +421,7 @@ function configMaterialInput() {
 
         } else {
             var paragraph = document.createElement('p')
-            const text = document.createTextNode(`Não é possível aplicar o material. Defina a geometria do perfil.`)
+            const text = document.createTextNode(window.i18n.__('It is not possible apply the material. Define the geometry of the profile.'))
             paragraph.appendChild(text)
             div.appendChild(paragraph)
         }
@@ -432,6 +432,6 @@ function openMeshVisualizer() {
     if (document.getElementById('elementSize').value != '') {
         
     } else {
-        ipcRenderer.send('create-dialog', {title: 'Erro', description: 'Defina o tamanho do elemento finito.'})
+        ipcRenderer.send('create-dialog', {title: window.i18n.__('Define the finite element size.'), description: ''})
     }
 }

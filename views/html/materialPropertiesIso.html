@@ -3,26 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Material isotrópico</title>
+    <title class="text"></title>
     <link rel="stylesheet" href="../css/materialPropertiesIso.css">
 </head>
 <body>
     <div>
-        <label>Nome</label> <input type="text" name="" id="name">
+        <label class="text"></label> <input type="text" name="" id="name">
     </div>
     <div>
         <label>E</label> <input type="number" name="" id="elasticModule">
     </div>
     <div>
-        <label for="">&nu;</label> <input type="number" name="" id="poisson">
+        <label>&nu;</label> <input type="number" name="" id="poisson">
     </div>
     <div>
-        <label for="">&rho;</label> <input type="number" name="" id="density">
+        <label>&rho;</label> <input type="number" name="" id="density">
     </div>
     <div>
-        <button id='apply'>Apply</button>
-        <button id='cancel'>Cancel</button>
+        <button id='apply' class="text"></button>
+        <button id='cancel' class="text"></button>
     </div>
+    <script>window.i18n = new(require('../../translations/i18n'));</script>
+    <script src="../js/translation/materialPropertiesIso.js"></script>
     <script src="../js/materialPropertiesIso.js"></script>
 </body>
 </html>

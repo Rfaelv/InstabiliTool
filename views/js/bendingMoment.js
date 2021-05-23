@@ -28,7 +28,7 @@ function switchImage() {
 
 function setLoadCondition() {
     if (radioButton[0].checked && document.querySelector('#Lshear').value == '') {
-        ipcRenderer.send('create-dialog', {title: 'Erro', description: 'Preencha todos os campos.'})
+        ipcRenderer.send('create-dialog', {title: window.i18n.__('Fill in all fields.'), description: ''})
         document.querySelector('#Lshear').focus()
         return
     }

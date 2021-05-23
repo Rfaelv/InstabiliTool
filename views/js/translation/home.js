@@ -1,6 +1,3 @@
-// const { ipcRenderer} = require('electron')
-
-// var i18n = ipcRenderer.sendSync('get-i18n')
 const texts = [
     "Analysi type",
     "Linear",

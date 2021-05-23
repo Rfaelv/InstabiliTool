@@ -141,9 +141,9 @@ function setBoundaryConditions() {
             model.boundaryConditions.table = rows
         }).catch((error) => {
             if (error.errno == -4058) {
-                ipcRenderer.send('create-dialog', {title: 'Erro', description: `Não foi possível abrir ${error.path}`})
+                ipcRenderer.send('create-dialog', {title: `${window.i18n.__('Cannot open')} ${error.path}`, description: ''})
             } else {
-                ipcRenderer.send('create-dialog', {title: 'Erro', description: 'Ocorreu algum problema.'})
+                ipcRenderer.send('create-dialog', {title: window.i18n.__('Cannot open the file'), description: ''})
             }
         }).finally(() => {
             writeData(model, 'model.json')

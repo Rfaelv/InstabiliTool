@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Força axial</title>
+    <title class="text"></title>
     <link rel="stylesheet" href="../css/axialForce.css">
 </head>
 <body>
-    <label style="padding-bottom: 10px;">Local de aplicação da carga</label>
+    <label style="padding-bottom: 10px;" class="text"></label>
     <div>
         <img src="../../assets/icons/local-aplicação-carga-normal.png" alt="" height="170px">
         <div id='container'>
@@ -22,9 +22,11 @@
         </div>
     </div>
     <div id='buttons'>
-        <button id='apply'>Apply</button>
-        <button id='cancel'>Cancel</button>
+        <button id='apply' class="text"></button>
+        <button id='cancel' class="text"></button>
     </div>
+    <script>window.i18n = new(require('../../translations/i18n'));</script>
+    <script src="../js/translation/axialForce.js"></script>
     <script src="../js/axialForce.js"></script>
 </body>
 </html>

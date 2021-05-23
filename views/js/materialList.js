@@ -2,6 +2,7 @@ const { ipcRenderer } = require('electron')
 const fs = require('fs')
 const path = require('path')
 const {writeData, readData} = require('../../modules/writeAndReadData')
+const i18n = require('../../translations/i18n')
 
 setTitle()
 
@@ -95,13 +96,13 @@ function setTitle() {
     const title = document.getElementsByTagName('title')
     var text = null
     if (localStorage.getItem('current-material-type') == 'isotropic') {
-        text = document.createTextNode('Material isotrópico')
+        text = document.createTextNode(window.i18n.__('Isotropic material'))
 
     } else if (localStorage.getItem('current-material-type') == 'orthotropic') {
-        text = document.createTextNode('Material ortotrópico')
+        text = document.createTextNode(window.i18n.__('Orthotropic material'))
 
     } else if (localStorage.getItem('current-material-type') == 'anisotropic') {
-        text = document.createTextNode('Material anisotrópico')
+        text = document.createTextNode(window.i18n.__('Anisotropic material'))
         
     }
     title[0].appendChild(text)

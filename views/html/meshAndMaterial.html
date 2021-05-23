@@ -3,35 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Malha e material</title>
+    <title class="text"></title>
     <link rel="stylesheet" href="../css/meshAndMaterial.css">
 </head>
 <body>
     <div>
-        <label>Tamanho do elemento</label> <input type="number" name="" id="elementSize">
+        <label class="text"></label> <input type="number" name="" id="elementSize">
         <img style="align-self: center; padding-left: 20px; cursor: pointer;" src="../../assets/icons/visualize.png" height="12px" id='visualizeButton'>
     </div>
-    <label>Método</label>
+    <label class="text"></label>
     <div style="justify-content: space-around;">
         
         <div style="justify-content: space-between;">
-            <label class="container" id='radioLabel'>Livre
+            <label class="container text" id='radioLabel'>
                 <input type="radio" name='method'>
                 <span class="checkmark"></span>
             </label><br>
-            <label class="container">Mapeado
-                <input type="radio" name='method'>
+            <label class="container text">
+                <input type="radio" name='method' checked>
                 <span class="checkmark"></span>
             </label>
         </div>
     </div>
     <hr style="width: 100%;">
-    <label>Material</label>
+    <label class="text"></label>
     <div id='addMateial'></div>
     <div id='buttons'>
-        <button id='apply'>Apply</button>
-        <button id='cancel'>Cancel</button>
+        <button id='apply' class="text"></button>
+        <button id='cancel' class="text"></button>
     </div>
+    <script>window.i18n = new(require('../../translations/i18n'));</script>
+    <script src="../js/translation/meshAndMaterial.js"></script>
     <script src="../js/meshAndMaterial.js"></script>
 </body>
 </html>

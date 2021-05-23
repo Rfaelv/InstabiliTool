@@ -16,7 +16,7 @@ function setGeometry() {
 
     for (label of input) {
         if (label.value == '') {
-            ipcRenderer.send('create-dialog', {title: 'Erro', description: 'Preencha todos os campos.'})
+            ipcRenderer.send('create-dialog', {title: window.i18n.__('Fill in all fields.'), description: ''})
             label.focus()
             return
         }

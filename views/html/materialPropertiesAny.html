@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Material anisotrópico</title>
+    <title class="text"></title>
     <link rel="stylesheet" href="../css/materialPropertiesAny.css">
 </head>
 <body>
     <section style="display: flex; flex-direction: row; justify-content: center;">
         <div style="margin-bottom: 15px;">
-            <label>Nome</label> <input type="text" name="" id="name">
+            <label class="text"></label> <input type="text" name="" id="name">
         </div>
     </section>
     <section>
@@ -138,9 +138,11 @@
         </div>
     </section>
     <div style="padding-top: 20px;">
-        <button id='apply'>Apply</button>
-        <button id='cancel'>Cancel</button>
+        <button id='apply' class="text"></button>
+        <button id='cancel' class="text"></button>
     </div>
+    <script>window.i18n = new(require('../../translations/i18n'));</script>
+    <script src="../js/translation/materialPropertiesAny.js"></script>
     <script src="../js/materialPropertiesAny.js"></script>
 </body>
 </html>

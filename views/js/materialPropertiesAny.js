@@ -27,13 +27,13 @@ function setMaterialProperties() {
 
     for (let i = 0; i < props.length; i++) {
         if (props[i].value == '' || density.value == '') {
-            ipcRenderer.send('create-dialog', {title: 'Erro', description: 'Preencha todos os campos.'})
+            ipcRenderer.send('create-dialog', {title: window.i18n.__('Fill in all fields.'), description: ''})
             props[i].focus()
             return
         }
     }
     if (name.value == '') {
-        ipcRenderer.send('create-dialog', {title: 'Erro', description: 'Preencha todos os campos.'})
+        ipcRenderer.send('create-dialog', {title: window.i18n.__('Fill in all fields.'), description: ''})
             name.focus()
             return
     } else {
@@ -41,7 +41,7 @@ function setMaterialProperties() {
 
         for (material of model.materials) {
             if (name.value == material.tag) {
-                ipcRenderer.send('create-dialog', {title: 'Erro', description: 'Esse nome já está sendo usado.'})
+                ipcRenderer.send('create-dialog', {title: window.i18n.__('This name has already been used.'), description: ''})
                 name.value = ""
                 name.focus()
                 return
@@ -72,7 +72,7 @@ function replaceMaterialProperties() {
 
     for (let i = 0; i < props.length; i++) {
         if (props[i].value == '' || density.value == '') {
-            ipcRenderer.send('create-dialog', {title: 'Erro', description: 'Preencha todos os campos.'})
+            ipcRenderer.send('create-dialog', {title: window.i18n.__('Fill in all fields.'), description: ''})
             props[i].focus()
             return
         }

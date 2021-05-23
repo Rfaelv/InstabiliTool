@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title class='ptLabels' lang="pt-br">Material ortotrópico</title>
+    <title class='text' lang="pt-br"></title>
     <link rel="stylesheet" href="../css/materialPropertiesOrth.css">
 </head>
 <body>
     <div>
-        <label>Nome</label> <input type="text" name="" id="name">
+        <label class="text"></label> <input type="text" name="" id="name">
     </div>
     <div>
         <label>Ex</label> <input type="number" name="" id="elasticModulex">
@@ -41,10 +41,11 @@
         <label for="">&rho;</label> <input type="number" name="" id="density">
     </div>
     <div style="padding-top: 20px;">
-        <button class='enLabels' id='apply'>Apply</button>
-        <button class='ptLabels' id='apply'>Aplicar</button>
-        <button id='cancel'>Cancel</button>
+        <button class='text' id='apply'></button>
+        <button class="text" id='cancel'></button>
     </div>
+    <script>window.i18n = new(require('../../translations/i18n'));</script>
+    <script src="../js/translation/materialPropertiesOrth.js"></script>
     <script src="../js/materialPropertiesOrth.js"></script>
 </body>
 </html>

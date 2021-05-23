@@ -24,7 +24,7 @@ function setMaterialProperties() {
 
     for (let key in props) {
         if (props[key].value == '') {
-            ipcRenderer.send('create-dialog', {title: 'Erro', description: 'Preencha todos os campos.'})
+            ipcRenderer.send('create-dialog', {title: window.i18n.__('Fill in all fields.'), description: ''})
             props[key].focus()
             return
 
@@ -33,7 +33,7 @@ function setMaterialProperties() {
 
             for (material of model.materials) {
                 if (props.name.value == material.tag) {
-                    ipcRenderer.send('create-dialog', {title: 'Erro', description: 'Esse nome já está sendo usado.'})
+                    ipcRenderer.send('create-dialog', {title: window.i18n.__('This name has already been used.'), description: ''})
                     props.name.value = ""
                     props.name.focus()
                     return
@@ -69,7 +69,7 @@ function replaceMaterialProperties() {
 
     for (let key in props) {
         if (props[key].value == '') {
-            ipcRenderer.send('create-dialog', {title: 'Erro', description: 'Preencha todos os campos.'})
+            ipcRenderer.send('create-dialog', {title: window.i18n.__('Fill in all fields.'), description: ''})
             props[key].focus()
             return
 
