@@ -21,6 +21,8 @@ document.getElementById('downloadButton')
 function createDOM() {
     var img = document.getElementById('img')
     var img2 = document.getElementById('img2')
+    // var axes = document.getElementById('axes')
+    // title="<span><img id='img2' height='280px'></span>">
     var table1 = document.getElementById('1')
     var table2 = document.getElementById('2')
     var table3 = document.getElementById('3')
@@ -77,6 +79,10 @@ function createDOM() {
 
     } else if (model.sectionType.rack) {
         img.src = '../../assets/icons/vigaRack-explodido.png'
+        // axes.title = "<img src='../../assets/icons/vigaRack-axes.png' height='280px'>"
+        // i = document.createElement('img')
+        // i.src = '../../assets/icons/vigaRack-axes.png'
+        // // axes.title = i
         img2.src = '../../assets/icons/vigaRack-axes.png'
         table3.style.display = 'block'
 

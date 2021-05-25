@@ -41,6 +41,10 @@ const analysiType = document.getElementsByName('type')
 analysiType[0].addEventListener('change', setAnalysiType)
 analysiType[1].addEventListener('change', setAnalysiType)
 
+const meshType = document.getElementsByName('discretize')
+meshType[0].addEventListener('change', setMeshType)
+meshType[1].addEventListener('change', setMeshType)
+
 document.getElementById('boundary')
     .addEventListener('change', setSimpleBoundaryConditions)
 
@@ -181,6 +185,18 @@ function setAnalysiType() {
     } else {
         model.analysiType.nonlinear = true
         model.analysiType.linear = false
+    }
+
+    writeData(model, 'model.json')
+}
+
+function setMeshType() {
+    var model = readData('model.json')
+
+    if (meshType[0].checked) { 
+        model.meshProperties.type = 0
+    } else {
+        model.meshProperties.type = 1
     }
 
     writeData(model, 'model.json')

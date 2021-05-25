@@ -1,6 +1,9 @@
-import numpy as np 
+import sys, json
 
-a = {"a":1, "b":2}
+input1 = sys.stdin.readlines()
+value = json.loads(input1[0])
 
-for key in a:
-    print(type(key))
+input2 = sys.stdin.readlines()
+value2 = json.loads(input2[0])
+
+print(value + value2)

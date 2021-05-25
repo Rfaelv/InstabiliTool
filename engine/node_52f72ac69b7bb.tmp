@@ -1,0 +1,11 @@
+const spawn = require('child_process').spawn
+
+const process = spawn('python', ['./test.py'])
+process.stdin.write('1')
+// const process = spawn(path.resolve('engine/dist/main'), props)
+
+process.stdout.on('data', (data) => {
+    const output = data.toString()
+
+    console.log(output)
+})

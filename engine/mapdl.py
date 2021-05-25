@@ -97,6 +97,7 @@ class Mapdl:
 
     def createMesh(self, meshData):
         self.mapdl.mshkey(meshData["method"])
+        self.mapdl.mshape(meshData["type"])
         self.mapdl.aesize("ALL", meshData["elementSize"])
         self.mapdl.asel("ALL")
         self.mapdl.amesh("ALL")

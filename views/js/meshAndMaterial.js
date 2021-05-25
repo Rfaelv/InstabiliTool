@@ -5,14 +5,25 @@ const path = require('path')
 
 configMaterialInput()
 
+// $(document).ready(function () {
+//     $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
+// })
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.tooltipped');
+    var instances = M.Tooltip.init(elems, options);
+});
+
 const applybutton = document.getElementById('apply')
 applybutton.addEventListener('click', setMeshAndMaterialAssignment)
 
 const cancelbutton = document.getElementById('cancel')
 cancelbutton.addEventListener('click', cancel)
 
-document.getElementById('visualizeButton')
-    .addEventListener('click', openMeshVisualizer)
+const vizualizerButton = document.getElementById('visualizeButton')
+vizualizerButton.addEventListener('click', openMeshVisualizer)
+
+vizualizerButton.title = window.i18n.__('View mesh')
 
 document.getElementById('elementSize').focus()
 
@@ -31,15 +42,14 @@ function setMeshAndMaterialAssignment() {
     }
 
     var model = readData('model.json')
-    model.meshProperties = {
-        elementSize: parseFloat(elementSize.value.replace(',', '.')),
-        method: parseFloat((elementMethod[0].checked? 0 : 1)),
-    }
+    model.meshProperties.elementSize = parseFloat(elementSize.value.replace(',', '.'))
+    model.meshProperties.method = parseFloat((elementMethod[0].checked? 0 : 1))
+
     var materialAssignmentList = []
     for (select of selects) {
         materialAssignmentList.push(parseInt(select.options[select.selectedIndex].value))
     }
-    model.sectionProperties.materialAssignment = materialAssignmentList.length == 0 ? [1,1,1] : aterialAssignmentList
+    model.sectionProperties.materialAssignment = materialAssignmentList.length == 0 ? [1,1,1] : materialAssignmentList
     writeData(model, 'model.json')
     ipcRenderer.send('delete-current-window')
 }
@@ -429,9 +439,53 @@ function configMaterialInput() {
 }
 
 function openMeshVisualizer() {
-    if (document.getElementById('elementSize').value != '') {
-        
+    const elementsize = document.getElementById('elementSize').value
+    const elementMethod = document.getElementsByName('method')
+    if (elementsize != '') {
+        var model = readData('model.json')
+        for (section in model.sectionType) {
+            if (model.sectionType[section]) {
+                document.getElementById('visualizeButton').style.display = 'none'
+                document.getElementById('preloader').style.display = 'block'
+                model.meshProperties.elementSize = parseFloat(elementsize.replace(',', '.'))
+                model.meshProperties.method = parseFloat((elementMethod[0].checked? 0 : 1))
+
+                if (Object.keys(model.loadProperties).length == 0) {
+                    model.loadProperties = {
+                        points:3
+                    }
+                }
+                if (!model.sectionProperties.materialAssignment) {
+                    model.sectionProperties.materialAssignment = [1,1,1]
+                }
+                writeData(model, 'model.json')
+                runPreview()
+                return
+            }
+            
+        }
+        ipcRenderer.send('create-dialog', {title: window.i18n.__('Define the geometry.'), description: ''})        
     } else {
         ipcRenderer.send('create-dialog', {title: window.i18n.__('Define the finite element size.'), description: ''})
     }
+}
+
+function runPreview() {
+    const electron = require('electron')
+    let app = electron.app ? electron.app : electron.remote.app
+    const spawn = require('child_process').spawn
+    const userDataPath = ipcRenderer.sendSync('get-user-data')
+    const pathToModel = path.join(userDataPath, 'data/', 'model.json')
+    // const process = spawn('python', ['../../engine/preview.py', pathToModel])
+    const process = spawn('python', [app.getAppPath() + '/engine/preview.py', pathToModel])
+   
+    // const process = spawn(path.resolve('engine/dist/main'), props)
+
+    process.stdout.on('data', (data) => {
+        const output = data.toString()
+        console.log(output)
+        document.getElementById('preloader').style.display = 'none'
+        document.getElementById('visualizeButton').style.display = 'block'
+
+    })
 }

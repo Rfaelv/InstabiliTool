@@ -1,6 +1,6 @@
 const texts = [
     "Boundary conditions",
-    "See axes",
+    "View axes",
     "Extremities",
     "Fix",
     "All",

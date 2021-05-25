@@ -54,7 +54,7 @@ ipcMain.on('create-window', (event, arg) => {
   })
   newWin.loadFile(arg.path)
   newWin.on('ready-to-show', () => {newWin.show()})
-  newWin.setMenu(null)
+  // newWin.setMenu(null)
 })
 
 ipcMain.on('delete-current-window', () => {
@@ -69,9 +69,6 @@ ipcMain.on('create-dialog', (event, args) => {
   dialog.showErrorBox(args.title, args.description)
 })
 
-// ipcMain.on('get-i18n', (event) => {
-//   event.returnValue = i18n
-// })
 
 function createModel() {
   var model = {
@@ -79,8 +76,7 @@ function createModel() {
     materials: [],
     sectionType: {I: false, tubular: false, C: false, C2:false, rack: false, angle: false, plate: false},
     sectionProperties: {},
-    meshType: {rectangle: true, triangle: false},
-    meshProperties: {},
+    meshProperties: {type: 0},
     boundaryConditions: {},
     loadType: {bending: true, normal: false},
     loadProperties: {}
