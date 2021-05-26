@@ -52,6 +52,9 @@ function setLoadCondition() {
     }
 
     writeData(model, 'model.json')
+    var inputStatus = JSON.parse(localStorage.getItem('input-status'))
+    inputStatus.load = true
+    localStorage.setItem('input-status', JSON.stringify(inputStatus))
     ipcRenderer.send('delete-current-window')
 }
 

@@ -127,5 +127,72 @@ class Mapdl:
         elif self.sectionType["plate"]:
             self.PlateProfile.setBoundaryConditions(boundaryConditions)
 
+    def setLoad(self, loadData):
+        self.loadType = loadData[0]
+        self.loadProperties = loadData[1]
+
+        if self.loadType["bending"]:
+            if self.sectionType["I"]:
+                self.Iprofile.setBendingLoad(self.loadProperties)
+
+            elif self.sectionType["tubular"]:
+                self.tubularProfile.setBendingLoad(self.loadProperties)
+
+            elif self.sectionType["C"]:
+                self.CProfile.setBendingLoad(self.loadProperties)
+
+            elif self.sectionType["C2"]:
+                self.C2Profile.setBendingLoad(self.loadProperties)
+
+            elif self.sectionType["rack"]:
+                self.RackProfile.setBendingLoad(self.loadProperties)
+
+            elif self.sectionType["angle"]:
+                self.AngleProfile.setBendingLoad(self.loadProperties)
+            
+            elif self.sectionType["plate"]:
+                self.PlateProfile.setBendingLoad(self.loadProperties)
+
+        elif self.loadType["normal"]:
+            if self.sectionType["I"]:
+                self.Iprofile.setNormalLoad(self.loadProperties)
+
+            elif self.sectionType["tubular"]:
+                self.tubularProfile.setNormalLoad(self.loadProperties)
+
+            elif self.sectionType["C"]:
+                self.CProfile.setNormalLoad(self.loadProperties)
+
+            elif self.sectionType["C2"]:
+                self.C2Profile.setNormalLoad(self.loadProperties)
+
+            elif self.sectionType["rack"]:
+                self.RackProfile.setNormalLoad(self.loadProperties)
+
+            elif self.sectionType["angle"]:
+                self.AngleProfile.setNormalLoad(self.loadProperties)
+            
+            elif self.sectionType["plate"]:
+                self.PlateProfile.setNormalLoad(self.loadProperties)
+
+    def runStaticAnalysi(self):
+        self.mapdl.antype("STATIC")
+        self.mapdl.pstres("ON")
+        self.mapdl.allsel("ALL")
+        self.mapdl.solve()
+        self.mapdl.finish()
+
+    def runLinearBucklingAnalysi(self):
+        self.mapdl.run("/SOLU")
+        self.mapdl.antype("BUCKLE")
+        self.mapdl.bucopt("LANB", 10)
+        self.mapdl.solve()
+        self.mapdl.finish()
+        self.mapdl.run("/SOLU")
+        self.mapdl.expass("ON")
+        self.mapdl.mxpand(10)
+        self.mapdl.solve()
+        self.mapdl.finish()
+
     def open_gui(self):
         self.mapdl.open_gui()

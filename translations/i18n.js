@@ -11,7 +11,7 @@ module.exports = i18n;
 function i18n() {
      
     if(fs.existsSync(path.join(__dirname, locale + '.js'))) {
-         loadedLanguage = JSON.parse(fs.readFileSync(path.join(__dirname, locale + '.js'), 'utf8'))
+         loadedLanguage = JSON.parse(fs.readFileSync(path.join(__dirname, 'en' + '.js'), 'utf8'))
     }
     else {
          loadedLanguage = JSON.parse(fs.readFileSync(path.join(__dirname, 'en.js'), 'utf8'))

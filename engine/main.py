@@ -9,11 +9,11 @@ from model import Model
 # mat1.setMaterialProperties(1, material["materialType"], material["materialProperties"])
 
 # mapdl.open_gui()
-
+pathToModel = 'C:\\Users\Rfael\\AppData\Roaming\\analise-de-flambagem-no-ansys\\data\\model.json'
 # BACKBONE
 
 mapdl = Mapdl('path-to-launch-mapdl')
-model = Model('path-to-model.json')
+model = Model(pathToModel)
 mapdl.initialize()
 mapdl.createMaterial(model.materialList())
 mapdl.createFiniteElement() # Verificar se será neecessário criar um elemento para cada material
@@ -21,7 +21,7 @@ mapdl.createProfile(model.section())
 mapdl.setMaterial()
 mapdl.createMesh(model.mesh())
 mapdl.setBoundaryConditions(model.boundaryConditions())
+mapdl.setLoad(model.load())
+mapdl.runStaticAnalysi()
+mapdl.runLinearBucklingAnalysi()
 mapdl.open_gui()
-# mapdl.setLoad(model.load())
-# mapdl.runStaticAnalysi()
-# mapdl.runLinearBucklingAnalysi()

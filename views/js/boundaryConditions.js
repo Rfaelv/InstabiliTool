@@ -153,11 +153,17 @@ function setBoundaryConditions() {
             }
         }).finally(() => {
             writeData(model, 'model.json')
+            var inputStatus = JSON.parse(localStorage.getItem('input-status'))
+            inputStatus.bd = true
+            localStorage.setItem('input-status', JSON.stringify(inputStatus))
             ipcRenderer.send('delete-current-window')
         })
     } else {
         model.boundaryConditions.table = ''
         writeData(model, 'model.json')
+        var inputStatus = JSON.parse(localStorage.getItem('input-status'))
+        inputStatus.bd = true
+        localStorage.setItem('input-status', JSON.stringify(inputStatus))
         ipcRenderer.send('delete-current-window')
     }
 }

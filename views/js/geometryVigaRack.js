@@ -41,6 +41,9 @@ function setGeometry() {
         L: parseFloat(input[5].value.replace(',', '.'))
     }
     writeData(model, 'model.json')
+    var inputStatus = JSON.parse(localStorage.getItem('input-status'))
+    inputStatus.section = true
+    localStorage.setItem('input-status', JSON.stringify(inputStatus))
     ipcRenderer.send('delete-current-window')
 }
 

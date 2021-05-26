@@ -1,5 +1,5 @@
 const texts = [
-    "Mesh ann material",
+    "Mesh and material",
     "Element size",
     "Method",
     "Free",

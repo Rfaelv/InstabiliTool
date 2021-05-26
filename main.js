@@ -1,5 +1,4 @@
 const { app, BrowserWindow, nativeTheme, ipcMain, dialog, Menu } = require('electron')
-// var i18n = require(__dirname + '\\translations\\i18n')
 
 let win = null
 
@@ -8,6 +7,7 @@ function createWindow () {
     width: 770,
     height: 650,
     show: false,
+    icon: './assets/icons/icon.ico',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation:false,
@@ -16,11 +16,11 @@ function createWindow () {
   })
 
   // require('./menu/mainmenu')
-
+  
   nativeTheme.themeSource = 'light'
   win.loadFile('views/html/home.html')
   win.on('ready-to-show', () => {
-    win.show()
+    setTimeout(() => {win.show()}, 200) 
   })
   createModel()
 }
@@ -53,8 +53,8 @@ ipcMain.on('create-window', (event, arg) => {
     }
   })
   newWin.loadFile(arg.path)
-  newWin.on('ready-to-show', () => {newWin.show()})
-  // newWin.setMenu(null)
+  newWin.on('ready-to-show', () => {setTimeout(() =>{newWin.show()}, 200) })
+  newWin.setMenu(null)
 })
 
 ipcMain.on('delete-current-window', () => {

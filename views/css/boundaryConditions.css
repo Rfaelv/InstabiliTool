@@ -1,8 +1,3 @@
-*,
-*::before,
-*::after {
-  box-sizing: unset
-}
 html[data-theme='light'] {
     font-family: 'Segoe UI';
     font-size: small;
@@ -48,7 +43,6 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: transparent;
 }
 div {
     display: flex;

@@ -21,7 +21,7 @@ function setGeometry() {
             return
         }
     }
-
+    
     var model = readData('model.json')
     for (key in model.sectionType) {
         if (key == 'I') {
@@ -40,6 +40,9 @@ function setGeometry() {
         L: parseFloat(input[6].value.replace(',', '.'))
     }
     writeData(model, 'model.json')
+    var inputStatus = JSON.parse(localStorage.getItem('input-status'))
+    inputStatus.section = true
+    localStorage.setItem('input-status', JSON.stringify(inputStatus))
     ipcRenderer.send('delete-current-window')
 }
 

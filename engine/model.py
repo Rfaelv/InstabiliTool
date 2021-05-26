@@ -28,4 +28,5 @@ class Model():
         return self.model['boundaryConditions']
 
     def load(self):
-        return
+        return [self.model["loadType"],
+                self.model["loadProperties"]]

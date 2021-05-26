@@ -51,6 +51,9 @@ function setMeshAndMaterialAssignment() {
     }
     model.sectionProperties.materialAssignment = materialAssignmentList.length == 0 ? [1,1,1] : materialAssignmentList
     writeData(model, 'model.json')
+    var inputStatus = JSON.parse(localStorage.getItem('input-status'))
+    inputStatus.mesh = true
+    localStorage.setItem('input-status', JSON.stringify(inputStatus))
     ipcRenderer.send('delete-current-window')
 }
 

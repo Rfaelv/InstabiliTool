@@ -86,6 +86,8 @@
     "A free mesh has no restrictions in terms of element shapes,\nand has no specified pattern applied to it.": "Uma malha livre não tem restrições em termos de formas\nde elemento e não possui um padrão esspecífico.",
     "A mapped mesh is restricted in terms of the element\nshape it contains and the pattern of the mesh.": "Uma malha mapeada é restrita em termos da forma do\nelemento que a contém e do padrão da malha.",
     "View mesh": "Ver malha",
+    "Documentation": "Documentação",
+    "Contact us": "Contate-nos",
     "Undo": "Undo",
     "Redo": "Redo",
     "Cut": "Cut",

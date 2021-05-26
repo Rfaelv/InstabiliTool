@@ -3,6 +3,9 @@ const {readData, writeData} = require('../../modules/writeAndReadData')
 const fs = require('fs')
 const path = require('path')
 
+if (!localStorage.getItem('input-status')) {
+    localStorage.setItem('input-status', JSON.stringify({section:false, mesh:false, bd:false, load:false}))
+}
 
 const buttonMateiralProps = document.getElementById('definirProps')
 buttonMateiralProps.addEventListener('click', materialProps)
@@ -47,6 +50,12 @@ meshType[1].addEventListener('change', setMeshType)
 
 document.getElementById('boundary')
     .addEventListener('change', setSimpleBoundaryConditions)
+
+document.querySelector('.start-analysi')
+    .addEventListener('click', startAnalysi)
+
+document.querySelector('.view-results')
+    .addEventListener('click', viewResults)
 
 window.addEventListener('focus', () => {
     if (localStorage.getItem('personalized-boundary-conditions') == 'y') {
@@ -203,6 +212,7 @@ function setMeshType() {
 }
 
 function setSimpleBoundaryConditions() {
+    var inputStatus = JSON.parse(localStorage.getItem('input-status'))
     const select = document.getElementById('boundary')
     const currentValue = select.options[select.selectedIndex].value
     if (currentValue != '') {
@@ -212,6 +222,46 @@ function setSimpleBoundaryConditions() {
         }
         model.boundaryConditions[currentValue] = true
         writeData(model, 'model.json')
+        inputStatus.bd = true
         localStorage.setItem('personalized-boundary-conditions', 'n')
+    } else {
+        inputStatus.bd = false
     }
+    localStorage.setItem('input-status', JSON.stringify(inputStatus))
+}
+
+function startAnalysi() {
+    // alert(readData('model.json').materials.length = 0)
+    const inputStatus = JSON.parse(localStorage.getItem('input-status'))
+    for (let key in inputStatus) {
+        if (!inputStatus[key] | (readData('model.json').materials.length == 0)) {
+            ipcRenderer.send('create-dialog', {title: 'Imcomplete input', description: 'Make sure you have entered all the necessary data.'})  
+            return
+        }
+    }
+    const {BrowserWindow} = require('electron').remote
+    const electron = require('electron').remote
+   
+    let win = new BrowserWindow({
+        width: 750,
+        height: 655,
+        icon: './assets/icon.ico',
+        maximizable: false,
+        autoHideMenuBar: true,
+        modal: true,
+        webPreferences: {
+            nodeIntegration: true,
+            enableRemoteModule: true
+          }
+    })
+
+    win.on('close', () => { win = null })
+    win.loadFile(electron.app.getAppPath() + '/views/html/transition.html')
+    // win.webContents.openDevTools()
+    win.show()
+
+}
+
+function viewResults() {
+    alert('view')
 }

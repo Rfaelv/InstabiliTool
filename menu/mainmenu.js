@@ -1,7 +1,7 @@
 const {Menu} = require('electron')
 const electron = require('electron')
 const app = electron.app
-// var i18n = new(require(__dirname + '\\translations\\i18n'))
+const shell = require('electron').shell
 
 var i18n = new(require('../translations/i18n'))
 
@@ -72,9 +72,20 @@ const template = [
     },
     {
       label: i18n.__('Help'),
-      click() {
-        // shell.openExternal('https://gitlab.com/programa-o-em-python-javascript-p-blico/analise-dinamica-de-passarelas/-/blob/master/README.md')
-      }
+      submenu: [
+        {
+          label: i18n.__('Documentation'),
+          click() {
+            
+          }
+        },
+        {
+          label: i18n.__('Contact us'),
+          click() {
+            shell.openExternal("mailto:rafa10031999@gmail.com?subject=&body=");
+          }
+        }
+      ]
     }
 ]
 
