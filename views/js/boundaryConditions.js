@@ -1,6 +1,8 @@
 const { ipcRenderer, dialog } = require('electron')
 const fs = require('fs')
+const path = require('path')
 const readXlsxFile = require('read-excel-file/node')
+const { exec } = require('child_process')
 const {readData, writeData} = require('../../modules/writeAndReadData')
 
 var model = readData('model.json')
@@ -357,7 +359,16 @@ function downloadExampleTable() {
         ]
     }).then(result => {
         if (result.filePath) {
-            fs.copyFileSync('data/example-sheet.xlsx', result.filePath)  
+            fs.copyFileSync('data/example-sheet.xlsx', result.filePath)
+            exec(result.filePath, (error, stdout, stderr) => {
+                if (error) {
+                    console.log(`error: ${error.message}`)
+                    return
+                }
+                if (stderr) {
+                    console.log(`stderr: ${stderr}`)
+                }
+            })
         } 
     })
 }
