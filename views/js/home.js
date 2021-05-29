@@ -231,7 +231,6 @@ function setSimpleBoundaryConditions() {
 }
 
 function startAnalysi() {
-    // alert(readData('model.json').materials.length = 0)
     const inputStatus = JSON.parse(localStorage.getItem('input-status'))
     for (let key in inputStatus) {
         if (!inputStatus[key] | (readData('model.json').materials.length == 0)) {
@@ -257,8 +256,26 @@ function startAnalysi() {
 
     win.on('close', () => { win = null })
     win.loadFile(electron.app.getAppPath() + '/views/html/transition.html')
-    // win.webContents.openDevTools()
+    win.webContents.openDevTools()
     win.show()
+
+    let app = electron.app ? electron.app : electron.remote.app
+    const spawn = require('child_process').spawn
+    const userDataPath = ipcRenderer.sendSync('get-user-data')
+    const pathToModel = path.join(userDataPath, 'data/', 'model.json')
+    // const process = spawn('python', ['../../engine/preview.py', pathToModel])
+    const process = spawn('python', [app.getAppPath() + '/engine/main.py', pathToModel])
+   
+    // const process = spawn(path.resolve('engine/dist/main'), props)
+
+    process.stdout.on('data', (data) => {
+        const output = data.toString()
+        console.log(output)
+        var model = readData('model.json')
+        model.result = JSON.parse(output)
+        writeData(model, 'model.json')
+        win.loadFile(electron.app.getAppPath() + '/views/html/results.html')
+    })
 
 }
 

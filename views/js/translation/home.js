@@ -1,7 +1,7 @@
 const texts = [
     "Analysi type",
     "Linear",
-    "Non linear",
+    "Non-linear",
     "Material properties",
     "Isotropic",
     "Orthotropic",

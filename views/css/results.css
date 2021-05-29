@@ -1,0 +1,103 @@
+html[data-theme='light'] {
+    font-family: 'Segoe UI';
+    font-size: small;
+    font-weight: 400;
+    --bg: #f1f3f3;
+    --primary: #eff0f0bb;
+    --secundary: #79a3b1;
+    --secundary2: #87aebb;
+    --terciary: #dadada;
+    --terciary2: #dfddde;
+    --opcao1 :#216B82;
+    --opcao2 : #1E7F9D;
+}
+html[data-theme='special'] {
+    font-family: 'Segoe UI';
+    font-size: small;
+    font-weight: 400;
+    --bg: #eff0f05d;
+    --primary: #eff0f05d;
+    --secundary: #1E7F9D;
+    --secundary2: #2788a5;
+    --terciary: #dadada;
+    --terciary2: #dfddde;
+    --text1: #ffffff;
+}
+html[data-theme='dark'] {
+    font-family: 'Segoe UI';
+    --bg: #303841;
+    --primary: #3a4750;
+    --secundary: #00adb5;
+    --terciary: #eeeeee;    
+}
+body {
+    background-color: var(--bg);
+    padding: 7px;
+}
+h3 {
+    color: black;
+    font-size: small;
+    font-family:'Spartan', sans-serif;
+    font-size: 13px;
+    font-weight: 200;
+    padding-bottom: 0px;
+    margin-bottom: 2px;
+}
+div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+#div-img {
+    height: 500px;
+    width: 90%;
+}
+#container1 {
+    background-color: var(--primary);
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid rgba(167, 166, 166, 0.158);
+    height: 30px;
+}
+button {
+    color: var(--secundary);
+    background-color: var(--primary);
+    border: 1px solid var(--secundary);
+    border-radius: 3px;
+    padding: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+    /* margin: 10px; */
+    font-family: 'Segoe UI';
+    text-align: center;
+}
+button:hover {
+    cursor: pointer;
+    color: var(--text1);
+    background-color: var(--secundary2);
+    border: 1px solid var(--secundary2);
+}
+button:active {
+    border: 1px solid;
+    background-color: var(--secundary);
+    border-color: var(--bg);
+    box-shadow: 0 0 3px 0 var(--bg);
+    transition: 0.1s;
+
+}
+button:focus {
+    outline: thin dotted;
+    outline: 0px auto -webkit-focus-ring-color;
+    outline-offset: 0px;
+}
+#special-button {
+  color: var(--text1);
+  background-color: var(--secundary);
+  padding: 7px;
+  padding-left: 40px;
+  padding-right: 40px;
+  margin: 5px;
+}
+
+  

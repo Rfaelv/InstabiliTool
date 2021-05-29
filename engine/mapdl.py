@@ -17,7 +17,7 @@ class Mapdl:
 
     def initialize(self):
         try:
-            self.mapdl = launch_mapdl()
+            self.mapdl = launch_mapdl(run_location=self.pathToLaunch)
         except:
             print('ERROR-launch_mapdl')
             sys.exit()
@@ -38,6 +38,7 @@ class Mapdl:
     
     def createProfile(self, profileProps):
         self.sectionType = profileProps[0]
+        self.sectionProperties = profileProps[1]
         if self.sectionType["I"]:
             self.Iprofile = IProfile(self.mapdl, profileProps[1])
             self.Iprofile.createSection()
@@ -194,5 +195,29 @@ class Mapdl:
         self.mapdl.solve()
         self.mapdl.finish()
 
+    def getResult(self):
+        result = self.mapdl.result
+        resultList = []
+        if self.loadType["bending"]:
+            for i in range(result.n_results):
+                if self.loadProperties["points"] == 4:
+                    criticalMoment = result.solution_info(i)["timfrq"] * self.loadProperties["Lshear"]
+
+                elif self.loadProperties["points"] == 3:
+                    criticalMoment = result.solution_info(i)["timfrq"] * self.sectionProperties["L"] / 4
+
+                resultList.append({
+                    "value": str(round(criticalMoment, 2)) + ' N.m',
+                    "imgUrl": 'nothing'
+                })
+
+        elif self.loadType["normal"]:
+            return
+
+        return resultList
+
     def open_gui(self):
         self.mapdl.open_gui()
+
+    def exit(self):
+        self.mapdl.exit()

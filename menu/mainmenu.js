@@ -66,7 +66,7 @@ const template = [
                 label: i18n.__('Units')
             },
             {
-                label: i18n.__('Axes')
+                label: i18n.__('Material axes')
             }
         ]
     },

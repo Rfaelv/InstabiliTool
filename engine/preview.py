@@ -5,9 +5,10 @@ import os
 
 
 pathToModel = sys.argv[1]
-# print(pathToModel)
+pathToRun = 'D:\\Documentos\\Python\\PROJETOS\\GUI com Electron\\analise-de-flambagem-no-ansys\\data'
+sys.stdout.write('terter')
 try:
-    mapdl = Mapdl('path-to-launch-mapdl')
+    mapdl = Mapdl(pathToRun)
     model = Model(pathToModel)
     mapdl.initialize()
     mapdlinstance = mapdl.getInstance()
