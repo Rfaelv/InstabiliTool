@@ -351,15 +351,15 @@ function changeAll11() {
 function downloadExampleTable() {
     const { dialog } = require('electron').remote
     dialog.showSaveDialog({
-        title:'Salvar Planilha',
+        title: window.i18n.__('Save Spreadsheet'),
         properties: ['openDirectory'],
-        defaultPath: 'Boundary-conditions-sheet',
+        defaultPath: window.i18n.__('Boundary-conditions-sheet'),
         filters: [
-            { name: 'planilha do excel', extensions: ['xlsx', 'xls'] },
+            { name: window.i18n.__('excel spreadsheet'), extensions: ['xlsx', 'xls'] },
         ]
     }).then(result => {
         if (result.filePath) {
-            fs.copyFileSync('data/example-sheet.xlsx', result.filePath)
+            fs.copyFileSync(`data/${window.i18n.__('example-sheet')}.xlsx`, result.filePath)
             exec(result.filePath, (error, stdout, stderr) => {
                 if (error) {
                     console.log(`error: ${error.message}`)
@@ -376,10 +376,10 @@ function downloadExampleTable() {
 function searchTable() {
     const { dialog } = require('electron').remote
     dialog.showOpenDialog({
-        title:'Selecionar tabela',
+        title: window.i18n.__('Select Table'),
         properties: ['openFile'],
         filters: [
-            { name: 'planilha do excel', extensions: ['xlsm', 'xlsx'] },
+            { name: window.i18n.__('excel spreadsheet'), extensions: ['xlsm', 'xlsx'] },
           ]
     }).then(result => {
         const textBox = document.getElementById('tablePath')

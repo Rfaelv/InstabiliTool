@@ -1,9 +1,0 @@
-/COM,ANSYS RELEASE 2021 R1           BUILD 21.1      UP20201109       12:05:56
-
- *** WARNING ***                         CP =       0.562   TIME= 12:06:01
- Altering the abort level key is not recommended.                        
-
- *** WARNING ***                         CP =       0.828   TIME= 12:06:02
- Both solid model and finite element model boundary conditions have been 
- applied to this model.  As solid loads are transferred to the nodes or  
- elements, they can overwrite directly applied loads.                    
