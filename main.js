@@ -1,4 +1,4 @@
-const { app, BrowserWindow, nativeTheme, ipcMain, dialog, Menu } = require('electron')
+const { app, BrowserWindow, nativeTheme, ipcMain, dialog} = require('electron')
 
 let win = null
 

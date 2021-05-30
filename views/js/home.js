@@ -62,6 +62,9 @@ window.addEventListener('focus', () => {
         document.getElementById('boundary').selectedIndex = 0
     }
 })
+window.addEventListener('load', () => {
+    return
+})
 
 
 function materialProps() {
