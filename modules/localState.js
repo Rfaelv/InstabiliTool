@@ -1,5 +1,6 @@
 const electron = require('electron')
 const app = electron.app ? electron.app : electron.remote.app
+const dialog = electron.dialog? electron.dialog : electron.remote.dialog
 const fs = require('fs')
 const path = require('path')
 var i18n = new(require('../translations/i18n'))
