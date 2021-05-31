@@ -53,6 +53,7 @@ function setMeshAndMaterialAssignment() {
     writeData(model, 'model.json')
     var inputStatus = JSON.parse(localStorage.getItem('input-status'))
     inputStatus.mesh = true
+    inputStatus.matAssign = true
     localStorage.setItem('input-status', JSON.stringify(inputStatus))
     ipcRenderer.send('delete-current-window')
 }

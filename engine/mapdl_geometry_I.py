@@ -241,6 +241,7 @@ class IProfile:
         if bendingLoadProperties["points"] == 4:
             self.mapdl.fk(104, "FY", -1)
             self.mapdl.fk(204, "FY", -1)
+
         elif bendingLoadProperties["points"] == 3:
             self.mapdl.fk(104, "FY", -1)
     

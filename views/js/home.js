@@ -4,7 +4,7 @@ const fs = require('fs')
 const path = require('path')
 
 if (!localStorage.getItem('input-status')) {
-    localStorage.setItem('input-status', JSON.stringify({section:false, mesh:false, bd:false, load:false}))
+    localStorage.setItem('input-status', JSON.stringify({section:false, mesh:false, matAssign:false, bd:false, load:false}))
 }
 
 const buttonMateiralProps = document.getElementById('definirProps')

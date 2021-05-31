@@ -17,13 +17,13 @@ class RackProfile:
     def createSection(self):
         self.mapdl.sectype(1, "SHELL", "", "flangeS")
         self.mapdl.secoffset("MID")
-        self.mapdl.secdata(self.t, 1)
+        self.mapdl.secdata(self.t, self.materialAssignment[0])
         self.mapdl.sectype(2, "SHELL", "", "web")
         self.mapdl.secoffset("MID")
-        self.mapdl.secdata(self.t, 2)
+        self.mapdl.secdata(self.t, self.materialAssignment[1])
         self.mapdl.sectype(3, "SHELL", "", "flangeI")
         self.mapdl.secoffset("MID")
-        self.mapdl.secdata(self.t, 3)
+        self.mapdl.secdata(self.t, self.materialAssignment[2])
 
     def createProfile(self, loadType, loadProps):
         if loadType['bending']:
@@ -190,31 +190,35 @@ class RackProfile:
                     self.mapdl.d('ALL', key, 0)
 
             bc1 = boundaryConditions['1']
-            self.mapdl.nsel("S", "LOC", "Z", 0)
-            self.mapdl.nsel("R", "LOC", "Y", self.bw/2, self.bw)
+            self.mapdl.nsel("S", "LOC", "Y", self.bw/2, self.bw)
             self.mapdl.nsel("U", "LOC", "X", 0)
+            self.mapdl.nsel("A", "LOC", "Y", self.bw)
+            self.mapdl.nsel("R", "LOC", "Z", 0)
             for key in bc1:
                 if bc1[key]:
                     self.mapdl.d('ALL', key, 0)
 
-            self.mapdl.nsel("S", "LOC", "Z", self.L)
-            self.mapdl.nsel("R", "LOC", "Y", self.bw/2, self.bw)
+            self.mapdl.nsel("S", "LOC", "Y", self.bw/2, self.bw)
             self.mapdl.nsel("U", "LOC", "X", 0)
+            self.mapdl.nsel("A", "LOC", "Y", self.bw)
+            self.mapdl.nsel("R", "LOC", "Z", self.L)
             for key in bc1:
                 if bc1[key] and key != 'UZ':
                     self.mapdl.d('ALL', key, 0)
 
             bc3 = boundaryConditions['3']
-            self.mapdl.nsel("S", "LOC", "Z", 0)
-            self.mapdl.nsel("R", "LOC", "Y", 0, self.bw/2)
+            self.mapdl.nsel("S", "LOC", "Y", 0, self.bw/2)
             self.mapdl.nsel("U", "LOC", "X", 0)
+            self.mapdl.nsel("A", "LOC", "Y", 0)
+            self.mapdl.nsel("R", "LOC", "Z", 0)
             for key in bc3:
                 if bc3[key]:
                     self.mapdl.d('ALL', key, 0)
 
-            self.mapdl.nsel("S", "LOC", "Z", self.L)
-            self.mapdl.nsel("R", "LOC", "Y", 0, self.bw)
+            self.mapdl.nsel("S", "LOC", "Y", 0, self.bw/2)
             self.mapdl.nsel("U", "LOC", "X", 0)
+            self.mapdl.nsel("A", "LOC", "Y", 0)
+            self.mapdl.nsel("R", "LOC", "Z", self.L)
             for key in bc3:
                 if bc3[key] and key != 'UZ':
                     self.mapdl.d('ALL', key, 0)
@@ -274,3 +278,14 @@ class RackProfile:
                 self.mapdl.nsel("S", "LOC", "Z", self.L)
                 self.mapdl.d("ALL", "UX", 0)
                 self.mapdl.d("ALL", "UY", 0)
+    
+    def setBendingLoad(self, bendingLoadProperties):
+        if bendingLoadProperties["points"] == 4:
+            self.mapdl.fk(105, "FY", -1)
+            self.mapdl.fk(205, "FY", -1)
+
+        elif bendingLoadProperties["points"] == 3:
+            self.mapdl.fk(105, "FY", -1)
+    
+    def setNormalLoad(self, normalLoadProperties):
+        return

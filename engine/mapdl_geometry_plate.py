@@ -11,7 +11,7 @@ class PlateProfile:
     def createSection(self):
         self.mapdl.sectype(1, "SHELL", "", "web")
         self.mapdl.secoffset("MID")
-        self.mapdl.secdata(self.t, 1)
+        self.mapdl.secdata(self.t, self.materialAssignment[0])
         
     def createProfile(self, loadType, loadProps):
         if loadType['bending']:
@@ -133,3 +133,14 @@ class PlateProfile:
                 self.mapdl.nsel("S", "LOC", "Z", self.L)
                 self.mapdl.d("ALL", "UX", 0)
                 self.mapdl.d("ALL", "UY", 0)
+    
+    def setBendingLoad(self, bendingLoadProperties):
+        if bendingLoadProperties["points"] == 4:
+            self.mapdl.fk(102, "FY", -1)
+            self.mapdl.fk(202, "FY", -1)
+
+        elif bendingLoadProperties["points"] == 3:
+            self.mapdl.fk(102, "FY", -1)
+    
+    def setNormalLoad(self, normalLoadProperties):
+        return

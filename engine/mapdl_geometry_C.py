@@ -13,13 +13,13 @@ class CProfile:
     def createSection(self):
         self.mapdl.sectype(1, "SHELL", "", "flangeS")
         self.mapdl.secoffset("MID")
-        self.mapdl.secdata(self.t, 1)
+        self.mapdl.secdata(self.t, self.materialAssignment[0])
         self.mapdl.sectype(2, "SHELL", "", "web")
         self.mapdl.secoffset("MID")
-        self.mapdl.secdata(self.t, 2)
+        self.mapdl.secdata(self.t, self.materialAssignment[1])
         self.mapdl.sectype(3, "SHELL", "", "flangeI")
         self.mapdl.secoffset("MID")
-        self.mapdl.secdata(self.t, 3)
+        self.mapdl.secdata(self.t, self.materialAssignment[2])
 
     def createProfile(self, loadType, loadProps):
         if loadType['bending']:
@@ -206,3 +206,14 @@ class CProfile:
                 self.mapdl.nsel("S", "LOC", "Z", self.L)
                 self.mapdl.d("ALL", "UX", 0)
                 self.mapdl.d("ALL", "UY", 0)
+    
+    def setBendingLoad(self, bendingLoadProperties):
+        if bendingLoadProperties["points"] == 4:
+            self.mapdl.fk(103, "FY", -1)
+            self.mapdl.fk(203, "FY", -1)
+
+        elif bendingLoadProperties["points"] == 3:
+            self.mapdl.fk(103, "FY", -1)
+    
+    def setNormalLoad(self, normalLoadProperties):
+        return
