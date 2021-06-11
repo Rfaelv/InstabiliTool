@@ -23,6 +23,10 @@ class IProfile:
         self.mapdl.secoffset("MID")
         self.mapdl.secdata(self.tfi, self.materialAssignment[2])
 
+        self.mapdl.sectype(4, "SHELL", "", "plateLoad")
+        self.mapdl.secoffset("MID")
+        self.mapdl.secdata(0.1, 100)
+
     def createProfile(self, loadType, loadProps):
         if loadType['bending']:
             if loadProps['points'] == 3:
@@ -110,22 +114,32 @@ class IProfile:
             self.mapdl.k(1, 0, 0, 0)
             self.mapdl.k(2, self.bfi/2, 0, 0)
             self.mapdl.k(3, - self.bfi/2, 0, 0)
-            self.mapdl.k(4, 0, self.bw, 0)
-            self.mapdl.k(5, self.bfs/2, self.bw, 0)
-            self.mapdl.k(6, - self.bfs/2, self.bw, 0)
+            self.mapdl.k(4, 0, self.bw/2, 0)
+            self.mapdl.k(5, 0, self.bw, 0)
+            self.mapdl.k(6, self.bfs/2, self.bw, 0)
+            self.mapdl.k(7, - self.bfs/2, self.bw, 0)
 
             self.mapdl.k(101, 0, 0, self.L)
             self.mapdl.k(102, self.bfi/2, 0, self.L)
             self.mapdl.k(103, - self.bfi/2, 0, self.L)
-            self.mapdl.k(104, 0, self.bw, self.L)
-            self.mapdl.k(105, self.bfs/2, self.bw, self.L)
-            self.mapdl.k(106, - self.bfs/2, self.bw, self.L)
+            self.mapdl.k(104, 0, self.bw/2, self.L)
+            self.mapdl.k(105, 0, self.bw, self.L)
+            self.mapdl.k(106, self.bfs/2, self.bw, self.L)
+            self.mapdl.k(107, - self.bfs/2, self.bw, self.L)
 
             self.mapdl.a(1, 2, 102, 101)
             self.mapdl.a(1, 3, 103, 101)
-            self.mapdl.a(4, 5, 105, 104)
-            self.mapdl.a(4, 6, 106, 104)
+            self.mapdl.a(5, 6, 106, 105)
+            self.mapdl.a(5, 7, 107, 105)
             self.mapdl.a(1, 4, 104, 101)
+            self.mapdl.a(4, 5, 105, 104)
+
+            self.mapdl.a(104,105,106,102,101,104)
+            self.mapdl.a(104,105,107,103,101,104)
+
+            self.mapdl.a(4,5,7,3,1,4)
+            self.mapdl.a(4,5,7,3,1,4)
+
         
     def setMaterial(self):
         self.mapdl.asel("ALL")
@@ -139,6 +153,10 @@ class IProfile:
         self.mapdl.asel("ALL")
         self.mapdl.asel("S", "LOC", "X", 0)
         self.mapdl.aatt(self.materialAssignment[1], 2, 1, 0, 2)
+
+        self.mapdl.asel("ALL")
+        self.mapdl.asel("S", "LOC", "Z", self.L)
+        self.mapdl.aatt(100, 4, 1, 0, 4)
     
     def setBoundaryConditions(self, boundaryConditions):
         if boundaryConditions['personalized']:
@@ -159,7 +177,9 @@ class IProfile:
             self.mapdl.nsel("S", "LOC", "Z", 0)
             self.mapdl.nsel("R", "LOC", "Y", self.bw)
             for key in bc1:
-                if bc1[key]:
+                # if bc1[key]:
+                #     self.mapdl.d('ALL', key, 0)
+                if bc1[key] and key != 'UZ':
                     self.mapdl.d('ALL', key, 0)
 
             self.mapdl.nsel("S", "LOC", "Z", self.L)
@@ -172,7 +192,9 @@ class IProfile:
             self.mapdl.nsel("S", "LOC", "Z", 0)
             self.mapdl.nsel("R", "LOC", "Y", 0)
             for key in bc3:
-                if bc3[key]:
+                # if bc3[key] and key != 'UZ':
+                #     self.mapdl.d('ALL', key, 0)
+                if bc3[key] and key != 'UZ':
                     self.mapdl.d('ALL', key, 0)
 
             self.mapdl.nsel("S", "LOC", "Z", self.L)
@@ -180,6 +202,9 @@ class IProfile:
             for key in bc3:
                 if bc3[key] and key != 'UZ':
                     self.mapdl.d('ALL', key, 0)
+            
+            self.mapdl.nsel("S", "LOC", "Z", self.L/2)
+            self.mapdl.d('ALL', "UZ", 0)
             
             if boundaryConditions['table'] != '':
                 for i, row in enumerate(boundaryConditions['table']):
@@ -246,4 +271,17 @@ class IProfile:
             self.mapdl.fk(104, "FY", -1)
     
     def setNormalLoad(self, normalLoadProperties):
-        return
+        # self.mapdl.run("/PREP7")
+        # self.mapdl.n(50000, 0, self.bw/2, self.L)
+        # self.mapdl.run("/SOLU")
+
+        # self.mapdl.nsel("S", "LOC", "Z", self.L)
+        # self.mapdl.sf("ALL", "PRESS", 1/(self.bfi + self.bfs + self.bw)) # Funciona para o caso de carga centrada
+
+        # self.mapdl.cp("UZ", "ALL")
+        self.mapdl.fk(104, "FZ", -1)
+        self.mapdl.fk(4, "FZ", 1)
+        # self.mapdl.fk(102, "FZ", -1)
+        # self.mapdl.fk(104, "MX", 0.145)
+        # self.mapdl.fk(104, "MY", 0.145)
+        self.mapdl.open_gui()

@@ -81,6 +81,8 @@ table {
     margin-left: 10px;
 }
 #divimg {
+    display: flex;
+    flex-direction: column;
     width: 50%;
     align-items: center;
     justify-content: center;
@@ -135,6 +137,34 @@ select:focus {
     border-color: var(--secundary);
     box-shadow: 0 0 1px 0 var(--secundary);
 }
+section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+section section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
+    padding: 5px;
+}
+section section:hover {
+    cursor: pointer;
+}
+section section:active {
+    background-color: #E2E6EA;
+    transition: 0.1s;
+}
+section input {
+    width: 50px;
+    margin: 6px;
+    height: 16px;
+}
 button {
     width: 80px;
     color: var(--bg);
@@ -167,7 +197,7 @@ button:focus {
     outline: 0px auto -webkit-focus-ring-color;
     outline-offset: 0px;
 }
-#downloadButton, #searchButton {
+#downloadButton, #searchButton{
     background-color: #edf0f3b6;
     color: black;
     border: solid #E2E6EA;
@@ -191,14 +221,14 @@ button:focus {
     border: solid #E2E6EA;
     border-width: thin;
 }
-#downloadButton:active, #searchButton:active{
+#downloadButton:active, #searchButton:active {
     background-color: #E2E6EA;
     /* border-color: dodgerblue; */
     /* box-shadow: 0 0 3px 0 dodgerblue; */
     transition: 0.1s;
 
 }
-#downloadButton:focus, #searchButton:focus{
+#downloadButton:focus, #searchButton:focus {
     outline: thin dotted;
     outline: 0px auto -webkit-focus-ring-color;
     outline-offset: 0px;

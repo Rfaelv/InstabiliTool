@@ -18,6 +18,7 @@ class Mapdl:
     def initialize(self):
         try:
             self.mapdl = launch_mapdl(run_location=self.pathToLaunch)
+
         except:
             print('ERROR-launch_mapdl')
             sys.exit()
@@ -31,6 +32,8 @@ class Mapdl:
 
         for i, material in enumerate(self.materialList):
             self.material.createMaterial(i + 1, material["materialType"], material["materialProperties"])
+        
+        self.material.createPlateLoadMaterial()
     
     def createFiniteElement(self):
         self.finiteElement = FiniteElement()

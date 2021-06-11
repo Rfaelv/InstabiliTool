@@ -37,6 +37,12 @@ class Material:
             self.mapdl.tbdata(19, K[4,4], K[4,5], K[5,5])
 
             self.mapdl.mp("DENS", self.id, self.materialProperties["dens"])
+    
+    def createPlateLoadMaterial(self):
+        # Material to be added to the plate that will receive the load in case of axial load.
+        self.mapdl.mp("EX", 100, 1000000000000000)
+        self.mapdl.mp("PRXY", 100, 0.3)
+        self.mapdl.mp("DENS", 100, 1900)
 
     def getMaterialProperties(self):
         return
