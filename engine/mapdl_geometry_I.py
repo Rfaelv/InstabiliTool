@@ -160,51 +160,27 @@ class IProfile:
     
     def setBoundaryConditions(self, boundaryConditions):
         if boundaryConditions['personalized']:
-            bc2 = boundaryConditions['2']
-            self.mapdl.nsel("S", "LOC", "X", 0)
-            self.mapdl.nsel("R", "LOC", "Z", 0)
-            for key in bc2:
-                if bc2[key]:
-                    self.mapdl.d('ALL', key, 0)
+            for item in boundaryConditions["data"]:
+                bc2 = item['2']
+                self.mapdl.nsel("S", "LOC", "X", 0)
+                self.mapdl.nsel("R", "LOC", "Z", item["z"])
+                for key in bc2:
+                    if bc2[key] and key != "all":
+                        self.mapdl.d('ALL', key, 0)
 
-            self.mapdl.nsel("S", "LOC", "X", 0)
-            self.mapdl.nsel("R", "LOC", "Z", self.L)
-            for key in bc2:
-                if bc2[key]  and key != 'UZ':
-                    self.mapdl.d('ALL', key, 0)
+                bc1 = item['1']
+                self.mapdl.nsel("S", "LOC", "Z", item["z"])
+                self.mapdl.nsel("R", "LOC", "Y", self.bw)
+                for key in bc1:
+                    if bc1[key] and key != "all":
+                        self.mapdl.d('ALL', key, 0)
 
-            bc1 = boundaryConditions['1']
-            self.mapdl.nsel("S", "LOC", "Z", 0)
-            self.mapdl.nsel("R", "LOC", "Y", self.bw)
-            for key in bc1:
-                # if bc1[key]:
-                #     self.mapdl.d('ALL', key, 0)
-                if bc1[key] and key != 'UZ':
-                    self.mapdl.d('ALL', key, 0)
-
-            self.mapdl.nsel("S", "LOC", "Z", self.L)
-            self.mapdl.nsel("R", "LOC", "Y", self.bw)
-            for key in bc1:
-                if bc1[key] and key != 'UZ':
-                    self.mapdl.d('ALL', key, 0)
-
-            bc3 = boundaryConditions['3']
-            self.mapdl.nsel("S", "LOC", "Z", 0)
-            self.mapdl.nsel("R", "LOC", "Y", 0)
-            for key in bc3:
-                # if bc3[key] and key != 'UZ':
-                #     self.mapdl.d('ALL', key, 0)
-                if bc3[key] and key != 'UZ':
-                    self.mapdl.d('ALL', key, 0)
-
-            self.mapdl.nsel("S", "LOC", "Z", self.L)
-            self.mapdl.nsel("R", "LOC", "Y", 0)
-            for key in bc3:
-                if bc3[key] and key != 'UZ':
-                    self.mapdl.d('ALL', key, 0)
-            
-            self.mapdl.nsel("S", "LOC", "Z", self.L/2)
-            self.mapdl.d('ALL', "UZ", 0)
+                bc3 = item['3']
+                self.mapdl.nsel("S", "LOC", "Z", item["z"])
+                self.mapdl.nsel("R", "LOC", "Y", 0)
+                for key in bc3:
+                    if bc3[key] and key != 'all':
+                        self.mapdl.d('ALL', key, 0)
             
             if boundaryConditions['table'] != '':
                 for i, row in enumerate(boundaryConditions['table']):
@@ -221,7 +197,10 @@ class IProfile:
                 self.mapdl.nsel("S", "LOC", "Z", 0)
                 self.mapdl.d("ALL", "UX", 0)
                 self.mapdl.d("ALL", "UY", 0)
+                
+                self.mapdl.nsel("S", "LOC", "Z", self.L / 2)
                 self.mapdl.d("ALL", "UZ", 0)
+
                 self.mapdl.nsel("S", "LOC", "Z", self.L)
                 self.mapdl.d("ALL", "UX", 0)
                 self.mapdl.d("ALL", "UY", 0)
@@ -239,10 +218,13 @@ class IProfile:
                 self.mapdl.nsel("S", "LOC", "Z", 0)
                 self.mapdl.d("ALL", "UX", 0)
                 self.mapdl.d("ALL", "UY", 0)
-                self.mapdl.d("ALL", "UZ", 0)
                 self.mapdl.d("ALL", "ROTX", 0)
                 self.mapdl.d("ALL", "ROTY", 0)
                 self.mapdl.d("ALL", "ROTZ", 0)
+
+                self.mapdl.nsel("S", "LOC", "Z", self.L / 2)
+                self.mapdl.d("ALL", "UZ", 0)
+
                 self.mapdl.nsel("S", "LOC", "Z", self.L)
                 self.mapdl.d("ALL", "UX", 0)
                 self.mapdl.d("ALL", "UY", 0)
@@ -258,6 +240,7 @@ class IProfile:
                 self.mapdl.d("ALL", "ROTX", 0)
                 self.mapdl.d("ALL", "ROTY", 0)
                 self.mapdl.d("ALL", "ROTZ", 0)
+
                 self.mapdl.nsel("S", "LOC", "Z", self.L)
                 self.mapdl.d("ALL", "UX", 0)
                 self.mapdl.d("ALL", "UY", 0)
