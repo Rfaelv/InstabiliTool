@@ -65,18 +65,13 @@ class PlateProfile:
 
     def setBoundaryConditions(self, boundaryConditions):
         if boundaryConditions['personalized']:
-            bc1 = boundaryConditions['1']
-            self.mapdl.nsel("S", "LOC", "X", 0)
-            self.mapdl.nsel("R", "LOC", "Z", 0)
-            for key in bc1:
-                if bc1[key]:
-                    self.mapdl.d('ALL', key, 0)
-
-            self.mapdl.nsel("S", "LOC", "X", 0)
-            self.mapdl.nsel("R", "LOC", "Z", self.L)
-            for key in bc1:
-                if bc1[key] and key != 'UZ':
-                    self.mapdl.d('ALL', key, 0)
+            for item in boundaryConditions["data"]:
+                bc1 = item['1']
+                self.mapdl.nsel("S", "LOC", "X", 0)
+                self.mapdl.nsel("R", "LOC", "Z", item["z"])
+                for key in bc1:
+                    if bc1[key] and key != "all":
+                        self.mapdl.d('ALL', key, 0)
             
             if boundaryConditions['table'] != '':
                 for i, row in enumerate(boundaryConditions['table']):
@@ -93,7 +88,10 @@ class PlateProfile:
                 self.mapdl.nsel("S", "LOC", "Z", 0)
                 self.mapdl.d("ALL", "UX", 0)
                 self.mapdl.d("ALL", "UY", 0)
+                
+                self.mapdl.nsel("S", "LOC", "Z", self.L / 2)
                 self.mapdl.d("ALL", "UZ", 0)
+
                 self.mapdl.nsel("S", "LOC", "Z", self.L)
                 self.mapdl.d("ALL", "UX", 0)
                 self.mapdl.d("ALL", "UY", 0)
@@ -111,10 +109,13 @@ class PlateProfile:
                 self.mapdl.nsel("S", "LOC", "Z", 0)
                 self.mapdl.d("ALL", "UX", 0)
                 self.mapdl.d("ALL", "UY", 0)
-                self.mapdl.d("ALL", "UZ", 0)
                 self.mapdl.d("ALL", "ROTX", 0)
                 self.mapdl.d("ALL", "ROTY", 0)
                 self.mapdl.d("ALL", "ROTZ", 0)
+
+                self.mapdl.nsel("S", "LOC", "Z", self.L / 2)
+                self.mapdl.d("ALL", "UZ", 0)
+
                 self.mapdl.nsel("S", "LOC", "Z", self.L)
                 self.mapdl.d("ALL", "UX", 0)
                 self.mapdl.d("ALL", "UY", 0)
@@ -130,6 +131,7 @@ class PlateProfile:
                 self.mapdl.d("ALL", "ROTX", 0)
                 self.mapdl.d("ALL", "ROTY", 0)
                 self.mapdl.d("ALL", "ROTZ", 0)
+
                 self.mapdl.nsel("S", "LOC", "Z", self.L)
                 self.mapdl.d("ALL", "UX", 0)
                 self.mapdl.d("ALL", "UY", 0)
