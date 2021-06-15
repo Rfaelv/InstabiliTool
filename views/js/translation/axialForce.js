@@ -1,6 +1,12 @@
 const texts = [
     "Axial load",
-    "Point of load application",
+    "Type",
+    "Point load",
+    "Distributed load",
+    "Eccentricity",
+    "x",
+    "y",
+    "The load will be evenly distributed across the cross section of the profile.",
     "Apply",
     "Cancel"
 ]

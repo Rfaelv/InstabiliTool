@@ -9,21 +9,29 @@ applybutton.addEventListener('click', setLoadCondition)
 const cancelbutton = document.getElementById('cancel')
 cancelbutton.addEventListener('click', cancel)
 
+const radio = document.getElementsByName("axial-force")
+radio.forEach(() => {
+    this.addEventListener('change', changeInput)
+}) 
+
 function setLoadCondition() {
     const x = document.getElementById('x')
     const y = document.getElementById('y')
-    if (x.value == '' || y.value == '') {
-        ipcRenderer.send('create-dialog', {title: window.i18n.__('Fill in all fields.'), description: ''})
-        if (x.value == '') {x.focus()} else {y.focus()}
-        return
-    }
+
     var model = readData('model.json')
     model.loadType.normal = true
     model.loadType.bending = false
 
-    model.loadProperties = {
-        x: parseFloat(x.value.replace(',', '.')),
-        y: parseFloat(y.value.replace(',', '.'))
+    if (radio[0].checked) {
+        model.loadProperties = {
+            type: "point",
+            x: parseFloat(x.value === "" ? 0 : x.value.replace(',', '.')),
+            y: parseFloat(y.value === "" ? 0 : y.value.replace(',', '.'))
+        }
+    } else {
+        model.loadProperties = {
+            type: "distributed"
+        }
     }
 
     writeData(model, 'model.json')
@@ -35,4 +43,15 @@ function setLoadCondition() {
 
 function cancel() {
     ipcRenderer.send('delete-current-window')
+}
+
+function changeInput(event) {
+    if (document.getElementsByName("axial-force")[0].checked) {
+        document.getElementById("divinput").style.display = "flex"
+        document.getElementById("divtext").style.display = "none"
+        document.getElementById("x").focus()
+    } else {
+        document.getElementById("divinput").style.display = "none"
+        document.getElementById("divtext").style.display = "flex"
+    }
 }
