@@ -26,7 +26,15 @@
 
     <header class="page-header" role="banner">
 <!--       <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1> -->
-      <h1 class="project-name">{{ page.name }}</h1>
+      {% if page.name === "index.md" %}
+        <h1 class="project-name">{{ site.title }}</h1>
+      {% endif %}
+      {% if page.name === "about.md" %}
+        <h1 class="project-name">{{ "About InstabiliTool" }}</h1>
+      {% endif %}
+      {% if page.name === "documentation.md" %}
+        <h1 class="project-name">{{ "Documentation" }}</h1>
+      {% endif %}
       <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
       {% if site.github.is_project_page %}
         <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
