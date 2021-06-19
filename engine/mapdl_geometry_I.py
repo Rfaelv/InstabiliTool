@@ -134,11 +134,11 @@ class IProfile:
             self.mapdl.a(1, 4, 104, 101)
             self.mapdl.a(4, 5, 105, 104)
 
-            self.mapdl.a(104,105,106,102,101,104)
-            self.mapdl.a(104,105,107,103,101,104)
+            # self.mapdl.a(104,105,106,102,101,104)
+            # self.mapdl.a(104,105,107,103,101,104)
 
-            self.mapdl.a(4,5,7,3,1,4)
-            self.mapdl.a(4,5,7,3,1,4)
+            # self.mapdl.a(4,5,7,3,1,4)
+            # self.mapdl.a(4,5,7,3,1,4)
 
         
     def setMaterial(self):
@@ -254,6 +254,33 @@ class IProfile:
             self.mapdl.fk(104, "FY", -1)
     
     def setNormalLoad(self, normalLoadProperties):
+        if normalLoadProperties["type"] == "distributed":
+            self.mapdl.nsel("S", "LOC", "Z", 0)
+            self.mapdl.sf("ALL", "PRES", 1/(self.bfi + self.bfs + self.bw))
+
+            self.mapdl.nsel("S", "LOC", "Z", self.L)
+            self.mapdl.sf("ALL", "PRES", - 1/(self.bfi + self.bfs + self.bw))
+
+        elif normalLoadProperties["type"] == "point":
+            ex = normalLoadProperties["x"]
+            ey = normalLoadProperties["y"]
+
+            self.mapdl.run("/PREP7")
+            self.mapdl.a(104,105,106,102,101,104)
+            self.mapdl.a(104,105,107,103,101,104)
+
+            self.mapdl.a(4,5,7,3,1,4)
+            self.mapdl.a(4,5,7,3,1,4)
+
+            #discretizar as chapas
+
+            self.mapdl.run("/SOLU")
+            self.mapdl.fk(104, "FZ", -1)
+            self.mapdl.fk(104, "MX", ex)
+            self.mapdl.fk(104, "MY", ey)
+            self.mapdl.fk(4, "FZ", 1)
+            self.mapdl.fk(4, "MX", - ex)
+            self.mapdl.fk(4, "MY", - ey)
         # self.mapdl.run("/PREP7")
         # self.mapdl.n(50000, 0, self.bw/2, self.L)
         # self.mapdl.run("/SOLU")
@@ -262,9 +289,9 @@ class IProfile:
         # self.mapdl.sf("ALL", "PRESS", 1/(self.bfi + self.bfs + self.bw)) # Funciona para o caso de carga centrada
 
         # self.mapdl.cp("UZ", "ALL")
-        self.mapdl.fk(104, "FZ", -1)
-        self.mapdl.fk(4, "FZ", 1)
+        # self.mapdl.fk(104, "FZ", -1)
+        # self.mapdl.fk(4, "FZ", 1)
         # self.mapdl.fk(102, "FZ", -1)
         # self.mapdl.fk(104, "MX", 0.145)
         # self.mapdl.fk(104, "MY", 0.145)
-        self.mapdl.open_gui()
+        # self.mapdl.open_gui()
