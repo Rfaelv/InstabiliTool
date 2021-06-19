@@ -8,7 +8,7 @@ The InstabiliTool is powered by Python and Electron. The Framework Electron is u
 
 ### People
 ---
-This software was developed by Rafael Vieira de Oliveira[1] with orientation of Janine Domingos Vieira[2].
+This software was developed by [Rafael Vieira de Oliveira](http://lattes.cnpq.br/1851035547350298) [1] with orientation of [Janine Domingos Vieira](http://lattes.cnpq.br/0355710321530328) [2].
 1. Undergraduate at Department of Civil Engineering in Federal Fluminese University
 2. Professor at Department of Civil Engineering in Federal Fluminese University
 
