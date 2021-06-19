@@ -7,5 +7,5 @@ InstabiliTool is a app developed using Python and the framework [Electron](https
 
 InstabiliTool is licensed under the MIT license.
 
-This app makes no commercial claim over Ansys whatsoever. This tool extends the functionality of MAPDL by adding a Graphical User Interface (GUI) without changing the core behavior or license of the original software. The use of the GUI requires a legally licensed local copy of Ansys.
+This app makes no commercial claim over Ansys whatsoever. This tool extends the functionality of MAPDL by adding a Graphical User Interface (GUI) without changing the core behavior or license of the original software. The use of the GUI requires a legally licensed local copy of Ansys (The student license is allowed, but it is necessary to observe the nodes/elements limit defined [here](https://www.ansys.com/academic/students/ansys-student).
 
