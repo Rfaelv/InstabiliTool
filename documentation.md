@@ -44,7 +44,7 @@ It is possible to apply boundary condition to any cross section in th eextension
 
 ### Script generator
 
-For the more exploratory users, it is disponibilized the Python and/or MAPDL script of the analysi created with the GUI. This can be interesting for those who want to explore features that are not included in the InstabiliTool.
+For the more explorative users, it is disponibilized the Python and/or MAPDL script of the analysi created with the GUI. This can be interesting for those who want to explore features that are not included in the InstabiliTool.
 
 ### Support or Contact
 
