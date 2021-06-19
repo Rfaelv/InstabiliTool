@@ -1,5 +1,4 @@
-[Home](./)  |  [About](./about.html)  |  [Documentation](./documentation.html)
-##
+[Home](./)  |  [About](./about.html)  |  [Documentation](./documentation.html) 
 Welcome to the Instabilitool documentation! If this is your first time exploring the InstabiliTool app, read through this section to get familiar with the basics. Appreciate it.
 
 ## Prerequisites
