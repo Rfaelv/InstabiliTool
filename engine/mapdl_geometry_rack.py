@@ -14,6 +14,9 @@ class RackProfile:
 
         self.materialAssignment = sectionProps["materialAssignment"]
 
+        self.xcg = (2 * (self.bf * self.t * self.bf / 2 + self.zf * self.t * (self.b - self.t) + self.y * self.t * (self.b + self.y / 2 - 3 * self.t / 2))) / (((self.bw - self.t) + 2 * (self.bf + self.zf + self.y)) * self.t)
+        self.ycg = self.bw / 2
+
     def createSection(self):
         self.mapdl.sectype(1, "SHELL", "", "flangeS")
         self.mapdl.secoffset("MID")
@@ -274,4 +277,40 @@ class RackProfile:
             self.mapdl.fk(105, "FY", -1)
     
     def setNormalLoad(self, normalLoadProperties):
-        return
+        if normalLoadProperties["type"] == "distributed":
+            self.mapdl.nsel("S", "LOC", "Z", 0)
+            self.mapdl.sf("ALL", "PRES", 1/(2 * (self.bf + self.zf + self.yf) + self.bw))
+
+            self.mapdl.nsel("S", "LOC", "Z", self.L)
+            self.mapdl.sf("ALL", "PRES", - 1/(2 * (self.bf + self.zf + self.yf) + self.bw))
+
+        elif normalLoadProperties["type"] == "point":
+            ex = normalLoadProperties["x"]
+            ey = normalLoadProperties["y"]
+
+            self.mapdl.run("/PREP7")
+            self.mapdl.k(9, self.xcg, self.ycg, 0)
+            self.mapdl.k(109, self.xcg, self.ycg, self.L)
+
+            self.mapdl.a(109,102,103,104,105,106,107)
+            self.mapdl.a(109,102,101,108,107)
+
+            self.mapdl.a(9,2,3,4,5,6,7)
+            self.mapdl.a(9,2,1,8,7)
+
+            self.mapdl.mshkey(2)
+            self.mapdl.mshape(1)
+            self.mapdl.aesize("ALL", 0.01)
+            self.mapdl.nsel("S", "LOC", "Z", 0)
+            self.mapdl.nsel("A", "LOC", "Z", self.L)
+            self.mapdl.amesh("ALL")
+            self.mapdl.aatt(100, 4, 1, 0, 4)
+
+            self.mapdl.run("/SOLU")
+
+            self.mapdl.fk(109, "FZ", -1)
+            self.mapdl.fk(109, "MX", ex)
+            self.mapdl.fk(109, "MY", ey)
+            self.mapdl.fk(9, "FZ", 1)
+            self.mapdl.fk(9, "MX", - ex)
+            self.mapdl.fk(9, "MY", - ey)

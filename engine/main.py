@@ -14,7 +14,7 @@ import json
 # mat1.setMaterialProperties(1, material["materialType"], material["materialProperties"])
 
 # mapdl.open_gui()
-pathToModel = 'C:\\Users\Rfael\\AppData\Roaming\\analise-de-flambagem-no-ansys\\data\\model.json'
+pathToModel = 'C:\\Users\Rfael\\AppData\Roaming\\InstabiliTool\\data\\model.json'
 pathToRun = 'D:\\Documentos\\Python\\PROJETOS\\GUI com Electron\\analise-de-flambagem-no-ansys\\data'
 # pathToModel = sys.argv[1]
 # BACKBONE
@@ -25,12 +25,17 @@ mapdl.initialize()
 mapdl.createMaterial(model.materialList())
 mapdl.createFiniteElement() # Verificar se será neecessário criar um elemento para cada material
 mapdl.createProfile(model.section())
-mapdl.setMaterial()
 mapdl.createMesh(model.mesh())
+mapdl.setMaterial()
 mapdl.setBoundaryConditions(model.boundaryConditions())
 mapdl.setLoad(model.load())
-# mapdl.open_gui()
+
+mapdl.open_gui()
+
 mapdl.runStaticAnalysi()
+
+mapdl.open_gui()
+
 mapdl.runLinearBucklingAnalysi()
 result = mapdl.getResult()
 

@@ -23,6 +23,7 @@ try:
     mapdlinstance.run("/RGB,INDEX,0,0,0,15")
     print('finished')
     mapdlinstance.eplot(vtk=False)
+    mapdlinstance.open_gui()
     mapdlinstance.exit()
     # os.system("taskkill /im Mechanical APDL Program.exe")
     # mapdl.open_gui()

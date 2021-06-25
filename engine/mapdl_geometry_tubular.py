@@ -213,4 +213,40 @@ class TubularProfile:
             self.mapdl.fk(104, "FY", -0.5)
     
     def setNormalLoad(self, normalLoadProperties):
-        return
+        if normalLoadProperties["type"] == "distributed":
+            self.mapdl.nsel("S", "LOC", "Z", 0)
+            self.mapdl.sf("ALL", "PRES", 1/(2 * self.bf + 2 * self.bw))
+
+            self.mapdl.nsel("S", "LOC", "Z", self.L)
+            self.mapdl.sf("ALL", "PRES", - 1/(2 * self.bf + 2 * self.bw))
+
+        elif normalLoadProperties["type"] == "point":
+            ex = normalLoadProperties["x"]
+            ey = normalLoadProperties["y"]
+
+            self.mapdl.run("/PREP7")
+            self.mapdl.k(5, self.bf / 2, self.bw / 2, 0)
+            self.mapdl.k(105, self.bf / 2, self.bw / 2, self.L)
+            self.mapdl.a(105,101,102,103)
+            self.mapdl.a(105,103,104,101)
+
+            self.mapdl.a(5,1,2,3)
+            self.mapdl.a(5,3,4,1)
+
+            self.mapdl.mshkey(2)
+            self.mapdl.mshape(0)
+            self.mapdl.aesize("ALL", 0.05)
+            self.mapdl.asel("S", "LOC", "Z", 0)
+            self.mapdl.asel("A", "LOC", "Z", self.L)
+            self.mapdl.amesh("ALL")
+
+            self.mapdl.aatt(100, 4, 1, 0, 4)
+
+            self.mapdl.run("/SOLU")
+
+            self.mapdl.fk(105, "FZ", -1)
+            self.mapdl.fk(105, "MX", ex)
+            self.mapdl.fk(105, "MY", ey)
+            self.mapdl.fk(5, "FZ", 1)
+            self.mapdl.fk(5, "MX", - ex)
+            self.mapdl.fk(5, "MY", - ey)

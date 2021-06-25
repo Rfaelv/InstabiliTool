@@ -12,6 +12,9 @@ class C2Profile:
 
         self.materialAssignment = sectionProps["materialAssignment"]
 
+        self.xcg = (2 * (self.bf * self.t * self.bf / 2 + self.z * self.t * self.bf)) / (((self.bw - self.t) + 2 * (self.bf + self.z)) * self.t)
+        self.ycg = self.bw / 2
+
     def createSection(self):
         self.mapdl.sectype(1, "SHELL", "", "flangeS")
         self.mapdl.secoffset("MID")
@@ -242,4 +245,40 @@ class C2Profile:
             self.mapdl.fk(104, "FY", -1)
     
     def setNormalLoad(self, normalLoadProperties):
-        return
+        if normalLoadProperties["type"] == "distributed":
+            self.mapdl.nsel("S", "LOC", "Z", 0)
+            self.mapdl.sf("ALL", "PRES", 1/(2 * (self.bf + self.zf) + self.bw))
+
+            self.mapdl.nsel("S", "LOC", "Z", self.L)
+            self.mapdl.sf("ALL", "PRES", - 1/(2 * (self.bf + self.zf) + self.bw))
+
+        elif normalLoadProperties["type"] == "point":
+            ex = normalLoadProperties["x"]
+            ey = normalLoadProperties["y"]
+
+            self.mapdl.run("/PREP7")
+            self.mapdl.k(7, self.xcg, self.ycg, 0)
+            self.mapdl.k(107, self.xcg, self.ycg, self.L)
+
+            self.mapdl.a(107,101,102,103,104,105,106)
+            self.mapdl.a(107,101,106)
+
+            self.mapdl.a(7,1,2,3,4,5,6)
+            self.mapdl.a(7,1,6)
+
+            self.mapdl.mshkey(2)
+            self.mapdl.mshape(1)
+            self.mapdl.aesize("ALL", 0.01)
+            self.mapdl.nsel("S", "LOC", "Z", 0)
+            self.mapdl.nsel("A", "LOC", "Z", self.L)
+            self.mapdl.amesh("ALL")
+            self.mapdl.aatt(100, 4, 1, 0, 4)
+
+            self.mapdl.run("/SOLU")
+
+            self.mapdl.fk(107, "FZ", -1)
+            self.mapdl.fk(107, "MX", ex)
+            self.mapdl.fk(107, "MY", ey)
+            self.mapdl.fk(7, "FZ", 1)
+            self.mapdl.fk(7, "MX", - ex)
+            self.mapdl.fk(7, "MY", - ey)

@@ -153,11 +153,7 @@ class IProfile:
         self.mapdl.asel("ALL")
         self.mapdl.asel("S", "LOC", "X", 0)
         self.mapdl.aatt(self.materialAssignment[1], 2, 1, 0, 2)
-
-        self.mapdl.asel("ALL")
-        self.mapdl.asel("S", "LOC", "Z", self.L)
-        self.mapdl.aatt(100, 4, 1, 0, 4)
-    
+  
     def setBoundaryConditions(self, boundaryConditions):
         if boundaryConditions['personalized']:
             for item in boundaryConditions["data"]:
@@ -269,12 +265,20 @@ class IProfile:
             self.mapdl.a(104,105,106,102,101,104)
             self.mapdl.a(104,105,107,103,101,104)
 
-            self.mapdl.a(4,5,7,3,1,4)
+            self.mapdl.a(4,5,6,2,1,4)
             self.mapdl.a(4,5,7,3,1,4)
 
-            #discretizar as chapas
+            self.mapdl.mshkey(2)
+            self.mapdl.mshape(0)
+            self.mapdl.aesize("ALL", 0.05)
+            self.mapdl.asel("S", "LOC", "Z", 0)
+            self.mapdl.asel("A", "LOC", "Z", self.L)
+            self.mapdl.amesh("ALL")
+
+            self.mapdl.aatt(100, 4, 1, 0, 4)
 
             self.mapdl.run("/SOLU")
+
             self.mapdl.fk(104, "FZ", -1)
             self.mapdl.fk(104, "MX", ex)
             self.mapdl.fk(104, "MY", ey)

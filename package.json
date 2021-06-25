@@ -1,5 +1,5 @@
 {
-  "name": "analise-de-flambagem-no-ansys",
+  "name": "InstabiliTool",
   "version": "1.0.0",
   "description": "Programa para a realização de análise de flambagem linear e não linear de modelos construídos com elemento de casca (shell). Para a interface se utiliza o framework Electron e o Python funciona no Backend.",
   "main": "main.js",

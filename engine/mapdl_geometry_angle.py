@@ -10,6 +10,9 @@ class AngleProfile:
 
         self.materialAssignment = sectionProps["materialAssignment"]
 
+        self.xcg = (self.b * self.t * (self.b / 2 - self.t / 2)) / ((self.bw - self.t + self.b) * self.t)
+        self.ycg = self.bw / 2
+
     def createSection(self):
         self.mapdl.sectype(1, "SHELL", "", "web")
         self.mapdl.secoffset("MID")
@@ -177,4 +180,43 @@ class AngleProfile:
             self.mapdl.fk(103, "FY", -1)
     
     def setNormalLoad(self, normalLoadProperties):
-        return
+        if normalLoadProperties["type"] == "distributed":
+            self.mapdl.nsel("S", "LOC", "Z", 0)
+            self.mapdl.sf("ALL", "PRES", 1/(self.bf + self.bw))
+
+            self.mapdl.nsel("S", "LOC", "Z", self.L)
+            self.mapdl.sf("ALL", "PRES", - 1/(self.bf + self.bw))
+
+        elif normalLoadProperties["type"] == "point":
+            ex = normalLoadProperties["x"]
+            ey = normalLoadProperties["y"]
+
+            self.mapdl.run("/PREP7")
+            self.mapdl.k(4, self.xcg, self.ycg, 0)
+            self.mapdl.k(104, self.xcg, self.ycg, self.L)
+
+            self.mapdl.k(5, self.bf, self.bw, 0)
+            self.mapdl.k(105, self.bf, self.bw, self.L)
+
+            self.mapdl.a(104,105,101,102)
+            self.mapdl.a(104,102,103,105)
+
+            self.mapdl.a(4,5,1,2)
+            self.mapdl.a(4,2,3,5)
+
+            self.mapdl.mshkey(2)
+            self.mapdl.mshape(1)
+            self.mapdl.aesize("ALL", 0.01)
+            self.mapdl.nsel("S", "LOC", "Z", 0)
+            self.mapdl.nsel("A", "LOC", "Z", self.L)
+            self.mapdl.amesh("ALL")
+            self.mapdl.aatt(100, 4, 1, 0, 4)
+
+            self.mapdl.run("/SOLU")
+
+            self.mapdl.fk(104, "FZ", -1)
+            self.mapdl.fk(104, "MX", ex)
+            self.mapdl.fk(104, "MY", ey)
+            self.mapdl.fk(4, "FZ", 1)
+            self.mapdl.fk(4, "MX", - ex)
+            self.mapdl.fk(4, "MY", - ey)

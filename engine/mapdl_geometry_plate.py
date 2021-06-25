@@ -52,12 +52,14 @@ class PlateProfile:
 
         else:
             self.mapdl.k(1, 0, 0, 0)
-            self.mapdl.k(2, 0, self.bw, 0)
+            self.mapdl.k(2, 0, self.bw / 2, 0)
+            self.mapdl.k(3, 0, self.bw, 0)
 
             self.mapdl.k(101, 0, 0, self.L)
-            self.mapdl.k(102, 0, self.bw, self.L)
+            self.mapdl.k(102, 0, self.bw / 2, self.L)
+            self.mapdl.k(103, 0, self.bw, self.L)
 
-            self.mapdl.a(1, 2, 102, 101)
+            self.mapdl.a(1, 2, 3, 103, 102, 101)
 
     def setMaterial(self):
         self.mapdl.asel("ALL")
@@ -145,4 +147,46 @@ class PlateProfile:
             self.mapdl.fk(102, "FY", -1)
     
     def setNormalLoad(self, normalLoadProperties):
-        return
+        if normalLoadProperties["type"] == "distributed":
+            self.mapdl.nsel("S", "LOC", "Z", 0)
+            self.mapdl.sf("ALL", "PRES", 1/self.bw)
+
+            self.mapdl.nsel("S", "LOC", "Z", self.L)
+            self.mapdl.sf("ALL", "PRES", - 1 / self.bw)
+
+        elif normalLoadProperties["type"] == "point":
+            ex = normalLoadProperties["x"]
+            ey = normalLoadProperties["y"]
+
+            self.mapdl.run("/PREP7")
+            self.mapdl.k(4, 0.1, 0, 0)
+            self.mapdl.k(104, 0.1, 0, self.L)
+            self.mapdl.k(5, -0.1, 0, 0)
+            self.mapdl.k(105, -0.1, 0, self.L)
+            self.mapdl.k(6, -0.1, self.bw, 0)
+            self.mapdl.k(106, -0.1, self.bw, self.L)
+            self.mapdl.k(7, 0.1, self.bw, 0)
+            self.mapdl.k(107, 0.1, self.bw, self.L)
+
+            self.mapdl.a(102,101,102,103,104)
+            self.mapdl.a(102,101,104)
+
+            self.mapdl.a(2,1,2,3,4)
+            self.mapdl.a(2,1,4)
+
+            self.mapdl.mshkey(2)
+            self.mapdl.mshape(1)
+            self.mapdl.aesize("ALL", 0.01)
+            self.mapdl.nsel("S", "LOC", "Z", 0)
+            self.mapdl.nsel("A", "LOC", "Z", self.L)
+            self.mapdl.amesh("ALL")
+            self.mapdl.aatt(100, 4, 1, 0, 4)
+
+            self.mapdl.run("/SOLU")
+
+            self.mapdl.fk(102, "FZ", -1)
+            self.mapdl.fk(102, "MX", ex)
+            self.mapdl.fk(102, "MY", ey)
+            self.mapdl.fk(2, "FZ", 1)
+            self.mapdl.fk(2, "MX", - ex)
+            self.mapdl.fk(2, "MY", - ey)
