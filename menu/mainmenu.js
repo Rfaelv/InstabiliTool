@@ -16,7 +16,7 @@ const template = [
         {
           label: i18n.__('About'),
           click() {
-            shell.openExternal("https://rfaelv.github.io/instabilitool/about")
+            shell.openExternal("https://rfaelv.github.io/InstabiliTool/about")
           },
         },
         {type: 'separator'},
@@ -85,7 +85,7 @@ const template = [
         {
           label: i18n.__('Documentation'),
           click() {
-            shell.openExternal('https://rfaelv.github.io/instabilitool/documentation')
+            shell.openExternal('https://rfaelv.github.io/InstabiliTool/documentation')
           }
         },
         {

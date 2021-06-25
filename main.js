@@ -15,7 +15,7 @@ function createWindow () {
     }
   })
 
-  // require('./menu/mainmenu')
+  require('./menu/mainmenu')
   // win.webContents.openDevTools()
   nativeTheme.themeSource = 'light'
   win.loadFile('views/html/home.html')
@@ -54,7 +54,7 @@ ipcMain.on('create-window', (event, arg) => {
   })
   newWin.loadFile(arg.path)
   newWin.on('ready-to-show', () => {setTimeout(() =>{newWin.show()}, 200) })
-  // newWin.setMenu(null)
+  newWin.setMenu(null)
   // newWin.webContents.openDevTools()
 })
 
