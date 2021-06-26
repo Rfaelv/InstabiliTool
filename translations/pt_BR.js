@@ -130,6 +130,8 @@
     "Standard shell formulation (default)": "Formulação padrão de casca (padrão)",
     "Advanced curved-shell formation": "Formulação avançada",
     "Simplified curved-shell formation": "Formulação simplificada",
+    "Linear analysis options": "Opções da análise linear",
+    "Number of modes": "Número de modos",
     "Undo": "Undo",
     "Redo": "Redo",
     "Cut": "Cut",

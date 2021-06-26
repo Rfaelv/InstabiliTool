@@ -5,11 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title class="text"></title>
+    <link rel="stylesheet" href="../css/linearAnalysisOptions.css">
 </head>
 <body>
     <div>
-        <label for="" class="text"></label><input type="number" name="linear-analysis-options" id="nmodes">
+        <label for="" class="text"></label><input type="number"  min="1" step="1" name="linear-analysis-options" id="nmodes">
     </div>
-    
+    <div>
+        <button id='apply' class="text"></button>
+        <button id='cancel' class="text"></button>
+    </div>
+    <script>window.i18n = new(require('../../translations/i18n'));</script>
+    <script src="../js/translation/linearAnalysisOptions.js"></script>
+    <script src="../js/linearAnalysisOptions.js"></script>
 </body>
 </html>

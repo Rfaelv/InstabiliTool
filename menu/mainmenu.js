@@ -62,13 +62,13 @@ const template = [
             {
               label: i18n.__('Linear analysis'),
               click() {
-                linearAnalysisOptions()
+                createWindow(260, 180, './views/html/linearAnalysisOptions.html')
               }
             },
             {
               label: i18n.__('Nonlinear analysis'),
               click() {
-                nonlinearAnalysisOptions()
+                createWindow(320, 320, './views/html/nonlinearAnalysisOptions.html')
               }
             },
             {type: 'separator'},
@@ -86,13 +86,13 @@ const template = [
             {
                 label: i18n.__('Units'),
                 click() {
-                  showUnits()
+                  createWindow(250, 180, './views/html/units.html')
                 }
             },
             {
                 label: i18n.__('Material axes'),
                 click() {
-                  showMaterialAxes()
+                  createWindow(320, 320, './views/html/materialAxes.html')
                 }
             }
         ]
@@ -263,51 +263,6 @@ function saveFileAs() {
       }
     }
   })
-}
-
-function linearAnalysisOptions() {
-  console.log('linearAnalysisOptions')
-}
-
-function nonlinearAnalysisOptions() {
-  console.log('nonlinearAnalysisOptions')
-}
-
-
-function showUnits() {
-  const newWin = new BrowserWindow({
-    width: 250,
-    height: 180,
-    parent: BrowserWindow.getFocusedWindow(),
-    maximizable: false,
-    minimizable: false,
-    show: false,
-    webPreferences: {
-      nodeIntegration: true,
-      enableRemoteModule: true
-    }
-  })
-  newWin.loadFile('./views/html/units.html')
-  newWin.on('ready-to-show', () => {newWin.show()})
-  newWin.setMenu(null)
-} 
-
-function showMaterialAxes() {
-  const newWin = new BrowserWindow({
-    width: 320,
-    height: 320,
-    parent: BrowserWindow.getFocusedWindow(),
-    maximizable: false,
-    minimizable: false,
-    show: false,
-    webPreferences: {
-      nodeIntegration: true,
-      enableRemoteModule: true
-    }
-  })
-  newWin.loadFile('./views/html/materialAxes.html')
-  newWin.on('ready-to-show', () => {newWin.show()})
-  newWin.setMenu(null)
 }
 
 function createWindow(width, height, filePath) {
