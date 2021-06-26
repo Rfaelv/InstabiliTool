@@ -1,4 +1,4 @@
-const { app, electron, Menu, dialog, BrowserWindow, localStorage } = require('electron')
+const { app, electron, Menu, dialog, BrowserWindow, ipcRenderer } = require('electron')
 const shell = require('electron').shell
 const fs = require('fs')
 const path = require('path')
@@ -59,7 +59,25 @@ const template = [
     {
         label: i18n.__('Options'),
         submenu: [
-
+            {
+              label: i18n.__('Linear analysis'),
+              click() {
+                linearAnalysisOptions()
+              }
+            },
+            {
+              label: i18n.__('Nonlinear analysis'),
+              click() {
+                nonlinearAnalysisOptions()
+              }
+            },
+            {type: 'separator'},
+            {
+              label: i18n.__('General'),
+              click() {
+                generalOptions()
+              }
+            }
         ]
     },
     {
@@ -247,8 +265,34 @@ function saveFileAs() {
   })
 }
 
+function linearAnalysisOptions() {
+  console.log('linearAnalysisOptions')
+}
+
+function nonlinearAnalysisOptions() {
+  console.log('nonlinearAnalysisOptions')
+}
+
+function generalOptions() {
+  console.log('generalOprions')
+}
+
 function showUnits() {
-  console.log('showUnits')
+  const newWin = new BrowserWindow({
+    width: 250,
+    height: 180,
+    parent: BrowserWindow.getFocusedWindow(),
+    maximizable: false,
+    minimizable: false,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true
+    }
+  })
+  newWin.loadFile('./views/html/units.html')
+  newWin.on('ready-to-show', () => {newWin.show()})
+  newWin.setMenu(null)
 } 
 
 function showMaterialAxes() {

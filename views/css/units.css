@@ -1,0 +1,51 @@
+html[data-theme='light'] {
+    font-family: 'Segoe UI';
+    font-size: small;
+    font-weight: 400;
+    --bg: #f1f3f3;
+    --primary: #eff0f0bb;
+    --secundary: #79a3b1;
+    --secundary2: #87aebb;
+    --terciary: #dadada;
+    --terciary2: #dfddde;
+    --opcao1 :#216B82;
+    --opcao2 : #1E7F9D;
+}
+html[data-theme='special'] {
+    font-family: 'Segoe UI';
+    font-size: small;
+    font-weight: 400;
+    --bg: #eff0f05d;
+    --primary: #eff0f05d;
+    --secundary: #1E7F9D;
+    --secundary2: #2788a5;
+    --terciary: #dadada;
+    --terciary2: #dfddde;
+    --text1: #ffffff;
+}
+html[data-theme='dark'] {
+    font-family: 'Segoe UI';
+    --bg: #303841;
+    --primary: #3a4750;
+    --secundary: #00adb5;
+    --terciary: #eeeeee;    
+}
+body {
+    background-color: var(--bg);
+    padding: 7px;
+}
+p {
+    color: black;
+    font-size: small;
+    font-family:'Spartan', sans-serif;
+    font-size: 13px;
+    font-weight: 200;
+    padding-bottom: 0px;
+    margin-bottom: 2px;
+}
+div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+}
