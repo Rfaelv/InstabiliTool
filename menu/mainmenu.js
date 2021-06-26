@@ -296,5 +296,19 @@ function showUnits() {
 } 
 
 function showMaterialAxes() {
-  console.log('showMaterialAxes')
+  const newWin = new BrowserWindow({
+    width: 320,
+    height: 320,
+    parent: BrowserWindow.getFocusedWindow(),
+    maximizable: false,
+    minimizable: false,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true
+    }
+  })
+  newWin.loadFile('./views/html/materialAxes.html')
+  newWin.on('ready-to-show', () => {newWin.show()})
+  newWin.setMenu(null)
 }

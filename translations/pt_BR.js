@@ -115,6 +115,8 @@
     "Dimensions: m": "Demensões: m",
     "Elastic moduli: N/m² - Pa": "Módulo de elasticidade: N/m² - Pa",
     "Density: kg/m³": "Massa específica: kg/m³",
+    "Material axes": "Eixos do material",
+    "The material axes are defined on the plates as is shown below.": "Os eixos do material são definidos nas placas conforme mostra a imagem abaixo.",
     "Undo": "Undo",
     "Redo": "Redo",
     "Cut": "Cut",

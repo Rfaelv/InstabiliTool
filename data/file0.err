@@ -1,0 +1,18 @@
+/COM,ANSYS RELEASE 2021 R1           BUILD 21.1      UP20201109       23:29:46
+
+ *** WARNING ***                         CP =       0.688   TIME= 23:29:53
+ Altering the abort level key is not recommended.                        
+
+ *** WARNING ***                         CP =       0.859   TIME= 23:29:54
+ There are no selected unmeshed areas.  The AATT command is ignored.     
+
+ *** WARNING ***                         CP =       0.859   TIME= 23:29:54
+ There are no selected unmeshed areas.  The AATT command is ignored.     
+
+ *** WARNING ***                         CP =       0.875   TIME= 23:29:54
+ There are no selected unmeshed areas.  The AATT command is ignored.     
+
+ *** WARNING ***                         CP =       0.891   TIME= 23:29:54
+ Both solid model and finite element model boundary conditions have been 
+ applied to this model.  As solid loads are transferred to the nodes or  
+ elements, they can overwrite directly applied loads.                    
