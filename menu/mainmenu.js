@@ -75,7 +75,7 @@ const template = [
             {
               label: i18n.__('General'),
               click() {
-                generalOptions()
+                createWindow(510, 300, './views/html/generalAnalysisOptions.html')
               }
             }
         ]
@@ -273,9 +273,6 @@ function nonlinearAnalysisOptions() {
   console.log('nonlinearAnalysisOptions')
 }
 
-function generalOptions() {
-  console.log('generalOprions')
-}
 
 function showUnits() {
   const newWin = new BrowserWindow({
@@ -311,4 +308,23 @@ function showMaterialAxes() {
   newWin.loadFile('./views/html/materialAxes.html')
   newWin.on('ready-to-show', () => {newWin.show()})
   newWin.setMenu(null)
+}
+
+function createWindow(width, height, filePath) {
+  const newWin = new BrowserWindow({
+    width: width,
+    height: height,
+    parent: BrowserWindow.getFocusedWindow(),
+    maximizable: false,
+    minimizable: false,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true
+    }
+  })
+  newWin.loadFile(filePath)
+  newWin.on('ready-to-show', () => {newWin.show()})
+  newWin.setMenu(null)
+  // newWin.webContents.openDevTools()
 }

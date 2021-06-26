@@ -23,6 +23,7 @@ function createWindow () {
     setTimeout(() => {win.show()}, 200) 
   })
   createModel()
+  createSettings()
 }
 
 app.whenReady().then(createWindow)
@@ -95,5 +96,29 @@ function createModel() {
     })
   } else {
     fs.writeFileSync(path.join(dir, 'model.json'), JSON.stringify(model))
+  }
+}
+
+function createSettings() {
+  const settings = {
+    linearAnalysis: {
+      nmodes: 10
+    },
+    nonlinearAnalysis: {
+
+    },
+    general: {
+      elementStiffness: 0,
+      integrationOption: 2,
+      curvedShellFormulation: 0
+    }
+  }
+
+  const fs = require('fs')
+  const path = require('path')
+  const dir = path.join(app.getPath('userData'), 'data/settings.json')
+  
+  if  (!fs.existsSync(dir)){
+    fs.writeFileSync(dir, JSON.stringify(settings))
   }
 }
