@@ -39,7 +39,7 @@ html {
 body {
     margin-top: 20px;
     padding: 10px;
-    height: 80%;
+    height: 75%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -85,7 +85,7 @@ button:focus {
     outline-offset: 0px;
 }
 input {
-    width: 100px;
+    width: 70px;
     border: none;
     border: solid #E2E6EA;
     border-width: thin;

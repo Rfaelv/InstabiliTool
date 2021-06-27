@@ -105,7 +105,8 @@ function createSettings() {
       nmodes: 10
     },
     nonlinearAnalysis: {
-
+      loadFactor: 1.2,
+      initialDeformationFactor: 0.1
     },
     general: {
       elementStiffness: 0,

@@ -68,7 +68,7 @@ const template = [
             {
               label: i18n.__('Nonlinear analysis'),
               click() {
-                createWindow(320, 320, './views/html/nonlinearAnalysisOptions.html')
+                createWindow(300, 220, './views/html/nonlinearAnalysisOptions.html')
               }
             },
             {type: 'separator'},
