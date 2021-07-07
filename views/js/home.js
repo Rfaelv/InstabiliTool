@@ -273,9 +273,23 @@ function startAnalysi() {
 
     process.stdout.on('data', (data) => {
         const output = data.toString()
-        console.log(output)
         var model = readData('model.json')
-        model.result = JSON.parse(output)
+        resultValues = JSON.parse(output)
+        resultImg = []
+
+        for (let i = 0; i <= resultValues.length; i++) {
+            imgpath = path.join(userDataPath, `data/movie${i}.gif`)
+
+            if (!fs.existsSync(imgpath)) {
+                toDataURL(imgpath, function(dataUrl) {
+                    resultImg.push(dataUrl)
+                })
+            }
+        }
+        model.result = {
+            values: resultValues,
+            img: resultImg
+        }
         writeData(model, 'model.json')
         win.loadFile(electron.app.getAppPath() + '/views/html/results.html')
     })
@@ -285,3 +299,19 @@ function startAnalysi() {
 function viewResults() {
     alert('view')
 }
+
+function toDataURL(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      var reader = new FileReader();
+      reader.onloadend = function() {
+        callback(reader.result);
+      }
+      reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.responseType = 'blob';
+    xhr.send();
+}
+  
+

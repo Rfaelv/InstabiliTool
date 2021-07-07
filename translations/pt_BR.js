@@ -137,6 +137,8 @@
     "Initial deformation factor": "Fator da deformação inicial",
     "The critical load of linear analysis is updated with this factor to be applied in nonlinear analysis.": "A carga crítica da análise linear será multiplicada por esse fator para ser utilizada na análise não linear.",
     "This factor will be applied to the minor tickness of the profile and the result will be applied to the buckling deformation resulting in linear analysis.": "Esse fator será aplicado à menor espessura existente no perfil e o resultado será multiplicado pela deformação resultante da análise linear de flambagem.",
+    "Results": "Resultados",
+    "Failed to generate image. The problem is probably due to the version of openGL installed on your computer. try to update it.": "Não foi possível gerar a imagem. Provavelmente, o problema ocorreu devido à versão do openGL do seu computador. Tente atualizá-lo.",
     "Undo": "Undo",
     "Redo": "Redo",
     "Cut": "Cut",

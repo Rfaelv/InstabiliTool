@@ -14,35 +14,39 @@ import json
 # mat1.setMaterialProperties(1, material["materialType"], material["materialProperties"])
 
 # mapdl.open_gui()
+path = 'C:\\Users\Rfael\\AppData\Roaming\\InstabiliTool\\data'
 pathToModel = 'C:\\Users\Rfael\\AppData\Roaming\\InstabiliTool\\data\\model.json'
 pathToRun = 'D:\\Documentos\\Python\\PROJETOS\\GUI com Electron\\analise-de-flambagem-no-ansys\\data'
 # pathToModel = sys.argv[1]
 # BACKBONE
+try:
+    mapdl = Mapdl(pathToRun)
+    model = Model(pathToModel)
+    mapdl.initialize()
+    mapdl.createMaterial(model.materialList())
+    mapdl.createFiniteElement() # Verificar se será neecessário criar um elemento para cada material
+    mapdl.createProfile(model.section())
+    mapdl.createMesh(model.mesh())
+    mapdl.setMaterial()
+    mapdl.setBoundaryConditions(model.boundaryConditions())
+    mapdl.setLoad(model.load())
 
-mapdl = Mapdl(pathToRun)
-model = Model(pathToModel)
-mapdl.initialize()
-mapdl.createMaterial(model.materialList())
-mapdl.createFiniteElement() # Verificar se será neecessário criar um elemento para cada material
-mapdl.createProfile(model.section())
-mapdl.createMesh(model.mesh())
-mapdl.setMaterial()
-mapdl.setBoundaryConditions(model.boundaryConditions())
-mapdl.setLoad(model.load())
+    # mapdl.open_gui()
 
-mapdl.open_gui()
+    mapdl.runStaticAnalysi()
 
-mapdl.runStaticAnalysi()
+    # mapdl.open_gui()
 
-mapdl.open_gui()
+    mapdl.runLinearBucklingAnalysi()
+    result = mapdl.getLinearResult(path)
 
-mapdl.runLinearBucklingAnalysi()
-result = mapdl.getResult()
+    print(json.dumps(result))
 
-print(json.dumps(result))
+    # mapdl.open_gui()
+    mapdl.exit()
 
-# mapdl.open_gui()
-mapdl.exit()
+except Exception as ex:
+    print(ex)
 
 # print(help(result))
 # result.save_as_vtk(teste.vtk, rsets=0)

@@ -198,24 +198,43 @@ class Mapdl:
         self.mapdl.solve()
         self.mapdl.finish()
 
-    def getResult(self):
+    def getLinearResult(self, path):
         result = self.mapdl.result
         resultList = []
-        if self.loadType["bending"]:
-            for i in range(result.n_results):
+        # print(type(result.n_results))
+        for i in range(result.n_results):
+            # print(f'for {i}')
+            if self.loadType["bending"]:
+                # print('bending')
                 if self.loadProperties["points"] == 4:
+                    # print('4points')
                     criticalMoment = result.solution_info(i)["timfrq"] * self.loadProperties["Lshear"]
 
                 elif self.loadProperties["points"] == 3:
+                    # print('3points')
                     criticalMoment = result.solution_info(i)["timfrq"] * self.sectionProperties["L"] / 4
+                
+                criticalLoad = str(round(criticalMoment, 2)) + ' N.m'
 
-                resultList.append({
-                    "value": str(round(criticalMoment, 2)) + ' N.m',
-                    "imgUrl": 'nothing'
-                })
+            elif self.loadType["normal"]:
+                # print('normal')
+                criticalLoad = str(round(result.solution_info(i)["timfrq"], 2)) + ' N'
+            
+            resultList.append({
+                "value": criticalLoad,
+            })
 
-        elif self.loadType["normal"]:
-            return
+            try:
+                cpos = [(1.8178551165619061, 1.2668720677458198, 3.6927581096403452),
+                (0.0762, 0.07302500000000003, 0.9000000000000001),
+                (-0.1329852358128566, 0.9386144670815737, -0.31830458564238795)]
+
+                imgPath = path + f'\\img{i}.gif'
+
+                result.animate_nodal_solution(i, movie_filename=imgPath, cpos=cpos, loop=False, displacement_factor=2,  off_screen=True, progress_bar=False, add_text=False, background='w', below_color=[256,256,256],show_scalar_bar=False)
+            
+            except Exception:
+                continue
 
         return resultList
 
