@@ -218,7 +218,7 @@ class TubularProfile:
             self.mapdl.sf("ALL", "PRES", 1/(2 * self.bf + 2 * self.bw))
 
             self.mapdl.nsel("S", "LOC", "Z", self.L)
-            self.mapdl.sf("ALL", "PRES", - 1/(2 * self.bf + 2 * self.bw))
+            self.mapdl.sf("ALL", "PRES", 1/(2 * self.bf + 2 * self.bw))
 
         elif normalLoadProperties["type"] == "point":
             ex = normalLoadProperties["x"]

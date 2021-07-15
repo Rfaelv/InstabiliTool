@@ -255,7 +255,7 @@ class IProfile:
             self.mapdl.sf("ALL", "PRES", 1/(self.bfi + self.bfs + self.bw))
 
             self.mapdl.nsel("S", "LOC", "Z", self.L)
-            self.mapdl.sf("ALL", "PRES", - 1/(self.bfi + self.bfs + self.bw))
+            self.mapdl.sf("ALL", "PRES", 1/(self.bfi + self.bfs + self.bw))
 
         elif normalLoadProperties["type"] == "point":
             ex = normalLoadProperties["x"]

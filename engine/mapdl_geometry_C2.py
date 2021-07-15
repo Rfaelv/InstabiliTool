@@ -250,7 +250,7 @@ class C2Profile:
             self.mapdl.sf("ALL", "PRES", 1/(2 * (self.bf + self.zf) + self.bw))
 
             self.mapdl.nsel("S", "LOC", "Z", self.L)
-            self.mapdl.sf("ALL", "PRES", - 1/(2 * (self.bf + self.zf) + self.bw))
+            self.mapdl.sf("ALL", "PRES", 1/(2 * (self.bf + self.zf) + self.bw))
 
         elif normalLoadProperties["type"] == "point":
             ex = normalLoadProperties["x"]

@@ -42,10 +42,11 @@ try:
 
     print(json.dumps(result))
 
-    # mapdl.open_gui()
+    mapdl.open_gui()
     mapdl.exit()
 
 except Exception as ex:
+    mapdl.exit()
     print(ex)
 
 # print(help(result))
