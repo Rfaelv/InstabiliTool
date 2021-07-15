@@ -7,6 +7,7 @@ const localState  = new(require('../modules/localState'))
 const { readData, writeData } = require('../modules/writeAndReadData')
 const { clearModel } = require('../modules/clearModel')
 
+localState.createIfNotExist()
 localState.clear()
 
 const template = [

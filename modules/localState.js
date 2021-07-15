@@ -6,30 +6,27 @@ const path = require('path')
 var i18n = new(require('../translations/i18n'))
 
 module.exports = class LocalState {
+  createIfNotExist() {
+    const userDataPath = app.getPath('userData')
+    try {
+      fs.writeFileSync(path.join(userDataPath, 'data/localstatedata.json'), JSON.stringify({}))
+
+    } catch (err) {
+      dialog.showErrorBox(i18n.__('Error'), err.message)
+
+    }
+  }
+
   set(key, value) {
     const userDataPath = app.getPath('userData')
-    if  (!fs.existsSync(path.join(userDataPath, 'data/localstatedata.json'))) {
-      var saveData = {}
+    try {
+      var saveData = JSON.parse(fs.readFileSync(path.join(userDataPath, 'data/localstatedata.json'), 'utf8'))
       saveData[key] = value
-  
-      try {
-        fs.writeFileSync(path.join(userDataPath, 'data/localstatedata.json'), JSON.stringify(saveData))
-  
-      } catch (err) {
-        dialog.showErrorBox(i18n.__('Error'), err.message)
-  
-      }
-  
-    } else {
-      try {
-        var saveData = JSON.parse(fs.readFileSync(path.join(userDataPath, 'data/localstatedata.json'), 'utf8'))
-        saveData[key] = value
-        fs.writeFileSync(path.join(userDataPath, 'data/localstatedata.json'), JSON.stringify(saveData))
-  
-      } catch (err) {
-        dialog.showErrorBox(i18n.__('Error'), err.message)
-  
-      }
+      fs.writeFileSync(path.join(userDataPath, 'data/localstatedata.json'), JSON.stringify(saveData))
+
+    } catch (err) {
+      dialog.showErrorBox(i18n.__('Error'), err.message)
+
     }
   }
   
