@@ -63,7 +63,7 @@ window.addEventListener('focus', () => {
     }
 })
 window.addEventListener('load', () => {
-    return
+    setModelData()
 })
 
 
@@ -312,6 +312,44 @@ function toDataURL(url, callback) {
     xhr.open('GET', url);
     xhr.responseType = 'blob';
     xhr.send();
+}
+
+function setModelData() {
+    const model = readData('model.json')
+
+    const analysiType = document.getElementsByName('type')
+    if (model.analysiType.linear) {
+        analysiType[0].checked = true
+    } else {
+        analysiType[1].checked = true
+    }
+
+    const mesh = document.getElementsByName('discretize')
+    if (model.meshProperties.type == 0) {
+        mesh[0].checked = true
+    } else {
+        mesh[1].checked = true
+    }
+
+    const bc = document.getElementById('boundary')
+    if (!model.boundaryConditions.personalized) {
+        if (model.boundaryConditions["S-S"]) {
+            bc.selectedIndex = 1
+        } else if (model.boundaryConditions["C-F"]) {
+            bc.selectedIndex = 2
+        } else if (model.boundaryConditions["C-C"]) {
+            bc.selectedIndex = 3
+        } else if (model.boundaryConditions["C-S"]) {
+            bc.selectedIndex = 4
+        }
+    }
+
+    const load = document.getElementById('load')
+    if (model.loadType.bending) {
+        load[0].checked = true
+    } else {
+        load[1].checked = true
+    }
 }
   
 
