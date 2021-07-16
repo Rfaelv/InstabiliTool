@@ -1,4 +1,7 @@
 const { app, BrowserWindow, nativeTheme, ipcMain, dialog} = require('electron')
+const process = require('process')
+
+const inputData = process.argv
 
 let win = null
 
@@ -16,6 +19,7 @@ function createWindow () {
   })
 
   require('./menu/mainmenu')
+  setInputModelIfExist()
   // win.webContents.openDevTools()
   nativeTheme.themeSource = 'light'
   win.loadFile('views/html/home.html')
@@ -82,7 +86,8 @@ function createModel() {
     meshProperties: {type: 0},
     boundaryConditions: {},
     loadType: {bending: true, normal: false},
-    loadProperties: {}
+    loadProperties: {},
+    result: {}
     }
   const fs = require('fs')
   const path = require('path')
@@ -122,5 +127,32 @@ function createSettings() {
   
   if  (!fs.existsSync(dir)){
     fs.writeFileSync(dir, JSON.stringify(settings))
+  }
+}
+
+function setInputModelIfExist() {
+  if (inputData[1] && inputData[1].split('.')[1] == "instt") {
+    const inputModelPath = inputData[1]
+    const fs = require('fs')
+
+    try {
+      const jsonData = fs.readFileSync(inputModelPath, 'utf8')
+      const inputModel = JSON.parse(jsonData)
+
+      const model = {
+        analysiType: inputModel.analysiType,
+        materials: inputModel.materials,
+        sectionType: inputModel.sectionType,
+        sectionProperties: inputModel.sectionProperties,
+        meshProperties: inputModel.meshProperties,
+        boundaryConditions: inputModel.boundaryConditions,
+        loadType: inputModel.loadType,
+        loadProperties: inputModel.loadProperties,
+        result: inputModel.result
+      }
+      writeData(model, 'model.json')
+    } catch (err) {
+      dialog.showErrorBox(i18n.__('Error'), err.message)
+    }
   }
 }

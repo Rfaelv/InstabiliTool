@@ -21,6 +21,7 @@
     "electron": "11.1.1"
   },
   "dependencies": {
+    "process": "^0.11.10",
     "python-shell": "^3.0.0",
     "read-excel-file": "^5.1.0"
   }
