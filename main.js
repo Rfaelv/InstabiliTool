@@ -22,6 +22,7 @@ function createWindow () {
   win.on('ready-to-show', () => {
     setTimeout(() => {win.show()}, 200) 
   })
+  // win.show()
   createModel()
   createSettings()
 }

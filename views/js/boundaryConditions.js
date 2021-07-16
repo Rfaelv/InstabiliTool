@@ -178,59 +178,63 @@ function apply3() {
     var checkbox1 = document.getElementsByClassName('checkbox3-1')
     var checkbox2 = document.getElementsByClassName('checkbox3-2')
     var checkbox3 = document.getElementsByClassName('checkbox3-3')
-    var zInput = document.getElementById("current-position").value
-    const z = parseFloat(zInput.replace(',', '.'))
-
-    var boundaryConditions = {
-        z: z,
-        1: {
-            UX: true,
-            UY: true,
-            UZ: true,
-            ROTX: true,
-            ROTY: true,
-            ROTZ: true,
-            all: true
-        },
-        2: {
-            UX: true,
-            UY: true,
-            UZ: true,
-            ROTX: true,
-            ROTY: true,
-            ROTZ: true
-        },
-        3: {
-            UX: true,
-            UY: true,
-            UZ: true,
-            ROTX: true,
-            ROTY: true,
-            ROTZ: true
-        }
-    }
-    var cont = 0
-
-    for (var key in boundaryConditions['1']) {
-        boundaryConditions['1'][key] = checkbox1[cont].checked
-        boundaryConditions['2'][key] = checkbox2[cont].checked
-        boundaryConditions['3'][key] = checkbox3[cont].checked
-
-        checkbox1[cont].checked = false
-        checkbox2[cont].checked = false
-        checkbox3[cont].checked = false
-
-        cont += 1
-    }
-    document.getElementById("current-position").value = ""
-    document.getElementById("current-position").focus()
-
     var boundaryConditionsData = JSON.parse(localStorage.getItem("boundary-consition-data"))
+    var zInput = document.getElementById("current-position").value
 
-    if (zIndex < boundaryConditionsData.length) {
-        boundaryConditionsData.splice(zIndex, 1, boundaryConditions)
-    } else {
-        boundaryConditionsData.push(boundaryConditions)
+    if (zInput !== "") {
+        const z = parseFloat(zInput.replace(',', '.'))
+
+        var boundaryConditions = {
+            z: z,
+            1: {
+                UX: true,
+                UY: true,
+                UZ: true,
+                ROTX: true,
+                ROTY: true,
+                ROTZ: true,
+                all: true
+            },
+            2: {
+                UX: true,
+                UY: true,
+                UZ: true,
+                ROTX: true,
+                ROTY: true,
+                ROTZ: true
+            },
+            3: {
+                UX: true,
+                UY: true,
+                UZ: true,
+                ROTX: true,
+                ROTY: true,
+                ROTZ: true
+            }
+        }
+        var cont = 0
+
+        for (var key in boundaryConditions['1']) {
+            boundaryConditions['1'][key] = checkbox1[cont].checked
+            boundaryConditions['2'][key] = checkbox2[cont].checked
+            boundaryConditions['3'][key] = checkbox3[cont].checked
+
+            checkbox1[cont].checked = false
+            checkbox2[cont].checked = false
+            checkbox3[cont].checked = false
+
+            cont += 1
+        }
+        document.getElementById("current-position").value = ""
+        document.getElementById("current-position").focus()
+
+        if (zIndex < boundaryConditionsData.length) {
+            boundaryConditionsData.splice(zIndex, 1, boundaryConditions)
+        } else {
+            boundaryConditionsData.push(boundaryConditions)
+        }
+    } else if (zIndex < boundaryConditionsData.length) {
+        boundaryConditionsData.splice(zIndex, 1)
     }
 
     localStorage.setItem("boundary-consition-data", JSON.stringify(boundaryConditionsData))
@@ -256,47 +260,54 @@ function get3() {
 function apply2() {
     var checkbox1 = document.getElementsByClassName('checkbox2-1')
     var checkbox2 = document.getElementsByClassName('checkbox2-2')
-    const z = parseFloat(document.getElementById("current-position").value.replace(',', '.'))
-
-    var boundaryConditions = {
-        z: z,
-        1:{
-            UX: true,
-            UY: true,
-            UZ: true,
-            ROTX: true,
-            ROTY: true,
-            ROTZ: true
-        },
-        2:{
-            UX: true,
-            UY: true,
-            UZ: true,
-            ROTX: true,
-            ROTY: true,
-            ROTZ: true
-        }
-    }
-    var cont = 0
-
-    for (var key in boundaryConditions[0]) {
-        boundaryConditions[0][key] = checkbox1[cont].checked
-        boundaryConditions[1][key] = checkbox2[cont].checked
-
-        checkbox1[cont].checked = false
-        checkbox2[cont].checked = false
-
-        cont += 1
-    }
-    document.getElementById("current-position").value = ""
-    document.getElementById("current-position").focus()
-
     var boundaryConditionsData = JSON.parse(localStorage.getItem("boundary-consition-data"))
+    var zInput = document.getElementById("current-position").value
 
-    if (zIndex < boundaryConditionsData.length) {
-        boundaryConditionsData.splice(zIndex, 1, boundaryConditions)
-    } else {
-        boundaryConditionsData.push(boundaryConditions)
+    if (zInput !== "") {
+        const z = parseFloat(zInput.replace(',', '.'))
+
+        var boundaryConditions = {
+            z: z,
+            1:{
+                UX: true,
+                UY: true,
+                UZ: true,
+                ROTX: true,
+                ROTY: true,
+                ROTZ: true,
+                all: true
+            },
+            2:{
+                UX: true,
+                UY: true,
+                UZ: true,
+                ROTX: true,
+                ROTY: true,
+                ROTZ: true,
+                all: true
+            }
+        }
+        var cont = 0
+
+        for (var key in boundaryConditions['1']) {
+            boundaryConditions['1'][key] = checkbox1[cont].checked
+            boundaryConditions['2'][key] = checkbox2[cont].checked
+
+            checkbox1[cont].checked = false
+            checkbox2[cont].checked = false
+
+            cont += 1
+        }
+        document.getElementById("current-position").value = ""
+        document.getElementById("current-position").focus()
+
+        if (zIndex < boundaryConditionsData.length) {
+            boundaryConditionsData.splice(zIndex, 1, boundaryConditions)
+        } else {
+            boundaryConditionsData.push(boundaryConditions)
+        }
+    } else if (zIndex < boundaryConditionsData.length) {
+        boundaryConditionsData.splice(zIndex, 1)
     }
 
     localStorage.setItem("boundary-consition-data", JSON.stringify(boundaryConditionsData))
@@ -319,37 +330,43 @@ function get2() {
 
 function apply1() {
     var checkbox1 = document.getElementsByClassName('checkbox1-1')
-    const z = parseFloat(document.getElementById("current-position").value.replace(',', '.'))
-
-    var boundaryConditions = {
-        z: z,
-        1:{
-            UX: true,
-            UY: true,
-            UZ: true,
-            ROTX: true,
-            ROTY: true,
-            ROTZ: true
-        }
-    }
-    var cont = 0
-
-    for (var key in boundaryConditions[0]) {
-        boundaryConditions[0][key] = checkbox1[cont].checked
-
-        checkbox1[cont].checked = false
-        
-        cont += 1
-    }
-    document.getElementById("current-position").value = ""
-    document.getElementById("current-position").focus()
-
     var boundaryConditionsData = JSON.parse(localStorage.getItem("boundary-consition-data"))
-    
-    if (zIndex < boundaryConditionsData.length) {
-        boundaryConditionsData.splice(zIndex, 1, boundaryConditions)
-    } else {
-        boundaryConditionsData.push(boundaryConditions)
+    var zInput = document.getElementById("current-position").value
+
+    if (zInput !== "") {
+        const z = parseFloat(zInput.replace(',', '.'))
+
+        var boundaryConditions = {
+            z: z,
+            1:{
+                UX: true,
+                UY: true,
+                UZ: true,
+                ROTX: true,
+                ROTY: true,
+                ROTZ: true,
+                all: true
+            }
+        }
+        var cont = 0
+
+        for (var key in boundaryConditions['1']) {
+            boundaryConditions['1'][key] = checkbox1[cont].checked
+
+            checkbox1[cont].checked = false
+            
+            cont += 1
+        }
+        document.getElementById("current-position").value = ""
+        document.getElementById("current-position").focus()
+        
+        if (zIndex < boundaryConditionsData.length) {
+            boundaryConditionsData.splice(zIndex, 1, boundaryConditions)
+        } else {
+            boundaryConditionsData.push(boundaryConditions)
+        }
+    } else if (zIndex < boundaryConditionsData.length) {
+        boundaryConditionsData.splice(zIndex, 1)
     }
 
     localStorage.setItem("boundary-consition-data", JSON.stringify(boundaryConditionsData))
@@ -486,12 +503,12 @@ function searchTable() {
 }
 
 function previousZPosition() {
-    const zinput = document.getElementById("current-position").value
+    // const zinput = document.getElementById("current-position").value
 
-    if ( zinput === "") {
-        ipcRenderer.send('create-dialog', {title: window.i18n.__('Fill in the z position field.'), description: ''})
-        return
-    }
+    // if ( zinput === "") {
+    //     ipcRenderer.send('create-dialog', {title: window.i18n.__('Fill in the z position field.'), description: ''})
+    //     return
+    // }
 
     if (zIndex >= 1) {
         setData()
@@ -503,19 +520,36 @@ function previousZPosition() {
 function nextZPosition() {
     const zinput = document.getElementById("current-position").value
     
-    if ( zinput === "") {
-        ipcRenderer.send('create-dialog', {title: window.i18n.__('Fill in the z position field.'), description: ''})
-    } else {
-        const boundaryDataLength = JSON.parse(localStorage.getItem("boundary-consition-data")).length
+    // if ( zinput === "") {
+    //     ipcRenderer.send('create-dialog', {title: window.i18n.__('Fill in the z position field.'), description: ''})
+    // } else {
+    //     const boundaryDataLength = JSON.parse(localStorage.getItem("boundary-consition-data")).length
 
-        if (zIndex >= boundaryDataLength - 1) {
-            setData()
-            zIndex += 1
+    //     if (zIndex >= boundaryDataLength - 1) {
+    //         setData()
+    //         zIndex += 1
+    //     } else {
+    //         setData()
+    //         zIndex += 1
+    //         getData()
+    //     }
+    // }
+
+    const boundaryDataLength = JSON.parse(localStorage.getItem("boundary-consition-data")).length
+
+    if (zIndex >= boundaryDataLength - 1) {
+        if ( zinput === "") {
+            ipcRenderer.send('create-dialog', {title: window.i18n.__('Fill in the z position field.'), description: ''})
         } else {
             setData()
             zIndex += 1
-            getData()
         }
+    } else {
+        setData()
+        if ( zinput !== "") {    
+            zIndex += 1
+        }
+        getData()
     }
 }
 
