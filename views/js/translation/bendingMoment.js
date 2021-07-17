@@ -1,5 +1,6 @@
 const texts = [
     "Bending moment",
+    "View axes",
     "Bending type",
     "Four point bending",
     "Three point bending",

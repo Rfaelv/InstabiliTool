@@ -3,6 +3,8 @@ const {writeData, readData} = require('../../modules/writeAndReadData')
 
 document.querySelector('#Lshear').focus()
 
+createDOM()
+
 const radioButton = document.getElementsByName('flexao')
 radioButton[0].addEventListener('change', switchImage)
 radioButton[1].addEventListener('change', switchImage)
@@ -19,6 +21,7 @@ cancelbutton.addEventListener('click', cancel)
 window.addEventListener('load', () => {
     setModelData()
 })
+
 
 function switchImage() {
     var img = document.getElementById('image-flexao')
@@ -107,5 +110,33 @@ function setModelData() {
             document.getElementsByName('direction')[1].checked = true
         }
         switchImage()
+    }
+}
+
+function createDOM() {
+    const model = readData('model.json')
+    const img2 = document.getElementById('img2')
+
+    if (model.sectionType.I) {
+        img2.src = '../../assets/icons/vigaI-axes.png'
+
+    } else if (model.sectionType.tubular) {
+        img2.src = '../../assets/icons/vigaTubular-axes.png'
+
+    } else if (model.sectionType.C) {
+        img2.src = '../../assets/icons/vigaC-axes.png'
+
+    } else if (model.sectionType.C2) {
+
+        img2.src = '../../assets/icons/vigaC2-axes.png'
+
+    } else if (model.sectionType.rack) {
+        img2.src = '../../assets/icons/vigaRack-axes.png'
+
+    } else if (model.sectionType.angle) {
+        img2.src = '../../assets/icons/cantoneira-axes.png'
+
+    } else if (model.sectionType.plate) {
+        img2.src = '../../assets/icons/plate-axes.png'
     }
 }
