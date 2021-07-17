@@ -11,6 +11,9 @@ cancelbutton.addEventListener('click', cancel)
 
 document.getElementById('d').focus()
 
+window.addEventListener('load', () => {
+    setModelData()
+})
 
 function setGeometry() {
     const input = document.getElementsByName('input')
@@ -24,8 +27,14 @@ function setGeometry() {
     }
 
     var model = readData('model.json')
+    var inputStatus = JSON.parse(localStorage.getItem('input-status'))
+
     for (key in model.sectionType) {
         if (key == 'C2') {
+            if (!model.sectionType[key]) {
+                model.boundaryConditions = {}
+                inputStatus.bd = false
+            }
             model.sectionType[key] = true
         } else {
             model.sectionType[key] = false
@@ -39,7 +48,7 @@ function setGeometry() {
         L: parseFloat(input[4].value.replace(',', '.'))
     }
     writeData(model, 'model.json')
-    var inputStatus = JSON.parse(localStorage.getItem('input-status'))
+    
     inputStatus.section = true
     inputStatus.matAssign = false
     localStorage.setItem('input-status', JSON.stringify(inputStatus))
@@ -48,4 +57,14 @@ function setGeometry() {
 
 function cancel() {
     ipcRenderer.send('delete-current-window')
+}
+
+function setModelData() {
+    const model = readData('model.json')
+
+    if (model.sectionType.C2) {
+        for (let key in model.sectionProperties) {
+            document.getElementById(key).value = model.sectionProperties[key]
+        }
+    }
 }

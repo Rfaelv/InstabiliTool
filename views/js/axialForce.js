@@ -14,6 +14,10 @@ radio.forEach(() => {
     this.addEventListener('change', changeInput)
 }) 
 
+window.addEventListener('load', () => {
+    setModelData()
+})
+
 function setLoadCondition() {
     const x = document.getElementById('x')
     const y = document.getElementById('y')
@@ -53,5 +57,19 @@ function changeInput(event) {
     } else {
         document.getElementById("divinput").style.display = "none"
         document.getElementById("divtext").style.display = "flex"
+    }
+}
+
+function setModelData() {
+    const model = readData('model.json')
+
+    if (model.loadProperties.type == 'point') {
+        document.getElementsByName('axial-force')[0].checked = true
+        document.getElementById('x').value = model.loadProperties.x
+        document.getElementById('y').value = model.loadProperties.y
+        
+    } else if (model.loadProperties.type == 'distributed') {
+        document.getElementsByName('axial-force')[1].checked = true
+        changeInput()
     }
 }

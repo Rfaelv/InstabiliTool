@@ -27,6 +27,9 @@ vizualizerButton.title = window.i18n.__('View mesh')
 
 document.getElementById('elementSize').focus()
 
+window.addEventListener('load', () => {
+    setModelData()
+})
 
 function setMeshAndMaterialAssignment() {
     const elementSize = document.getElementById('elementSize')
@@ -156,15 +159,15 @@ function configMaterialInput() {
             const textLabel2 = document.createTextNode('2')
             const select1 = document.createElement('select')
             const select2= document.createElement('select')
-            select1.setAttribute('className', 'materialAssignment')
-            select2.setAttribute('className', 'materialAssignment')
+            select1.setAttribute('class', 'materialAssignment')
+            select2.setAttribute('class', 'materialAssignment')
 
-            for (let i in model.materials) {
+            for (let i = 0; i < model.materials.length; i++) {
                 var opt1 = document.createElement("option")
-                opt1.value = model.materials[i].tag
+                opt1.value = i + 1
                 opt1.text = model.materials[i].tag
                 var opt2 = document.createElement("option")
-                opt2.value = model.materials[i].tag
+                opt2.value = i + 1
                 opt2.text = model.materials[i].tag
                 select1.add(opt1, select1.options[i])
                 select2.add(opt2, select2.options[i])
@@ -205,19 +208,19 @@ function configMaterialInput() {
             const select1 = document.createElement('select')
             const select2= document.createElement('select')
             const select3 = document.createElement('select')
-            select1.setAttribute('className', 'materialAssignment')
-            select2.setAttribute('className', 'materialAssignment')
-            select3.setAttribute('className', 'materialAssignment')
+            select1.setAttribute('class', 'materialAssignment')
+            select2.setAttribute('class', 'materialAssignment')
+            select3.setAttribute('class', 'materialAssignment')
 
-            for (let i in model.materials) {
+            for (let i = 0; i < model.materials.length; i++) {
                 var opt1 = document.createElement("option")
-                opt1.value = model.materials[i].tag
+                opt1.value = i + 1
                 opt1.text = model.materials[i].tag
                 var opt2 = document.createElement("option")
-                opt2.value = model.materials[i].tag
+                opt2.value = i + 1
                 opt2.text = model.materials[i].tag
                 var opt3 = document.createElement("option")
-                opt3.value = model.materials[i].tag
+                opt3.value = i + 1
                 opt3.text = model.materials[i].tag
                 select1.add(opt1, select1.options[i])
                 select2.add(opt2, select2.options[i])
@@ -263,19 +266,19 @@ function configMaterialInput() {
             const select1 = document.createElement('select')
             const select2= document.createElement('select')
             const select3 = document.createElement('select')
-            select1.setAttribute('className', 'materialAssignment')
-            select2.setAttribute('className', 'materialAssignment')
-            select3.setAttribute('className', 'materialAssignment')
+            select1.setAttribute('class', 'materialAssignment')
+            select2.setAttribute('class', 'materialAssignment')
+            select3.setAttribute('class', 'materialAssignment')
 
-            for (let i in model.materials) {
+            for (let i = 0; i < model.materials.length; i++) {
                 var opt1 = document.createElement("option")
-                opt1.value = model.materials[i].tag
+                opt1.value = i + 1
                 opt1.text = model.materials[i].tag
                 var opt2 = document.createElement("option")
-                opt2.value = model.materials[i].tag
+                opt2.value = i + 1
                 opt2.text = model.materials[i].tag
                 var opt3 = document.createElement("option")
-                opt3.value = model.materials[i].tag
+                opt3.value = i + 1
                 opt3.text = model.materials[i].tag
                 select1.add(opt1, select1.options[i])
                 select2.add(opt2, select2.options[i])
@@ -321,19 +324,19 @@ function configMaterialInput() {
             const select1 = document.createElement('select')
             const select2= document.createElement('select')
             const select3 = document.createElement('select')
-            select1.setAttribute('className', 'materialAssignment')
-            select2.setAttribute('className', 'materialAssignment')
-            select3.setAttribute('className', 'materialAssignment')
+            select1.setAttribute('class', 'materialAssignment')
+            select2.setAttribute('class', 'materialAssignment')
+            select3.setAttribute('class', 'materialAssignment')
 
-            for (let i in model.materials) {
+            for (let i = 0; i < model.materials.length; i++) {
                 var opt1 = document.createElement("option")
-                opt1.value = model.materials[i].tag
+                opt1.value = i + 1
                 opt1.text = model.materials[i].tag
                 var opt2 = document.createElement("option")
-                opt2.value = model.materials[i].tag
+                opt2.value = i + 1
                 opt2.text = model.materials[i].tag
                 var opt3 = document.createElement("option")
-                opt3.value = model.materials[i].tag
+                opt3.value = i + 1
                 opt3.text = model.materials[i].tag
                 select1.add(opt1, select1.options[i])
                 select2.add(opt2, select2.options[i])
@@ -375,15 +378,15 @@ function configMaterialInput() {
             const textLabel2 = document.createTextNode('2')
             const select1 = document.createElement('select')
             const select2= document.createElement('select')
-            select1.setAttribute('className', 'materialAssignment')
-            select2.setAttribute('className', 'materialAssignment')
+            select1.setAttribute('class', 'materialAssignment')
+            select2.setAttribute('class', 'materialAssignment')
 
-            for (let i in model.materials) {
+            for (let i = 0; i < model.materials.length; i++) {
                 var opt1 = document.createElement("option")
-                opt1.value = model.materials[i].tag
+                opt1.value = i + 1
                 opt1.text = model.materials[i].tag
                 var opt2 = document.createElement("option")
-                opt2.value = model.materials[i].tag
+                opt2.value = i + 1
                 opt2.text = model.materials[i].tag
                 select1.add(opt1, select1.options[i])
                 select2.add(opt2, select2.options[i])
@@ -415,11 +418,11 @@ function configMaterialInput() {
             inputDiv.setAttribute('id', 'inputDiv')
             const div1 = document.createElement('div')
             const select1 = document.createElement('select')
-            select1.setAttribute('className', 'materialAssignment')
+            select1.setAttribute('class', 'materialAssignment')
 
-            for (let i in model.materials) {
+            for (let i = 0; i < model.materials.length; i++) {
                 var opt1 = document.createElement("option")
-                opt1.value = model.materials[i].tag
+                opt1.value = i + 1
                 opt1.text = model.materials[i].tag
                 select1.add(opt1, select1.options[i])
             }
@@ -492,4 +495,24 @@ function runPreview() {
         document.getElementById('visualizeButton').style.display = 'block'
 
     })
+}
+
+function setModelData() {
+    const model = readData('model.json')
+
+    if (model.meshProperties.elementSize) {
+        document.getElementById('elementSize').value = model.meshProperties.elementSize
+    }
+    if (model.meshProperties.method == 1) {
+        document.getElementsByName('method')[1].checked = true
+    } else if (model.meshProperties.method == 0) {
+        document.getElementsByName('method')[0].checked = true
+    }
+    if (model.sectionProperties.materialAssignment) {
+        const selects = document.getElementsByClassName('materialAssignment')
+
+        for (let i = 0; i < selects.length; i++) {
+            selects[i].selectedIndex = model.sectionProperties.materialAssignment[i] - 1
+        }
+    }
 }

@@ -171,7 +171,7 @@ function load() {
     const loadType = document.getElementsByName('load')
     
     if (loadType[0].checked) {
-        var width = 450
+        var width = 570
         var height = 350
         var path = 'views/html/bendingMoment.html'
     } else {

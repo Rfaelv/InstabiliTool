@@ -3,7 +3,11 @@ const texts = [
     "Bending type",
     "Four point bending",
     "Three point bending",
+    "Direct bending",
     "Lshear",
+    "Direction",
+    "x",
+    "y",
     "Apply",
     "Cancel"
 ]

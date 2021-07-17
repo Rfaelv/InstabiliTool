@@ -19,6 +19,8 @@ function createWindow () {
   })
 
   require('./menu/mainmenu')
+  createModel()
+  createSettings()
   setInputModelIfExist()
   // win.webContents.openDevTools()
   nativeTheme.themeSource = 'light'
@@ -27,8 +29,6 @@ function createWindow () {
     setTimeout(() => {win.show()}, 200) 
   })
   // win.show()
-  createModel()
-  createSettings()
 }
 
 app.whenReady().then(createWindow)

@@ -13,6 +13,10 @@ var zIndex = 0
 
 window.addEventListener("close", () => {localStorage.setItem("boundary-consition-data", "[]")})
 
+window.addEventListener('load', () => {
+    setModelData()
+})
+
 const applybutton = document.getElementById('apply')
 applybutton.addEventListener('click', setBoundaryConditions)
 
@@ -600,5 +604,14 @@ function getData() {
     } else if (model.sectionType.plate) {
         get1()
 
+    }
+}
+
+function setModelData() {
+    const model = readData('model.json')
+
+    if (model.boundaryConditions.data) {
+        localStorage.setItem("boundary-consition-data", JSON.stringify(model.boundaryConditions.data))
+        getData()
     }
 }
