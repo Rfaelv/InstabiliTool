@@ -4,8 +4,9 @@ import sys
 import os
 
 
-pathToModel = sys.argv[1]
+# pathToModel = sys.argv[1]
 pathToRun = 'D:\\Documentos\\Python\\PROJETOS\\GUI com Electron\\analise-de-flambagem-no-ansys\\data'
+pathToModel = 'C:\\Users\Rfael\\AppData\Roaming\\InstabiliTool\\data\\model.json'
 sys.stdout.write('terter')
 try:
     mapdl = Mapdl(pathToRun)
@@ -23,7 +24,7 @@ try:
     mapdlinstance.run("/RGB,INDEX,0,0,0,15")
     print('finished')
     mapdlinstance.eplot(vtk=False)
-    mapdlinstance.open_gui()
+    # mapdlinstance.open_gui()
     mapdlinstance.exit()
     # os.system("taskkill /im Mechanical APDL Program.exe")
     # mapdl.open_gui()

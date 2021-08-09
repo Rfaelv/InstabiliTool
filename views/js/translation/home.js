@@ -1,5 +1,5 @@
 const texts = [
-    "Analysi type",
+    "Analysis type",
     "Linear",
     "Non-linear",
     "Material properties",
@@ -22,7 +22,8 @@ const texts = [
     "Bending",
     "Axial",
     "Configure",
-    "Start analysi",
+    "Generate script",
+    "Start analysis",
     "View results"
 ]
 
