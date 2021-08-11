@@ -1,8 +1,8 @@
 const { ipcRenderer } = require('electron')
-const fs = require('fs')
-const path = require('path')
+// const fs = require('fs')
+// const path = require('path')
 const {writeData, readData} = require('../../modules/writeAndReadData')
-const i18n = require('../../translations/i18n')
+// const i18n = require('../../translations/i18n')
 
 setTitle()
 
@@ -41,6 +41,7 @@ function del() {
 function finalize() {
     ipcRenderer.send('delete-current-window')
 }
+
 function refreshData() {
     generateList()
 }
@@ -126,7 +127,7 @@ function openInputPropertieWindow() {
     } else if (localStorage.getItem('current-material-type') == 'anisotropic') {
         ipcRenderer.send('create-window', {
             width:820,
-            height:350,
+            height:390,
             path:'views/html/materialPropertiesAny.html'
         })
     }

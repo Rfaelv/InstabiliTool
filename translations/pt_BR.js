@@ -45,6 +45,7 @@
     "Orthotropic material": "Material ortotrópico",
     "Anisotropic material": "Material anisotrópico",
     "Name": "Nome",
+    "Stiffness matrix": "Matriz de rigidez",
     "Apply": "Aplicar",
     "Cancel": "Cancelar",
     "Geometry - I section": "Geometria - Seção I",

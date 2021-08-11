@@ -1,6 +1,7 @@
 const texts = [
     "Anisotropic material",
     "Name",
+    "Stiffness matrix",
     "Apply",
     "Cancel"
 ]

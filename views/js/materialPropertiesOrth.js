@@ -1,6 +1,6 @@
 const { ipcRenderer } = require('electron')
-const fs = require('fs')
-const path = require('path')
+// const fs = require('fs')
+// const path = require('path')
 const {writeData, readData} = require('../../modules/writeAndReadData')
 var currentTag = null
 

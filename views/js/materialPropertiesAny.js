@@ -1,16 +1,18 @@
 const { ipcRenderer } = require('electron')
-const fs = require('fs')
-const path = require('path')
+// const fs = require('fs')
+// const path = require('path')
 const {writeData, readData} = require('../../modules/writeAndReadData')
 var currentTag = null
 
 
 const applybutton = document.getElementById('apply')
+
 if (localStorage.getItem('selected-material') && localStorage.getItem('selected-material') != '') {
     fillFields()
     applybutton.addEventListener('click', replaceMaterialProperties)
     currentTag = localStorage.getItem('selected-material')
     localStorage.setItem('selected-material', '')
+    
 } else {
     applybutton.addEventListener('click', setMaterialProperties)
 }
