@@ -1,6 +1,6 @@
-const { ipcRenderer, dialog } = require('electron')
-const fs = require('fs')
-const path = require('path')
+const { ipcRenderer } = require('electron')
+// const fs = require('fs')
+// const path = require('path')
 const {writeData, readData} = require('../../modules/writeAndReadData')
 
 const applybutton = document.getElementById('apply')

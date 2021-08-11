@@ -1,6 +1,6 @@
-const { ipcRenderer, dialog } = require('electron')
-const fs = require('fs')
-const path = require('path')
+const { ipcRenderer } = require('electron')
+// const fs = require('fs')
+// const path = require('path')
 const { writeData, readData } = require('../../modules/writeAndReadData')
 
 
@@ -54,7 +54,6 @@ function setGeometry() {
     localStorage.setItem('input-status', JSON.stringify(inputStatus))
     ipcRenderer.send('delete-current-window')
 }
-
 
 function cancel() {
     ipcRenderer.send('delete-current-window')
