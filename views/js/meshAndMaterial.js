@@ -1,18 +1,9 @@
-const { ipcRenderer, dialog } = require('electron')
+const { ipcRenderer } = require('electron')
 const {readData, writeData} = require('../../modules/writeAndReadData')
-const fs = require('fs')
 const path = require('path')
 
+
 configMaterialInput()
-
-// $(document).ready(function () {
-//     $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
-// })
-
-document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.tooltipped');
-    var instances = M.Tooltip.init(elems, options);
-});
 
 const applybutton = document.getElementById('apply')
 applybutton.addEventListener('click', setMeshAndMaterialAssignment)
@@ -45,25 +36,60 @@ function setMeshAndMaterialAssignment() {
     }
 
     var model = readData('model.json')
-    model.meshProperties.elementSize = parseFloat(elementSize.value.replace(',', '.'))
-    model.meshProperties.method = parseFloat((elementMethod[0].checked? 0 : 1))
 
-    var materialAssignmentList = []
-    for (select of selects) {
-        materialAssignmentList.push(parseInt(select.options[select.selectedIndex].value))
+    if(model.materials.length == 0) {
+        ipcRenderer.send('create-dialog', {title: window.i18n.__('Create at least one material to add to profile.'), description: ''})
+    } else {
+        model.meshProperties.elementSize = parseFloat(elementSize.value.replace(',', '.'))
+        model.meshProperties.method = parseFloat((elementMethod[0].checked? 0 : 1))
+
+        var materialAssignmentList = []
+        for (select of selects) {
+            materialAssignmentList.push(parseInt(select.options[select.selectedIndex].value))
+        }
+        model.sectionProperties.materialAssignment = materialAssignmentList.length == 0 ? [1,1,1] : materialAssignmentList
+        writeData(model, 'model.json')
+        var inputStatus = JSON.parse(localStorage.getItem('input-status'))
+        inputStatus.mesh = true
+        inputStatus.matAssign = true
+        localStorage.setItem('input-status', JSON.stringify(inputStatus))
     }
-    model.sectionProperties.materialAssignment = materialAssignmentList.length == 0 ? [1,1,1] : materialAssignmentList
-    writeData(model, 'model.json')
-    var inputStatus = JSON.parse(localStorage.getItem('input-status'))
-    inputStatus.mesh = true
-    inputStatus.matAssign = true
-    localStorage.setItem('input-status', JSON.stringify(inputStatus))
-    ipcRenderer.send('delete-current-window')
+    
+    ipcRenderer.send('delete-current-window')  
 }
 
+async function cancel() {
+    const electron = require('electron')
+    let app = electron.app ? electron.app : electron.remote.app
+    const spawn = require('child_process').spawn
+    const userDataPath = ipcRenderer.sendSync('get-user-data')
+    const pathToLaunchAnsys = path.join(userDataPath, 'data/ansys')
+    const fs = require('fs')
 
-function cancel() {
-    ipcRenderer.send('delete-current-window')
+    const process = spawn('python', [app.getAppPath() + '/engine/ANSYS_kill.py'])
+    process.stdout.on('close', () => {
+        clearRunLocation()
+        
+    })
+
+    function clearRunLocation () {
+        new Promise((resolve, reject) => {
+            fs.readdir(pathToLaunchAnsys, (err, files) => {
+                if (err) throw err
+                
+                for (const file of files) {
+                  fs.unlink(path.join(pathToLaunchAnsys, file), err => {
+                    if (err) throw err
+                  })
+                }
+                resolve()
+            })
+        
+        })
+        .then(() => {
+            ipcRenderer.sendSync('delete-current-window')
+        })
+    } 
 }
 
 function configMaterialInput() {
@@ -445,18 +471,22 @@ function configMaterialInput() {
     }
 }
 
-function openMeshVisualizer() {
+async function openMeshVisualizer() {
+    await animateButton()
+    async function animateButton() {
+        document.getElementById('visualizeButton').style.display = 'none'
+        document.getElementById('preloader').style.display = 'block'
+    }
     const elementsize = document.getElementById('elementSize').value
     const elementMethod = document.getElementsByName('method')
+    
     if (elementsize != '') {
         var model = readData('model.json')
         for (section in model.sectionType) {
             if (model.sectionType[section]) {
-                document.getElementById('visualizeButton').style.display = 'none'
-                document.getElementById('preloader').style.display = 'block'
                 model.meshProperties.elementSize = parseFloat(elementsize.replace(',', '.'))
                 model.meshProperties.method = parseFloat((elementMethod[0].checked? 0 : 1))
-
+                
                 if (Object.keys(model.loadProperties).length == 0) {
                     model.loadProperties = {
                         points:3
@@ -475,26 +505,87 @@ function openMeshVisualizer() {
     } else {
         ipcRenderer.send('create-dialog', {title: window.i18n.__('Define the finite element size.'), description: ''})
     }
-}
 
-function runPreview() {
-    const electron = require('electron')
-    let app = electron.app ? electron.app : electron.remote.app
-    const spawn = require('child_process').spawn
-    const userDataPath = ipcRenderer.sendSync('get-user-data')
-    const pathToModel = path.join(userDataPath, 'data/', 'model.json')
-    // const process = spawn('python', ['../../engine/preview.py', pathToModel])
-    const process = spawn('python', [app.getAppPath() + '/engine/preview.py', pathToModel])
-   
-    // const process = spawn(path.resolve('engine/dist/main'), props)
+    document.getElementById('visualizeButton').style.display = 'block'
+    document.getElementById('preloader').style.display = 'none'
 
-    process.stdout.on('data', (data) => {
-        const output = data.toString()
-        console.log(output)
-        document.getElementById('preloader').style.display = 'none'
-        document.getElementById('visualizeButton').style.display = 'block'
+    function runPreview() {
+        const electron = require('electron')
+        let app = electron.app ? electron.app : electron.remote.app
+        const spawn = require('child_process').spawn
+        const userDataPath = ipcRenderer.sendSync('get-user-data')
+        const pathToModel = path.join(userDataPath, 'data/', 'model.json')
+        const pathToLaunchAnsys = path.join(userDataPath, 'data/ansys')
+        const pathToMeshImage = path.join(userDataPath, '/data/images/mesh.png')
 
-    })
+        var process
+        setTimeout(() => {
+            process = spawn('python', [app.getAppPath() + '/engine/preview.py', pathToModel, pathToLaunchAnsys])
+
+            process.stdout.on('data', (data) => {
+                document.getElementById('visualizeButton').style.display = 'block'
+                document.getElementById('preloader').style.display = 'none'
+                const output = data.toString()
+                ipcRenderer.send('create-dialog', {title: window.i18n.__('Error'), description: output})
+                setTimeout(killAllANSYSInstance(), 2000)
+            })
+
+        }, 500)
+       
+        // const process = spawn(path.resolve('engine/dist/main'), props)
+        const fs = require('fs')
+        const searchForFinish = setInterval(() => {
+            if (fs.existsSync(path.join(pathToLaunchAnsys, 'file000.png'))) {
+                setTimeout(() => {process.kill()}, 1000)
+                document.getElementById('preloader').style.display = 'none'
+                document.getElementById('visualizeButton').style.display = 'block'
+                window.clearInterval(searchForFinish)
+                setTimeout(() => {killAllANSYSInstance()}, 1000)
+
+            }
+        }, 50)
+
+        function killAllANSYSInstance () {
+            saveMeshImage()
+            const process2 = spawn('python', [app.getAppPath() + '/engine/ANSYS_kill.py'])
+            process2.stdout.on('close', () => {
+                setTimeout(clearRunLocation, 3000)
+                
+            })
+
+            function clearRunLocation () {
+                fs.readdir(pathToLaunchAnsys, (err, files) => {
+                    if (err) throw err
+                    
+                    for (const file of files) {
+                      fs.unlink(path.join(pathToLaunchAnsys, file), err => {
+                        if (err) throw err
+                      })
+                    }
+                })
+                openMeshViewer()
+            }
+
+            async function saveMeshImage() {
+                if (fs.existsSync(path.join(pathToLaunchAnsys, 'file000.png'))) {
+                    
+                    fs.copyFileSync(path.join(pathToLaunchAnsys, 'file000.png'), pathToMeshImage)
+
+                } else {
+                    ipcRenderer.send('create-dialog', {title: window.i18n.__('Could not generate the image.'), description: ''})
+                }
+            }
+
+            function openMeshViewer () {
+                ipcRenderer.send('create-window', {
+                    width: 600,
+                    height: 500,
+                    path: 'views/html/meshViewer.html',
+                    maximizable: true
+                })
+            }
+        }
+    }
 }
 
 function setModelData() {
@@ -516,3 +607,7 @@ function setModelData() {
         }
     }
 }
+
+// async function abort () {
+     
+// }

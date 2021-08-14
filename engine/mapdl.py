@@ -17,8 +17,7 @@ class Mapdl:
 
     def initialize(self):
         try:
-            self.mapdl = launch_mapdl(run_location=self.pathToLaunch)
-
+            self.mapdl = launch_mapdl(run_location=self.pathToLaunch)    
         except:
             print('ERROR-launch_mapdl')
             sys.exit()

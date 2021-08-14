@@ -138,7 +138,8 @@ function meshAndMaterialAssignment() {
     ipcRenderer.send('create-window', {
         width: 350,
         height: 420,
-        path: 'views/html/meshAndMaterial.html'
+        path: 'views/html/meshAndMaterial.html',
+        hasAnsysInstance: true
     })
 
     const meshShape = document.getElementsByName('discretize')

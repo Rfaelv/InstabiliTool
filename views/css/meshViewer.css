@@ -1,0 +1,17 @@
+html[data-theme='main'] {
+    font-family: 'Segoe UI';
+    font-size: small;
+    font-weight: 400;
+    --bg: #ffffff;
+    --primary: #edf0f371;
+    --secundary: #1E7F9D;
+    --secundary2: hsl(194, 62%, 40%);
+    --terciary: #dadada;
+    --terciary2: #dfddde;
+    --text1: #ffffff;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}

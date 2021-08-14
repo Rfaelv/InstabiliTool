@@ -1,15 +1,15 @@
 from mapdl import Mapdl
 from model import Model
 import sys
-import os
 
 
-# pathToModel = sys.argv[1]
-pathToRun = 'D:\\Documentos\\Python\\PROJETOS\\GUI com Electron\\analise-de-flambagem-no-ansys\\data'
-pathToModel = 'C:\\Users\Rfael\\AppData\Roaming\\InstabiliTool\\data\\model.json'
-sys.stdout.write('terter')
+pathToModel = sys.argv[1]
+pathToLaunch = sys.argv[2]
+# pathToLaunch = 'D:\\Documentos\\Python\\PROJETOS\\GUI com Electron\\analise-de-flambagem-no-ansys\\data'
+# pathToModel = 'C:\\Users\Rfael\\AppData\Roaming\\InstabiliTool\\data\\model.json'
+
 try:
-    mapdl = Mapdl(pathToRun)
+    mapdl = Mapdl(pathToLaunch)
     model = Model(pathToModel)
     mapdl.initialize()
     mapdlinstance = mapdl.getInstance()
@@ -22,14 +22,10 @@ try:
     mapdlinstance.run("/RGB,INDEX,80,80,80,13")
     mapdlinstance.run("/RGB,INDEX,60,60,60,14")
     mapdlinstance.run("/RGB,INDEX,0,0,0,15")
-    print('finished')
     mapdlinstance.eplot(vtk=False)
-    # mapdlinstance.open_gui()
     mapdlinstance.exit()
-    # os.system("taskkill /im Mechanical APDL Program.exe")
-    # mapdl.open_gui()
+ 
     sys.exit()
+
 except Exception as e:
     print(e)
-
-

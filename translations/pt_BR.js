@@ -144,6 +144,8 @@
     "This factor will be applied to the minor tickness of the profile and the result will be applied to the buckling deformation resulting in linear analysis.": "Esse fator será aplicado à menor espessura existente no perfil e o resultado será multiplicado pela deformação resultante da análise linear de flambagem.",
     "Results": "Resultados",
     "Failed to generate image. The problem is probably due to the version of openGL installed on your computer. try to update it.": "Não foi possível gerar a imagem. Provavelmente, o problema ocorreu devido à versão do openGL do seu computador. Tente atualizá-lo.",
+    "Mesh viwer": "Visualização da malha",
+    "Could not generate the image.": "Não foi possível gerar a imagem.",
     "Undo": "Undo",
     "Redo": "Redo",
     "Cut": "Cut",

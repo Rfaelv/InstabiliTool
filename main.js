@@ -50,7 +50,7 @@ ipcMain.on('create-window', (event, arg) => {
     width: arg.width,
     height: arg.height,
     parent: win,
-    maximizable: false,
+    maximizable: arg.maximizable? true: false,
     minimizable: false,
     show: false,
     webPreferences: {
@@ -60,9 +60,12 @@ ipcMain.on('create-window', (event, arg) => {
   })
   newWin.loadFile(arg.path)
   newWin.on('ready-to-show', () => {setTimeout(() =>{newWin.show()}, 200) })
+  newWin.on('close', () => {if (arg.hasAnsysInstance) {abortAnsysInstance()}})
   newWin.setMenu(null)
   // newWin.webContents.openDevTools()
 })
+
+ipcMain.on('o', () => {console.log('foi')})
 
 ipcMain.on('delete-current-window', () => {
   BrowserWindow.getFocusedWindow().close()
@@ -155,4 +158,30 @@ function setInputModelIfExist() {
       dialog.showErrorBox(i18n.__('Error'), err.message)
     }
   }
+}
+
+function abortAnsysInstance () {
+  const path = require('path')
+  const spawn = require('child_process').spawn
+  const userDataPath = app.getPath('userData')
+  const pathToLaunchAnsys = path.join(userDataPath, 'data/ansys')
+  const fs = require('fs')
+
+  const process = spawn('python', [app.getAppPath() + '/engine/ANSYS_kill.py'])
+  process.stdout.on('close', () => {
+      clearRunLocation()
+      
+  })
+
+  function clearRunLocation () {
+      fs.readdir(pathToLaunchAnsys, (err, files) => {
+          if (err) throw err
+          
+          for (const file of files) {
+            fs.unlink(path.join(pathToLaunchAnsys, file), err => {
+              if (err) throw err
+            })
+          }
+      })
+  } 
 }
