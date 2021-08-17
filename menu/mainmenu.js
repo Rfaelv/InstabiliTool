@@ -9,6 +9,7 @@ const { clearModel } = require('../modules/clearModel')
 
 localState.createIfNotExist()
 localState.clear()
+localState.set('model', JSON.stringify(readData('model.json')))
 
 const template = [
     {
@@ -121,6 +122,7 @@ const menu = Menu.buildFromTemplate(template)
 Menu.setApplicationMenu(menu)
 
 function newFile() {
+  const mainWin = BrowserWindow.getFocusedWindow()
   const model = JSON.stringify(readData('model.json'))
   const modelState = localState.get('model') 
 
@@ -141,6 +143,7 @@ function newFile() {
       }
       localState.clear()
       clearModel()
+      localState.set('model', JSON.stringify(readData('model.json')))
       mainWin.title = 'InstabiliTool'
       mainWin.reload()
 
@@ -148,6 +151,7 @@ function newFile() {
   } else {
     localState.clear()
     clearModel()
+    localState.set('model', JSON.stringify(readData('model.json')))
     mainWin.title = 'InstabiliTool'
     mainWin.reload()
 
@@ -163,9 +167,11 @@ function openFile() {
         { name: i18n.__('InstabiliTool file'), extensions: ['instt'] },
       ]
   }).then(result => {
+    if (result.canceled) {return}
+
     const filePath = localState.get('file-path')
     
-    if (filePath == result.filePaths[0]) {
+    if (filePath == result.filePaths[0] && result.filePaths[0]) {
       dialog.showMessageBox(mainWin, {
         message: i18n.__('The selected file is already open.'),
         type: 'info',
@@ -186,13 +192,16 @@ function openFile() {
         defaultId: 0,
         title: 'InstabiliTool'
       }).then((index) => {
+        var response
         if (index.response == 0) {
-          saveFile()
+          response = saveFile()
 
         } else if (index.response == 2) {
-          return
+          return 
 
         }
+        if (response.canceled) {return}
+
         localState.set('file-path', result.filePaths[0])
         const newmodelState = JSON.parse(fs.readFileSync(result.filePaths[0], 'utf8'))
         writeData(newmodelState, 'model.json')
@@ -230,40 +239,45 @@ function saveFile() {
     }
   
   } else {
-    saveFileAs()
+    return saveFileAs()
 
   }
 }
 
 function saveFileAs() {
   const mainWin = BrowserWindow.getFocusedWindow()
-  dialog.showSaveDialog(mainWin, {
+  const result = dialog.showSaveDialogSync(mainWin, {
     title: i18n.__('Save File'),
     properties: ['openDirectory'],
     defaultPath: i18n.__('instability-analysi'),
     filters: [
         { name: i18n.__('InstabiliTool file'), extensions: ['instt'] },
     ]
-  }).then(result => { 
-    try {
-      var model = readData('model.json')
-    } catch (err) {
-      dialog.showErrorBox(i18n.__('Error'), err.message)
-      return
-    }
-
-    try {
-      fs.writeFileSync(result.filePath, JSON.stringify(model))
-      mainWin.title = `InstabiliTool - ${result.filePath.split('\\').pop().split('.')[0]}`
-      localState.set('file-path', result.filePath)
-      localState.set('model', JSON.stringify(model))
-      
-    } catch (err) {
-      if (err.message != 'ENOENT: no such file or directory, open') {
-        dialog.showErrorBox(i18n.__('Error'), err.message)
-      }
-    }
   })
+  response = {}
+  response.canceled = true
+
+  if (result == undefined) {return response}
+
+  try {
+    var model = readData('model.json')
+  } catch (err) {
+    dialog.showErrorBox(i18n.__('Error'), err.message)
+    return
+  }
+
+  try {
+    fs.writeFileSync(result, JSON.stringify(model))
+    mainWin.title = `InstabiliTool - ${result.split('\\').pop().split('.')[0]}`
+    localState.set('file-path', result)
+    localState.set('model', JSON.stringify(model))
+    
+  } catch (err) {
+    if (err.message != 'ENOENT: no such file or directory, open') {
+      dialog.showErrorBox(i18n.__('Error'), err.message)
+    }
+  }
+  // })
 }
 
 function createWindow(width, height, filePath) {

@@ -18,16 +18,17 @@ function createWindow () {
     }
   })
 
-  require('./menu/mainmenu')
   createModel()
   createSettings()
   setInputModelIfExist()
+  require('./menu/mainmenu')
   // win.webContents.openDevTools()
   nativeTheme.themeSource = 'light'
   win.loadFile('views/html/home.html')
   win.on('ready-to-show', () => {
     setTimeout(() => {win.show()}, 200) 
   })
+  createDirectory()
   // win.show()
 }
 
@@ -123,13 +124,35 @@ function createSettings() {
       curvedShellFormulation: 0
     }
   }
-
   const fs = require('fs')
   const path = require('path')
   const dir = path.join(app.getPath('userData'), 'data/settings.json')
   
   if  (!fs.existsSync(dir)){
     fs.writeFileSync(dir, JSON.stringify(settings))
+  }
+}
+
+function createDirectory() {
+  const fs = require('fs')
+  const path = require('path')
+  const ansysdir = path.join(app.getPath('userData'), 'data/ansys')
+  const imagesdir = path.join(app.getPath('userData'), 'data/images')
+
+  if  (!fs.existsSync(ansysdir)){
+    fs.mkdir(ansysdir, (err) => {
+      if (err) {
+        dialog.showErrorBox('Erro', err)
+      }
+    })
+  }
+
+  if  (!fs.existsSync(imagesdir)){
+    fs.mkdir(imagesdir, (err) => {
+      if (err) {
+        dialog.showErrorBox('Erro', err)
+      }
+    })
   }
 }
 
