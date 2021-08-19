@@ -28,13 +28,13 @@ function setGeometry() {
     }
 
     var model = readData('model.json')
-    var inputStatus = JSON.parse(localStorage.getItem('input-status'))
     
     for (key in model.sectionType) {
         if (key == 'tubular') {
             if (!model.sectionType[key]) {
-                model.boundaryConditions = {}
-                inputStatus.bd = false
+                if (model.boundaryConditions.personalized) {
+                    model.boundaryConditions = {}
+                }
             }
             model.sectionType[key] = true
         } else {
@@ -49,9 +49,6 @@ function setGeometry() {
     }
     writeData(model, 'model.json')
     
-    inputStatus.section = true
-    inputStatus.matAssign = false
-    localStorage.setItem('input-status', JSON.stringify(inputStatus))
     ipcRenderer.send('delete-current-window')
 }
 

@@ -3,10 +3,6 @@ const {readData, writeData} = require('../../modules/writeAndReadData')
 const fs = require('fs')
 const path = require('path')
 
-if (!localStorage.getItem('input-status')) {
-    localStorage.setItem('input-status', JSON.stringify({section:false, mesh:false, matAssign:false, bd:false, load:false}))
-}
-
 const buttonMateiralProps = document.getElementById('definirProps')
 buttonMateiralProps.addEventListener('click', materialProps)
 
@@ -85,7 +81,6 @@ function materialProps() {
     })
 }
 
-
 function geometry(type) {
     if (type == 'vigaI') {
         ipcRenderer.send('create-window', {
@@ -133,7 +128,6 @@ function geometry(type) {
     
 }
 
-
 function meshAndMaterialAssignment() {
     ipcRenderer.send('create-window', {
         width: 350,
@@ -150,7 +144,6 @@ function meshAndMaterialAssignment() {
     fs.writeFileSync(path.join(userDataPath, 'data/analysiData.json'), JSON.stringify(analysiData))
 }
 
-
 function boundaryConditions() {
     const model = readData('model.json')
 
@@ -166,7 +159,6 @@ function boundaryConditions() {
     }
     ipcRenderer.send('create-dialog', {title: 'Não há dados de seção', description: 'Defina a seção antes de continuar.'})  
 }
-
 
 function load() {
     const loadType = document.getElementsByName('load')
@@ -187,7 +179,6 @@ function load() {
         path: path
     })
 }
-
 
 function setAnalysiType() {
     var model = readData('model.json')
@@ -235,13 +226,17 @@ function setSimpleBoundaryConditions() {
 }
 
 function startAnalysi() {
-    const inputStatus = JSON.parse(localStorage.getItem('input-status'))
-    for (let key in inputStatus) {
-        if (!inputStatus[key] | (readData('model.json').materials.length == 0)) {
-            ipcRenderer.send('create-dialog', {title: 'Imcomplete input', description: 'Make sure you have entered all the necessary data.'})  
-            return
-        }
+    const dataLost = verifyModelData()
+    const dataLostText = dataLost.join(", ")
+
+    if (dataLost.length > 0) {
+        dataLost.join(',  ')
+        ipcRenderer.send('create-dialog', {title: window.i18n.__('Incomplete input'), description: `${window.i18n.__('You need to set')}: ${dataLostText}`})  
+        return
+
     }
+
+    return
     const {BrowserWindow} = require('electron').remote
     const electron = require('electron').remote
    
@@ -294,6 +289,34 @@ function startAnalysi() {
         writeData(model, 'model.json')
         win.loadFile(electron.app.getAppPath() + '/views/html/results.html')
     })
+
+    function verifyModelData () {
+        const model =  readData('model.json') 
+        
+        var inputNotFound = []
+        if (model.materials.length == 0) {
+            inputNotFound.push(window.i18n.__('material properties'))
+        }
+
+        let sectionIsDefined = false
+        for (let key in model.sectionType) {
+            if (model.sectionType[key]) {sectionIsDefined = true}
+        }
+
+        if (!sectionIsDefined) {inputNotFound.push(window.i18n.__('section geometry'))}
+
+        if (model.sectionProperties.materialAssignment == undefined) {inputNotFound.push(window.i18n.__('material assignment'))}
+
+        if (model.meshProperties.elementSize == undefined || model.meshProperties.method == undefined) {
+            inputNotFound.push(window.i18n.__('mesh properties'))
+        }
+
+        if (model.boundaryConditions.personalized == undefined) {inputNotFound.push(window.i18n.__('boundary conditions'))}
+ 
+        if (Object.keys(model.loadProperties).length == 0) {inputNotFound.push(window.i18n.__('load properties'))}
+
+        return inputNotFound
+    }
 
 }
 
