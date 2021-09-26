@@ -63,7 +63,7 @@ ipcMain.on('create-window', (event, arg) => {
   newWin.on('ready-to-show', () => {setTimeout(() =>{newWin.show()}, 200) })
   newWin.on('close', () => {if (arg.hasAnsysInstance) {abortAnsysInstance()}})
   newWin.setMenu(null)
-  // newWin.webContents.openDevTools()
+  newWin.webContents.openDevTools()
 })
 
 ipcMain.on('o', () => {console.log('foi')})

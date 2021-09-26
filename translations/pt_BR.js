@@ -154,6 +154,7 @@
     "mesh properties": "propriedades da malha",
     "boundary conditions": "condições de contorno",
     "load properties": "propriedades do carregamento",
+    "Processing...": "Processando...",
     "Undo": "Undo",
     "Redo": "Redo",
     "Cut": "Cut",

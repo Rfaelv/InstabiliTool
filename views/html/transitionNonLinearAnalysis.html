@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme='main'>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title class="text"></title>
+    <link rel="stylesheet" href="../css/transitionNonLinearAnalysis.css">
+</head>
+<body>
+    <div id="progress">
+        <div id="bar">
+            <label id="progress-number" style="display: none;">2%</label>
+        </div>
+    </div>
+    <script>
+        window.i18n = new(require('../../translations/i18n'))
+        document.getElementsByClassName('text')[0].appendChild(document.createTextNode(i18n.__("Processing...")))
+    </script>
+    <script src="../js/transitionNonLinearAnalysis.js"></script>
+</body>
+</html>

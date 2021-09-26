@@ -226,17 +226,19 @@ function setSimpleBoundaryConditions() {
 }
 
 function startAnalysi() {
+    var transitionWindowPath
+    var model = readData('model.json')
     const dataLost = verifyModelData()
     const dataLostText = dataLost.join(", ")
 
     if (dataLost.length > 0) {
         dataLost.join(',  ')
         ipcRenderer.send('create-dialog', {title: window.i18n.__('Incomplete input'), description: `${window.i18n.__('You need to set')}: ${dataLostText}`})  
-        return
+        // return
 
     }
 
-    return
+    
     const {BrowserWindow} = require('electron').remote
     const electron = require('electron').remote
    
@@ -254,10 +256,13 @@ function startAnalysi() {
     })
 
     win.on('close', () => { win = null })
-    win.loadFile(electron.app.getAppPath() + '/views/html/transition.html')
+    if (model.analysiType.linear) {transitionWindowPath = '/views/html/transitionLinearAnalysis.html'}
+    if (model.analysiType.nonlinear) {transitionWindowPath = '/views/html/transitionNonLinearAnalysis.html'}
+    win.loadFile(electron.app.getAppPath() + transitionWindowPath)
     win.webContents.openDevTools()
     win.show()
 
+    return
     let app = electron.app ? electron.app : electron.remote.app
     const spawn = require('child_process').spawn
     const userDataPath = ipcRenderer.sendSync('get-user-data')

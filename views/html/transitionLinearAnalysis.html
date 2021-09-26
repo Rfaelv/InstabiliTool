@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Processing...</title>
+    <title class="text"></title>
     <link rel = "stylesheet"
-    href = "../css/transition.css">
+    href = "../css/transitionLinearAnalysis.css">
 </head>
 <body style="display:flex; padding-top: 30%; justify-content:center; align-items:center; height: 100%">
     <div class="preloader-wrapper big active">
@@ -19,5 +19,9 @@
           </div>
         </div>
       </div>
+      <script>
+        window.i18n = new(require('../../translations/i18n'))
+        document.getElementsByClassName('text')[0].appendChild(document.createTextNode(i18n.__("Processing...")))
+      </script>
 </body>
 </html>
