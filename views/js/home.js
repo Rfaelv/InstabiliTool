@@ -169,7 +169,7 @@ function load() {
         var path = 'views/html/bendingMoment.html'
     } else {
         var width =380
-        var height = 350
+        var height = 370
         var path = 'views/html/axialForce.html'
     }
 

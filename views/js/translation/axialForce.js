@@ -1,5 +1,6 @@
 const texts = [
     "Axial load",
+    "View axes",
     "Type",
     "Point load",
     "Distributed load",

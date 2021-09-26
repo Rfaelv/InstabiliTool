@@ -3,6 +3,8 @@ const {writeData, readData} = require('../../modules/writeAndReadData')
 
 document.querySelector('#x').focus()
 
+createDOM()
+
 const applybutton = document.getElementById('apply')
 applybutton.addEventListener('click', setLoadCondition)
 
@@ -71,5 +73,33 @@ function setModelData() {
     } else if (model.loadProperties.type == 'distributed') {
         document.getElementsByName('axial-force')[1].checked = true
         changeInput()
+    }
+}
+
+function createDOM() {
+    const model = readData('model.json')
+    const img2 = document.getElementById('img2')
+
+    if (model.sectionType.I) {
+        img2.src = '../../assets/icons/vigaI-axes.png'
+
+    } else if (model.sectionType.tubular) {
+        img2.src = '../../assets/icons/vigaTubular-axes.png'
+
+    } else if (model.sectionType.C) {
+        img2.src = '../../assets/icons/vigaC-axes.png'
+
+    } else if (model.sectionType.C2) {
+
+        img2.src = '../../assets/icons/vigaC2-axes.png'
+
+    } else if (model.sectionType.rack) {
+        img2.src = '../../assets/icons/vigaRack-axes.png'
+
+    } else if (model.sectionType.angle) {
+        img2.src = '../../assets/icons/cantoneira-axes.png'
+
+    } else if (model.sectionType.plate) {
+        img2.src = '../../assets/icons/plate-axes.png'
     }
 }
