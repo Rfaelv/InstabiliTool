@@ -28,18 +28,18 @@ try:
     mapdl = Mapdl(path.runLocale)
     model = Model(path.model)
     mapdl.initialize()
+    mapdl.createFiniteElement() # Ao que tudo indica, não é necessário criar um elemento para cada material
     mapdl.createMaterial(model.materialList())
-    mapdl.createFiniteElement() # Verificar se será neecessário criar um elemento para cada material
     mapdl.createProfile(model.section())
-    mapdl.createMesh(model.mesh())
     mapdl.setMaterial()
+    mapdl.createMesh(model.mesh())
     mapdl.setBoundaryConditions(model.boundaryConditions())
     mapdl.setLoad(model.load())
 
-    mapdl.open_gui()
-
-    mapdl.exit()
     mapdl.runStaticAnalysi()
+
+    mapdl.open_gui()
+    mapdl.exit()
 
     # mapdl.open_gui()
 

@@ -1,5 +1,6 @@
 class FiniteElement():
     def createShell181(self, mapdl):
+        mapdl.run("/PREP7")
         mapdl.et(1, "SHELL181")
         mapdl.keyopt(1, 1, 0)
         mapdl.keyopt(1, 3, 2)

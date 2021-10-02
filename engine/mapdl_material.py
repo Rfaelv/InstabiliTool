@@ -1,7 +1,6 @@
 class Material:
     def __init__(self, mapdl):
         self.mapdl = mapdl
-        self.mapdl.run("/PREP7")
 
     def createMaterial(self, materialID, materialType, materialProperties):
         self.id = materialID
