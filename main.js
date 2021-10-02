@@ -119,6 +119,8 @@ function createSettings() {
       initialDeformationFactor: 0.1
     },
     general: {
+      execFilePath: null,
+      connections: {rigid: true, stiffness: null},
       elementStiffness: 0,
       integrationOption: 2,
       curvedShellFormulation: 0

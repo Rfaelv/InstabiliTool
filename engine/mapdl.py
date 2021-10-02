@@ -8,12 +8,17 @@ from mapdl_geometry_C2 import C2Profile
 from mapdl_geometry_rack import RackProfile
 from mapdl_geometry_angle import AngleProfile
 from mapdl_geometry_plate import PlateProfile
+import json
 import sys
 
 
 class Mapdl:
     def __init__(self, path):
-        self.pathToLaunch = path
+        self.path = path
+        self.pathToLaunch = self.path.runLocale
+
+        with open(self.path.settings, 'r') as jfile:
+	        self.settings = json.load(jfile)
 
     def initialize(self):
         try:  
@@ -30,8 +35,11 @@ class Mapdl:
         return self.mapdl
 
     def createFiniteElement(self):
-        self.finiteElement = FiniteElement()
-        self.finiteElement.createShell181(self.mapdl)
+        self.finiteElement = FiniteElement(self.mapdl)
+        self.finiteElement.createShell181()
+
+        if not self.settings["general"]["connections"]["rigid"]:
+            self.finiteElement.createCombin39(self.settings["general"]["connections"]["stiffness"])
 
     def createMaterial(self, materialList):
         self.materialList = materialList

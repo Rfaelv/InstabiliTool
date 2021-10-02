@@ -25,7 +25,7 @@ try:
     # path = Path(sys.argv[1])
     path = Path('C:/Users/Rfael/AppData/Roaming/InstabiliTool')
 
-    mapdl = Mapdl(path.runLocale)
+    mapdl = Mapdl(path)
     model = Model(path.model)
     mapdl.initialize()
     mapdl.createFiniteElement() # Ao que tudo indica, não é necessário criar um elemento para cada material
