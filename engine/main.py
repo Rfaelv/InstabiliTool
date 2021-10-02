@@ -1,6 +1,7 @@
 from types import MappingProxyType
 from mapdl import Mapdl
 from model import Model
+from path import Path
 import sys
 import json
 # import pyvista
@@ -14,14 +15,18 @@ import json
 # mat1.setMaterialProperties(1, material["materialType"], material["materialProperties"])
 
 # mapdl.open_gui()
-path = 'C:\\Users\Rfael\\AppData\Roaming\\InstabiliTool\\data'
-pathToModel = 'C:\\Users\Rfael\\AppData\Roaming\\InstabiliTool\\data\\model.json'
-pathToRun = 'D:\\Documentos\\Python\\PROJETOS\\GUI com Electron\\analise-de-flambagem-no-ansys\\data'
+# path = 'C:\\Users\Rfael\\AppData\Roaming\\InstabiliTool\\data'
+# pathToModel = 'C:\\Users\Rfael\\AppData\Roaming\\InstabiliTool\\data\\model.json'
+# pathToRun = 'D:\\Documentos\\Python\\PROJETOS\\GUI com Electron\\analise-de-flambagem-no-ansys\\data'
 # pathToModel = sys.argv[1]
 # BACKBONE
+
 try:
-    mapdl = Mapdl(pathToRun)
-    model = Model(pathToModel)
+    # path = Path(sys.argv[1])
+    path = Path('C:/Users/Rfael/AppData/Roaming/InstabiliTool')
+
+    mapdl = Mapdl(path.runLocale)
+    model = Model(path.model)
     mapdl.initialize()
     mapdl.createMaterial(model.materialList())
     mapdl.createFiniteElement() # Verificar se será neecessário criar um elemento para cada material
@@ -31,14 +36,15 @@ try:
     mapdl.setBoundaryConditions(model.boundaryConditions())
     mapdl.setLoad(model.load())
 
-    # mapdl.open_gui()
+    mapdl.open_gui()
 
+    mapdl.exit()
     mapdl.runStaticAnalysi()
 
     # mapdl.open_gui()
 
     mapdl.runLinearBucklingAnalysi()
-    result = mapdl.getLinearResult(path)
+    result = mapdl.getLinearResult(path.images)
 
     print(json.dumps(result))
 
