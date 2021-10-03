@@ -36,7 +36,7 @@ class Mapdl:
 
     def createFiniteElement(self):
         self.finiteElement = FiniteElement(self.mapdl)
-        self.finiteElement.createShell181()
+        self.finiteElement.createShell181(self.settings["general"])
 
         if not self.settings["general"]["connections"]["rigid"]:
             self.finiteElement.createCombin39(self.settings["general"]["connections"]["stiffness"])

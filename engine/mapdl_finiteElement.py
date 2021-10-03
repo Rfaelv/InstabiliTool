@@ -2,11 +2,12 @@ class FiniteElement():
     def __init__(self, mapdl):
         self.mapdl = mapdl
 
-    def createShell181(self):
+    def createShell181(self, elementSettings):
         self.mapdl.run("/PREP7")
         self.mapdl.et(1, "SHELL181")
-        self.mapdl.keyopt(1, 1, 0)
-        self.mapdl.keyopt(1, 3, 2)
+        self.mapdl.keyopt(1, 1, elementSettings["elementStiffness"])
+        self.mapdl.keyopt(1, 3, elementSettings["integrationOption"])
+        self.mapdl.keyopt(1, 5, elementSettings["curvedShellFormulation"])
         self.mapdl.keyopt(1, 8, 0)
         self.mapdl.keyopt(1, 9, 0) 
         self.mapdl.keyopt(1, 10, 0)
