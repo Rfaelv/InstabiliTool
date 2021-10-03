@@ -223,7 +223,7 @@ class Mapdl:
     def runLinearBucklingAnalysi(self):
         self.mapdl.run("/SOLU")
         self.mapdl.antype("BUCKLE")
-        self.mapdl.bucopt("LANB", 10)
+        self.mapdl.bucopt("LANB", 10,"","","RANGE")
         self.mapdl.solve()
         self.mapdl.finish()
         self.mapdl.run("/SOLU")
