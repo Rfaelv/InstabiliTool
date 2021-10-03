@@ -1,6 +1,7 @@
 class IProfile:
-    def __init__(self, mapdl, sectionProps):
+    def __init__(self, mapdl, sectionProps, settings):
         self.mapdl = mapdl
+        self.settings = settings
         self.d = sectionProps['d']
         self.bfs = sectionProps['bfs']
         self.bfi = sectionProps['bfi']
@@ -28,6 +29,7 @@ class IProfile:
         self.mapdl.secdata(0.1, 100)
 
     def createProfile(self, loadType, loadProps):
+        self.connectionsIsNotRigid = not self.settings["general"]["connections"]["rigid"]
         if loadType['bending']:
             if loadProps['points'] == 3:
                 self.mapdl.k(1, 0, 0, 0)
@@ -36,6 +38,9 @@ class IProfile:
                 self.mapdl.k(4, 0, self.bw, 0)
                 self.mapdl.k(5, self.bfs/2, self.bw, 0)
                 self.mapdl.k(6, - self.bfs/2, self.bw, 0)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(11, 0, 0, 0)
+                    self.mapdl.k(44, 0, self.bw, 0)
 
                 self.mapdl.k(101, 0, 0, self.L/2)
                 self.mapdl.k(102, self.bfi/2, 0, self.L/2)
@@ -43,6 +48,9 @@ class IProfile:
                 self.mapdl.k(104, 0, self.bw, self.L/2)
                 self.mapdl.k(105, self.bfs/2, self.bw, self.L/2)
                 self.mapdl.k(106, - self.bfs/2, self.bw, self.L/2)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(111, 0, 0, self.L/2)
+                    self.mapdl.k(144, 0, self.bw, self.L/2)
 
                 self.mapdl.k(201, 0, 0, self.L)
                 self.mapdl.k(202, self.bfi/2, 0, self.L)
@@ -50,18 +58,28 @@ class IProfile:
                 self.mapdl.k(204, 0, self.bw, self.L)
                 self.mapdl.k(205, self.bfs/2, self.bw, self.L)
                 self.mapdl.k(206, - self.bfs/2, self.bw, self.L)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(211, 0, 0, self.L)
+                    self.mapdl.k(244, 0, self.bw, self.L)
 
                 self.mapdl.a(1, 2, 102, 101)
                 self.mapdl.a(1, 3, 103, 101)
                 self.mapdl.a(4, 5, 105, 104)
                 self.mapdl.a(4, 6, 106, 104)
-                self.mapdl.a(1, 4, 104, 101)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.a(11, 44, 144, 111)
+                else:
+                    self.mapdl.a(1, 4, 104, 101)
 
                 self.mapdl.a(101, 102, 202, 201)
                 self.mapdl.a(101, 103, 203, 201)
                 self.mapdl.a(104, 105, 205, 204)
                 self.mapdl.a(104, 106, 206, 204)
-                self.mapdl.a(101, 104, 204, 201)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.a(111, 144, 244, 211)
+                else:
+                    self.mapdl.a(101, 104, 204, 201)
+
             else:
                 self.Lshear = loadProps['Lshear']
 
@@ -71,6 +89,9 @@ class IProfile:
                 self.mapdl.k(4, 0, self.bw, 0)
                 self.mapdl.k(5, self.bfs/2, self.bw, 0)
                 self.mapdl.k(6, - self.bfs/2, self.bw, 0)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(11, 0, 0, 0)
+                    self.mapdl.k(44, 0, self.bw, 0)
 
                 self.mapdl.k(101, 0, 0, self.Lshear)
                 self.mapdl.k(102, self.bfi/2, 0, self.Lshear)
@@ -78,6 +99,9 @@ class IProfile:
                 self.mapdl.k(104, 0, self.bw, self.Lshear)
                 self.mapdl.k(105, self.bfs/2, self.bw, self.Lshear)
                 self.mapdl.k(106, - self.bfs/2, self.bw, self.Lshear)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(111, 0, 0, self.Lshear)
+                    self.mapdl.k(144, 0, self.bw, self.Lshear)
 
                 self.mapdl.k(201, 0, 0, self.L - self.Lshear)
                 self.mapdl.k(202, self.bfi/2, 0, self.L - self.Lshear)
@@ -85,6 +109,9 @@ class IProfile:
                 self.mapdl.k(204, 0, self.bw, self.L - self.Lshear)
                 self.mapdl.k(205, self.bfs/2, self.bw, self.L - self.Lshear)
                 self.mapdl.k(206, - self.bfs/2, self.bw, self.L - self.Lshear)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(211, 0, 0, self.L - self.Lshear)
+                    self.mapdl.k(244, 0, self.bw, self.L - self.Lshear)
 
                 self.mapdl.k(301, 0, 0, self.L)
                 self.mapdl.k(302, self.bfi/2, 0, self.L)
@@ -92,24 +119,38 @@ class IProfile:
                 self.mapdl.k(304, 0, self.bw, self.L)
                 self.mapdl.k(305, self.bfs/2, self.bw, self.L)
                 self.mapdl.k(306, - self.bfs/2, self.bw, self.L)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(311, 0, 0, self.L)
+                    self.mapdl.k(344, 0, self.bw, self.L)
 
                 self.mapdl.a(1, 2, 102, 101)
                 self.mapdl.a(1, 3, 103, 101)
                 self.mapdl.a(4, 5, 105, 104)
                 self.mapdl.a(4, 6, 106, 104)
-                self.mapdl.a(1, 4, 104, 101)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.a(11, 44, 144, 111)
+                else:
+                    self.mapdl.a(1, 4, 104, 101)
 
                 self.mapdl.a(101, 102, 202, 201)
                 self.mapdl.a(101, 103, 203, 201)
                 self.mapdl.a(104, 105, 205, 204)
                 self.mapdl.a(104, 106, 206, 204)
-                self.mapdl.a(101, 104, 204, 201)
+                # self.mapdl.a(101, 104, 204, 201)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.a(111, 144, 244, 211)
+                else:
+                    self.mapdl.a(101, 104, 204, 201)
 
                 self.mapdl.a(201, 202, 302, 301)
                 self.mapdl.a(201, 203, 303, 301)
                 self.mapdl.a(204, 205, 305, 304)
                 self.mapdl.a(204, 206, 306, 304)
-                self.mapdl.a(201, 204, 304, 301)
+                # self.mapdl.a(201, 204, 304, 301)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.a(211, 244, 344, 311)
+                else:
+                    self.mapdl.a(201, 204, 304, 301)
         else:
             self.mapdl.k(1, 0, 0, 0)
             self.mapdl.k(2, self.bfi/2, 0, 0)
@@ -118,6 +159,9 @@ class IProfile:
             self.mapdl.k(5, 0, self.bw, 0)
             self.mapdl.k(6, self.bfs/2, self.bw, 0)
             self.mapdl.k(7, - self.bfs/2, self.bw, 0)
+            if self.connectionsIsNotRigid:
+                self.mapdl.k(11, 0, 0, 0)
+                self.mapdl.k(55, 0, self.bw, 0)
 
             self.mapdl.k(101, 0, 0, self.L)
             self.mapdl.k(102, self.bfi/2, 0, self.L)
@@ -126,21 +170,27 @@ class IProfile:
             self.mapdl.k(105, 0, self.bw, self.L)
             self.mapdl.k(106, self.bfs/2, self.bw, self.L)
             self.mapdl.k(107, - self.bfs/2, self.bw, self.L)
+            if self.connectionsIsNotRigid:
+                self.mapdl.k(111, 0, 0, self.L)
+                self.mapdl.k(155, 0, self.bw, self.L)
 
             self.mapdl.a(1, 2, 102, 101)
             self.mapdl.a(1, 3, 103, 101)
             self.mapdl.a(5, 6, 106, 105)
             self.mapdl.a(5, 7, 107, 105)
-            self.mapdl.a(1, 4, 104, 101)
-            self.mapdl.a(4, 5, 105, 104)
+            if self.connectionsIsNotRigid:
+                self.mapdl.a(111, 144, 244, 211)
+                self.mapdl.a(144, 155, 255, 244)
+            else:
+                self.mapdl.a(1, 4, 104, 101)
+                self.mapdl.a(4, 5, 105, 104)
 
             # self.mapdl.a(104,105,106,102,101,104)
             # self.mapdl.a(104,105,107,103,101,104)
 
             # self.mapdl.a(4,5,7,3,1,4)
             # self.mapdl.a(4,5,7,3,1,4)
-
-        
+   
     def setMaterial(self):
         self.mapdl.asel("ALL")
         self.mapdl.asel("S", "LOC", "Y", self.bw)
@@ -240,6 +290,51 @@ class IProfile:
                 self.mapdl.nsel("S", "LOC", "Z", self.L)
                 self.mapdl.d("ALL", "UX", 0)
                 self.mapdl.d("ALL", "UY", 0)
+    
+    def setConnectionsIfAreNotRigid(self, elementSize):
+        if self.connectionsIsNotRigid:
+            self.mapdl.prep7()
+
+            self.mapdl.allsel("ALL")
+            cont = 1
+            for i in range(int(self.L/elementSize + 1)):
+                self.mapdl.nsel('S', 'LOC', 'Y', self.bw)
+                self.mapdl.nsel('R', 'LOC', 'X', 0)
+                self.mapdl.nsel('R', 'LOC', 'Z', i*elementSize)
+
+                self.mapdl.run(f'*GET,arg_max{i},NODE,0,NUM,MAX')
+                self.mapdl.run(f'*GET,arg_min{i},NODE,0,NUM,MIN')
+
+                self.mapdl.run(f'CP,{cont},UX,arg_min{i},arg_max{i}')
+                self.mapdl.run(f'CP,{cont + 1},UY,arg_min{i},arg_max{i}')
+                self.mapdl.run(f'CP,{cont + 2},UZ,arg_min{i},arg_max{i}')
+                self.mapdl.run(f'CP,{cont + 3},ROTX,arg_min{i},arg_max{i}')
+                self.mapdl.run(f'CP,{cont + 4},ROTY,arg_min{i},arg_max{i}')
+
+                self.mapdl.type(2)
+                self.mapdl.real(2)
+                self.mapdl.run(f'E,arg_min{i},arg_max{i}')
+
+                self.mapdl.nsel('S', 'LOC', 'Y', 0)
+                self.mapdl.nsel('R', 'LOC', 'X', 0)
+                self.mapdl.nsel('R', 'LOC', 'Z', i*elementSize)
+
+                self.mapdl.run(f'*GET,arg2_max{i},NODE,0,NUM,MAX')
+                self.mapdl.run(f'*GET,arg2_min{i},NODE,0,NUM,MIN')
+
+                self.mapdl.run(f'CP,{cont + 5},UX,arg2_min{i},arg2_max{i}')
+                self.mapdl.run(f'CP,{cont + 6},UY,arg2_min{i},arg2_max{i}')
+                self.mapdl.run(f'CP,{cont + 7},UZ,arg2_min{i},arg2_max{i}')
+                self.mapdl.run(f'CP,{cont + 8},ROTX,arg2_min{i},arg2_max{i}')
+                self.mapdl.run(f'CP,{cont + 9},ROTY,arg2_min{i},arg2_max{i}')
+
+                self.mapdl.type(2)
+                self.mapdl.real(2)
+                self.mapdl.run(f'E,arg2_min{i},arg2_max{i}')
+            
+                cont += 10
+        
+            self.mapdl.run("/SOLU")
 
     def setBendingLoad(self, bendingLoadProperties):
         if bendingLoadProperties["points"] == 4:

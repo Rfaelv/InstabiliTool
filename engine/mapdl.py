@@ -54,7 +54,7 @@ class Mapdl:
         self.sectionType = profileProps[0]
         self.sectionProperties = profileProps[1]
         if self.sectionType["I"]:
-            self.Iprofile = IProfile(self.mapdl, profileProps[1])
+            self.Iprofile = IProfile(self.mapdl, profileProps[1], self.settings)
             self.Iprofile.createSection()
             self.Iprofile.createProfile(profileProps[2], profileProps[3])
 
@@ -111,12 +111,13 @@ class Mapdl:
             self.PlateProfile.setMaterial()
 
     def createMesh(self, meshData):
-        self.mapdl.mshkey(meshData["method"])
-        self.mapdl.mshape(meshData["type"])
-        self.mapdl.aesize("ALL", meshData["elementSize"])
+        self.meshData = meshData
         self.mapdl.asel("ALL")
+        self.mapdl.mshkey(self.meshData["method"])
+        self.mapdl.mshape(self.meshData["type"])
+        self.mapdl.aesize("ALL", self.meshData["elementSize"])
         self.mapdl.amesh("ALL")
-        self.mapdl.seltol(meshData["elementSize"]/2)
+        self.mapdl.seltol(self.meshData["elementSize"]/2)
         # self.mapdl.finish()
 
     def setBoundaryConditions(self, boundaryConditions):
@@ -141,6 +142,28 @@ class Mapdl:
         
         elif self.sectionType["plate"]:
             self.PlateProfile.setBoundaryConditions(boundaryConditions)
+        
+    def setConnectionsIfAreNotRigid(self):
+        if self.sectionType["I"]:
+            self.Iprofile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
+
+        elif self.sectionType["tubular"]:
+            self.tubularProfile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
+
+        elif self.sectionType["C"]:
+            self.CProfile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
+
+        elif self.sectionType["C2"]:
+            self.C2Profile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
+
+        elif self.sectionType["rack"]:
+            self.RackProfile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
+
+        elif self.sectionType["angle"]:
+            self.AngleProfile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
+        
+        elif self.sectionType["plate"]:
+            self.PlateProfile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
 
     def setLoad(self, loadData):
         self.loadType = loadData[0]

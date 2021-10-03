@@ -34,16 +34,17 @@ try:
     mapdl.setMaterial()
     mapdl.createMesh(model.mesh())
     mapdl.setBoundaryConditions(model.boundaryConditions())
+    mapdl.setConnectionsIfAreNotRigid()
     mapdl.setLoad(model.load())
 
     mapdl.runStaticAnalysi()
-
+    mapdl.runLinearBucklingAnalysi()
     mapdl.open_gui()
+
     mapdl.exit()
 
     # mapdl.open_gui()
 
-    mapdl.runLinearBucklingAnalysi()
     result = mapdl.getLinearResult(path.images)
 
     print(json.dumps(result))
