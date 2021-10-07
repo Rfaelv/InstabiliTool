@@ -1,6 +1,7 @@
 class TubularProfile:
-    def __init__(self, mapdl, sectionProps):
+    def __init__(self, mapdl, sectionProps, settings):
         self.mapdl = mapdl
+        self.settings = settings
         self.d = sectionProps['d']
         self.b = sectionProps['b']
         self.t = sectionProps['t']
@@ -19,32 +20,56 @@ class TubularProfile:
         self.mapdl.secdata(self.t, self.materialAssignment[1])
 
     def createProfile(self, loadType, loadProps):
+        self.connectionsIsNotRigid = not self.settings["general"]["connections"]["rigid"]
         if loadType['bending']:
             if loadProps['points'] == 3:
                 self.mapdl.k(1, 0, 0, 0)
                 self.mapdl.k(2, self.bf, 0, 0)
                 self.mapdl.k(3, self.bf, self.bw, 0)
                 self.mapdl.k(4, 0, self.bw, 0)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(11, 0, 0, 0)
+                    self.mapdl.k(22, self.bf, 0, 0)
+                    self.mapdl.k(33, self.bf, self.bw, 0)
+                    self.mapdl.k(44, 0, self.bw, 0)
 
                 self.mapdl.k(101, 0, 0, self.L/2)
                 self.mapdl.k(102, self.bf, 0, self.L/2)
                 self.mapdl.k(103, self.bf, self.bw, self.L/2)
                 self.mapdl.k(104, 0, self.bw, self.L/2)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(111, 0, 0, 0)
+                    self.mapdl.k(122, self.bf, 0, 0)
+                    self.mapdl.k(133, self.bf, self.bw, 0)
+                    self.mapdl.k(144, 0, self.bw, 0)
 
                 self.mapdl.k(201, 0, 0, self.L)
                 self.mapdl.k(202, self.bf, self.bw, self.L)
                 self.mapdl.k(203, self.bf, 0, self.L)
                 self.mapdl.k(204, 0, self.bw, self.L)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(211, 0, 0, 0)
+                    self.mapdl.k(222, self.bf, 0, 0)
+                    self.mapdl.k(233, self.bf, self.bw, 0)
+                    self.mapdl.k(244, 0, self.bw, 0)
 
                 self.mapdl.a(1, 2, 102, 101)
-                self.mapdl.a(2, 3, 103, 102)
                 self.mapdl.a(3, 4, 104, 103)
-                self.mapdl.a(4, 1, 101, 104)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.a(22, 33, 133, 122)
+                    self.mapdl.a(44, 11, 111, 144)
+                else:
+                    self.mapdl.a(2, 3, 103, 102)
+                    self.mapdl.a(4, 1, 101, 104)
 
                 self.mapdl.a(101, 102, 202, 201)
-                self.mapdl.a(102, 103, 203, 202)
                 self.mapdl.a(103, 104, 204, 203)
-                self.mapdl.a(104, 101, 201, 204)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.a(122, 133, 233, 222)
+                    self.mapdl.a(144, 111, 211, 244)
+                else:
+                    self.mapdl.a(102, 103, 203, 202)
+                    self.mapdl.a(104, 101, 201, 204)
 
             else:
                 self.Lshear = loadProps['Lshear']
@@ -53,57 +78,103 @@ class TubularProfile:
                 self.mapdl.k(2, self.bf, 0, 0)
                 self.mapdl.k(3, self.bf, self.bw, 0)
                 self.mapdl.k(4, 0, self.bw, 0)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(11, 0, 0, 0)
+                    self.mapdl.k(22, self.bf, 0, 0)
+                    self.mapdl.k(33, self.bf, self.bw, 0)
+                    self.mapdl.k(44, 0, self.bw, 0)
 
                 self.mapdl.k(101, 0, 0, self.Lshear)
                 self.mapdl.k(102, self.bf, 0, self.Lshear)
                 self.mapdl.k(103, self.bf, self.bw, self.Lshear)
                 self.mapdl.k(104, 0, self.bw, self.Lshear)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(111, 0, 0, self.Lshear)
+                    self.mapdl.k(122, self.bf, 0, self.Lshear)
+                    self.mapdl.k(133, self.bf, self.bw, self.Lshear)
+                    self.mapdl.k(144, 0, self.bw, self.Lshear)
 
                 self.mapdl.k(201, 0, 0, self.L - self.Lshear)
                 self.mapdl.k(202, self.bf, 0, self.L - self.Lshear)
                 self.mapdl.k(203, self.bf, self.bw, self.L - self.Lshear)
                 self.mapdl.k(204, 0, self.bw, self.L - self.Lshear)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(211, 0, 0, self.L - self.Lshear)
+                    self.mapdl.k(222, self.bf, 0, self.L - self.Lshear)
+                    self.mapdl.k(233, self.bf, self.bw, self.L - self.Lshear)
+                    self.mapdl.k(244, 0, self.bw, self.L - self.Lshear)
 
                 self.mapdl.k(301, 0, 0, self.L)
                 self.mapdl.k(302, self.bf, 0, self.L)
                 self.mapdl.k(303, self.bf, self.bw, self.L)
                 self.mapdl.k(304, 0, self.bw, self.L)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(311, 0, 0, self.L)
+                    self.mapdl.k(322, self.bf, 0, self.L)
+                    self.mapdl.k(333, self.bf, self.bw, self.L)
+                    self.mapdl.k(344, 0, self.bw, self.L)
 
                 self.mapdl.a(1, 2, 102, 101)
-                self.mapdl.a(2, 3, 103, 102)
                 self.mapdl.a(3, 4, 104, 103)
-                self.mapdl.a(4, 1, 101, 104)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.a(22, 33, 133, 122)
+                    self.mapdl.a(44, 11, 111, 144)
+                else:
+                    self.mapdl.a(2, 3, 103, 102)
+                    self.mapdl.a(4, 1, 101, 104)
 
                 self.mapdl.a(101, 102, 202, 201)
-                self.mapdl.a(102, 103, 203, 202)
                 self.mapdl.a(103, 104, 204, 203)
-                self.mapdl.a(104, 101, 201, 204)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.a(122, 133, 233, 222)
+                    self.mapdl.a(144, 111, 211, 244)
+                else:
+                    self.mapdl.a(102, 103, 203, 202)
+                    self.mapdl.a(104, 101, 201, 204)
 
                 self.mapdl.a(201, 202, 302, 301)
-                self.mapdl.a(202, 203, 303, 302)
                 self.mapdl.a(203, 204, 304, 303)
-                self.mapdl.a(204, 201, 301, 304)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.a(222, 233, 333, 322)
+                    self.mapdl.a(244, 211, 311, 344)
+                else:
+                    self.mapdl.a(202, 203, 303, 302)
+                    self.mapdl.a(204, 201, 301, 304)
         else:
             self.mapdl.k(1, 0, 0, 0)
             self.mapdl.k(2, self.bf, 0, 0)
             self.mapdl.k(3, self.bf, self.bw, 0)
             self.mapdl.k(4, 0, self.bw, 0)
+            if self.connectionsIsNotRigid:
+                    self.mapdl.k(11, 0, 0, 0)
+                    self.mapdl.k(22, self.bf, 0, 0)
+                    self.mapdl.k(33, self.bf, self.bw, 0)
+                    self.mapdl.k(44, 0, self.bw, 0)
 
             self.mapdl.k(101, 0, 0, self.L)
             self.mapdl.k(102, self.bf, 0, self.L)
             self.mapdl.k(103, self.bf, self.bw, self.L)
             self.mapdl.k(104, 0, self.bw, self.L)
+            if self.connectionsIsNotRigid:
+                    self.mapdl.k(111, 0, 0, self.L)
+                    self.mapdl.k(122, self.bf, 0, self.L)
+                    self.mapdl.k(133, self.bf, self.bw, self.L)
+                    self.mapdl.k(144, 0, self.bw, self.L)
 
             self.mapdl.a(1, 2, 102, 101)
-            self.mapdl.a(2, 3, 103, 102)
             self.mapdl.a(3, 4, 104, 103)
-            self.mapdl.a(4, 1, 101, 104)
+            if self.connectionsIsNotRigid:
+                    self.mapdl.a(22, 33, 133, 122)
+                    self.mapdl.a(44, 11, 111, 144)
+            else:
+                    self.mapdl.a(2, 3, 103, 102)
+                    self.mapdl.a(4, 1, 101, 104)
 
     def setMaterial(self):
         self.mapdl.asel("ALL")
         self.mapdl.asel("S", "LOC", "Y", 0)
         self.mapdl.asel("A", "LOC", "Y", self.bw)
-        self.mapdl.aatt(self.materialAssignment[0], 1, 1, 0, 1) 
+        self.mapdl.aatt(self.materialAssignment[0], 1, 1, 0, 1)
 
         self.mapdl.asel("ALL")
         self.mapdl.asel("S", "LOC", "X", 0)
@@ -201,6 +272,88 @@ class TubularProfile:
                 self.mapdl.nsel("S", "LOC", "Z", self.L)
                 self.mapdl.d("ALL", "UX", 0)
                 self.mapdl.d("ALL", "UY", 0)
+    
+    def setConnectionsIfAreNotRigid(self, elementSize):
+        if self.connectionsIsNotRigid:
+            self.mapdl.prep7()
+
+            self.mapdl.allsel("ALL")
+            cont = 1
+            for i in range(int(self.L/elementSize + 1)):
+                self.mapdl.nsel('S', 'LOC', 'Y', 0)
+                self.mapdl.nsel('R', 'LOC', 'X', 0)
+                self.mapdl.nsel('R', 'LOC', 'Z', i*elementSize)
+
+                self.mapdl.run(f'*GET,arg_max{i},NODE,0,NUM,MAX')
+                self.mapdl.run(f'*GET,arg_min{i},NODE,0,NUM,MIN')
+
+                self.mapdl.run(f'CP,{cont},UX,arg_min{i},arg_max{i}')
+                self.mapdl.run(f'CP,{cont + 1},UY,arg_min{i},arg_max{i}')
+                self.mapdl.run(f'CP,{cont + 2},UZ,arg_min{i},arg_max{i}')
+                self.mapdl.run(f'CP,{cont + 3},ROTX,arg_min{i},arg_max{i}')
+                self.mapdl.run(f'CP,{cont + 4},ROTY,arg_min{i},arg_max{i}')
+
+                self.mapdl.type(2)
+                self.mapdl.real(2)
+                self.mapdl.run(f'E,arg_min{i},arg_max{i}')
+
+
+                self.mapdl.nsel('S', 'LOC', 'Y', 0)
+                self.mapdl.nsel('R', 'LOC', 'X', self.bf)
+                self.mapdl.nsel('R', 'LOC', 'Z', i*elementSize)
+
+                self.mapdl.run(f'*GET,arg2_max{i},NODE,0,NUM,MAX')
+                self.mapdl.run(f'*GET,arg2_min{i},NODE,0,NUM,MIN')
+
+                self.mapdl.run(f'CP,{cont + 5},UX,arg2_min{i},arg2_max{i}')
+                self.mapdl.run(f'CP,{cont + 6},UY,arg2_min{i},arg2_max{i}')
+                self.mapdl.run(f'CP,{cont + 7},UZ,arg2_min{i},arg2_max{i}')
+                self.mapdl.run(f'CP,{cont + 8},ROTX,arg2_min{i},arg2_max{i}')
+                self.mapdl.run(f'CP,{cont + 9},ROTY,arg2_min{i},arg2_max{i}')
+
+                self.mapdl.type(2)
+                self.mapdl.real(2)
+                self.mapdl.run(f'E,arg2_min{i},arg2_max{i}')
+
+
+                self.mapdl.nsel('S', 'LOC', 'Y', self.bw)
+                self.mapdl.nsel('R', 'LOC', 'X', self.bf)
+                self.mapdl.nsel('R', 'LOC', 'Z', i*elementSize)
+
+                self.mapdl.run(f'*GET,arg3_max{i},NODE,0,NUM,MAX')
+                self.mapdl.run(f'*GET,arg3_min{i},NODE,0,NUM,MIN')
+
+                self.mapdl.run(f'CP,{cont + 10},UX,arg3_min{i},arg3_max{i}')
+                self.mapdl.run(f'CP,{cont + 11},UY,arg3_min{i},arg3_max{i}')
+                self.mapdl.run(f'CP,{cont + 12},UZ,arg3_min{i},arg3_max{i}')
+                self.mapdl.run(f'CP,{cont + 13},ROTX,arg3_min{i},arg3_max{i}')
+                self.mapdl.run(f'CP,{cont + 14},ROTY,arg3_min{i},arg3_max{i}')
+
+                self.mapdl.type(2)
+                self.mapdl.real(2)
+                self.mapdl.run(f'E,arg3_min{i},arg3_max{i}')
+
+
+                self.mapdl.nsel('S', 'LOC', 'Y', self.bw)
+                self.mapdl.nsel('R', 'LOC', 'X', 0)
+                self.mapdl.nsel('R', 'LOC', 'Z', i*elementSize)
+
+                self.mapdl.run(f'*GET,arg4_max{i},NODE,0,NUM,MAX')
+                self.mapdl.run(f'*GET,arg4_min{i},NODE,0,NUM,MIN')
+
+                self.mapdl.run(f'CP,{cont + 15},UX,arg4_min{i},arg4_max{i}')
+                self.mapdl.run(f'CP,{cont + 16},UY,arg4_min{i},arg4_max{i}')
+                self.mapdl.run(f'CP,{cont + 17},UZ,arg4_min{i},arg4_max{i}')
+                self.mapdl.run(f'CP,{cont + 18},ROTX,arg4_min{i},arg4_max{i}')
+                self.mapdl.run(f'CP,{cont + 19},ROTY,arg4_min{i},arg4_max{i}')
+
+                self.mapdl.type(2)
+                self.mapdl.real(2)
+                self.mapdl.run(f'E,arg4_min{i},arg4_max{i}')
+            
+                cont += 20
+        
+            self.mapdl.run("/SOLU")
     
     def setBendingLoad(self, bendingLoadProperties):
         if bendingLoadProperties["points"] == 4:

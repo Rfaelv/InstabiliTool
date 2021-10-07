@@ -1,6 +1,7 @@
 class AngleProfile:
-    def __init__(self, mapdl, sectionProps):
+    def __init__(self, mapdl, sectionProps, settings):
         self.mapdl = mapdl
+        self.settings = settings
         self.d = sectionProps['d']
         self.b = sectionProps['b']
         self.t = sectionProps['t']
@@ -22,25 +23,38 @@ class AngleProfile:
         self.mapdl.secdata(self.t, self.materialAssignment[1])
         
     def createProfile(self, loadType, loadProps):
+        self.connectionsIsNotRigid = not self.settings["general"]["connections"]["rigid"]
         if loadType['bending']:
             if loadProps['points'] == 3:
                 self.mapdl.k(1, self.bf, 0, 0)
                 self.mapdl.k(2, 0, 0, 0)
                 self.mapdl.k(3, 0, self.bw, 0)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(22, 0, 0, 0)
 
                 self.mapdl.k(101, self.bf, 0, self.L/2)
                 self.mapdl.k(102, 0, 0, self.L/2)
                 self.mapdl.k(103, 0, self.bw, self.L/2)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(122, 0, 0, self.L/2)
 
                 self.mapdl.k(201, self.bf, 0, self.L)
                 self.mapdl.k(202, 0, 0, self.L)
                 self.mapdl.k(203, 0, self.bw, self.L)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(222, 0, 0, self.L)
 
                 self.mapdl.a(1, 2, 102, 101)
-                self.mapdl.a(2, 3, 103, 102)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.a(22, 3, 103, 122)
+                else:
+                    self.mapdl.a(2, 3, 103, 102)
 
                 self.mapdl.a(101, 102, 202, 201)
-                self.mapdl.a(102, 103, 203, 202)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.a(122, 103, 203, 222)
+                else:
+                    self.mapdl.a(102, 103, 203, 202)
 
             else:
                 self.Lshear = loadProps['Lshear']
@@ -48,39 +62,63 @@ class AngleProfile:
                 self.mapdl.k(1, self.bf, 0, 0)
                 self.mapdl.k(2, 0, 0, 0)
                 self.mapdl.k(3, 0, self.bw, 0)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(22, 0, 0, 0)
 
                 self.mapdl.k(101, self.bf, 0, self.Lshear)
                 self.mapdl.k(102, 0, 0, self.Lshear)
                 self.mapdl.k(103, 0, self.bw, self.Lshear)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(122, 0, 0, self.Lshear)
 
                 self.mapdl.k(201, self.bf, 0, self.L - self.Lshear)
                 self.mapdl.k(202, 0, 0, self.L - self.Lshear)
                 self.mapdl.k(203, 0, self.bw, self.L - self.Lshear)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(222, 0, 0, self.L - self.Lshear)
 
                 self.mapdl.k(301, self.bf, 0, self.L)
                 self.mapdl.k(302, 0, 0, self.L)
                 self.mapdl.k(303, 0, self.bw, self.L)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.k(322, 0, 0, self.L)
 
                 self.mapdl.a(1, 2, 102, 101)
-                self.mapdl.a(2, 3, 103, 102)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.a(22, 3, 103, 122)
+                else:
+                    self.mapdl.a(2, 3, 103, 102)
 
                 self.mapdl.a(101, 102, 202, 201)
-                self.mapdl.a(102, 103, 203, 202)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.a(122, 103, 203, 222)
+                else:
+                    self.mapdl.a(102, 103, 203, 202)
 
                 self.mapdl.a(201, 202, 302, 301)
-                self.mapdl.a(202, 203, 303, 302)
+                if self.connectionsIsNotRigid:
+                    self.mapdl.a(222, 203, 303, 322)
+                else:
+                    self.mapdl.a(202, 203, 303, 302)
 
         else:
             self.mapdl.k(1, self.bf, 0, 0)
             self.mapdl.k(2, 0, 0, 0)
             self.mapdl.k(3, 0, self.bw, 0)
+            if self.connectionsIsNotRigid:
+                self.mapdl.k(22, 0, 0, 0)
 
             self.mapdl.k(101, self.bf, 0, self.L)
             self.mapdl.k(102, 0, 0, self.L)
             self.mapdl.k(103, 0, self.bw, self.L)
+            if self.connectionsIsNotRigid:
+                self.mapdl.k(122, 0, 0, self.L)
 
             self.mapdl.a(1, 2, 102, 101)
-            self.mapdl.a(2, 3, 103, 102)
+            if self.connectionsIsNotRigid:
+                self.mapdl.a(22, 3, 103, 122)
+            else:
+                self.mapdl.a(2, 3, 103, 102)
 
     def setMaterial(self):
         self.mapdl.asel("ALL")
@@ -171,6 +209,34 @@ class AngleProfile:
                 self.mapdl.d("ALL", "UX", 0)
                 self.mapdl.d("ALL", "UY", 0)
     
+    def setConnectionsIfAreNotRigid(self, elementSize):
+        if self.connectionsIsNotRigid:
+            self.mapdl.prep7()
+
+            self.mapdl.allsel("ALL")
+            cont = 1
+            for i in range(int(self.L/elementSize + 1)):
+                self.mapdl.nsel('S', 'LOC', 'Y', 0)
+                self.mapdl.nsel('R', 'LOC', 'X', 0)
+                self.mapdl.nsel('R', 'LOC', 'Z', i*elementSize)
+
+                self.mapdl.run(f'*GET,arg_max{i},NODE,0,NUM,MAX')
+                self.mapdl.run(f'*GET,arg_min{i},NODE,0,NUM,MIN')
+
+                self.mapdl.run(f'CP,{cont},UX,arg_min{i},arg_max{i}')
+                self.mapdl.run(f'CP,{cont + 1},UY,arg_min{i},arg_max{i}')
+                self.mapdl.run(f'CP,{cont + 2},UZ,arg_min{i},arg_max{i}')
+                self.mapdl.run(f'CP,{cont + 3},ROTX,arg_min{i},arg_max{i}')
+                self.mapdl.run(f'CP,{cont + 4},ROTY,arg_min{i},arg_max{i}')
+
+                self.mapdl.type(2)
+                self.mapdl.real(2)
+                self.mapdl.run(f'E,arg_min{i},arg_max{i}')
+            
+                cont += 5
+        
+            self.mapdl.run("/SOLU")
+
     def setBendingLoad(self, bendingLoadProperties):
         if bendingLoadProperties["points"] == 4:
             self.mapdl.fk(103, "FY", -1)

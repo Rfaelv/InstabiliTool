@@ -59,27 +59,27 @@ class Mapdl:
             self.Iprofile.createProfile(profileProps[2], profileProps[3])
 
         elif self.sectionType["tubular"]:
-            self.tubularProfile = TubularProfile(self.mapdl, profileProps[1])
+            self.tubularProfile = TubularProfile(self.mapdl, profileProps[1], self.settings)
             self.tubularProfile.createSection()
             self.tubularProfile.createProfile(profileProps[2], profileProps[3])
 
         elif self.sectionType["C"]:
-            self.CProfile = CProfile(self.mapdl, profileProps[1])
+            self.CProfile = CProfile(self.mapdl, profileProps[1], self.settings)
             self.CProfile.createSection()
             self.CProfile.createProfile(profileProps[2], profileProps[3])
 
         elif self.sectionType["C2"]:
-            self.C2Profile = C2Profile(self.mapdl, profileProps[1])
+            self.C2Profile = C2Profile(self.mapdl, profileProps[1], self.settings)
             self.C2Profile.createSection()
             self.C2Profile.createProfile(profileProps[2], profileProps[3])
 
         elif self.sectionType["rack"]:
-            self.RackProfile = RackProfile(self.mapdl, profileProps[1])
+            self.RackProfile = RackProfile(self.mapdl, profileProps[1], self.settings)
             self.RackProfile.createSection()
             self.RackProfile.createProfile(profileProps[2], profileProps[3])
 
         elif self.sectionType["angle"]:
-            self.AngleProfile = AngleProfile(self.mapdl, profileProps[1])
+            self.AngleProfile = AngleProfile(self.mapdl, profileProps[1], self.settings)
             self.AngleProfile.createSection()
             self.AngleProfile.createProfile(profileProps[2], profileProps[3])
         
