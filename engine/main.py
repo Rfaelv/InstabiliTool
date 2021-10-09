@@ -37,9 +37,9 @@ try:
     mapdl.setConnectionsIfAreNotRigid()
     mapdl.setLoad(model.load())
 
+    mapdl.runStaticAnalysi()
     mapdl.open_gui()
     mapdl.exit()
-    mapdl.runStaticAnalysi()
     mapdl.runLinearBucklingAnalysi()
 
 

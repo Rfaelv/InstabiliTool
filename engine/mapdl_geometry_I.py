@@ -30,7 +30,7 @@ class IProfile:
 
     def createProfile(self, loadType, loadProps):
         self.connectionsIsNotRigid = not self.settings["general"]["connections"]["rigid"]
-        if loadType['bending']:
+        if loadType['bending'] and 'points' in loadProps:
             if loadProps['points'] == 3:
                 self.mapdl.k(1, 0, 0, 0)
                 self.mapdl.k(2, self.bfi/2, 0, 0)
@@ -179,8 +179,8 @@ class IProfile:
             self.mapdl.a(5, 6, 106, 105)
             self.mapdl.a(5, 7, 107, 105)
             if self.connectionsIsNotRigid:
-                self.mapdl.a(111, 144, 244, 211)
-                self.mapdl.a(144, 155, 255, 244)
+                self.mapdl.a(11, 4, 104, 111)
+                self.mapdl.a(4, 55, 155, 104)
             else:
                 self.mapdl.a(1, 4, 104, 101)
                 self.mapdl.a(4, 5, 105, 104)
@@ -337,12 +337,39 @@ class IProfile:
             self.mapdl.run("/SOLU")
 
     def setBendingLoad(self, bendingLoadProperties):
-        if bendingLoadProperties["points"] == 4:
-            self.mapdl.fk(104, "FY", -1)
-            self.mapdl.fk(204, "FY", -1)
+        if 'points' in bendingLoadProperties:
+            if bendingLoadProperties["points"] == 4:
+                self.mapdl.fk(104, "FY", -1)
+                self.mapdl.fk(204, "FY", -1)
 
-        elif bendingLoadProperties["points"] == 3:
-            self.mapdl.fk(104, "FY", -1)
+            elif bendingLoadProperties["points"] == 3:
+                self.mapdl.fk(104, "FY", -1)
+        
+        else:
+            direction = 'M' + bendingLoadProperties["direction"]
+            self.mapdl.run("/PREP7")
+            self.mapdl.a(104,105,106,102,101,104)
+            self.mapdl.a(104,105,107,103,101,104)
+
+            self.mapdl.a(4,5,6,2,1,4)
+            self.mapdl.a(4,5,7,3,1,4)
+
+            self.mapdl.asel("ALL")
+            self.mapdl.asel("S", "LOC", "Z", 0)
+            self.mapdl.asel("A", "LOC", "Z", self.L)
+            self.mapdl.aatt(100, 4, 1, 0, 4)
+
+            self.mapdl.mshkey(2)
+            self.mapdl.mshape(0)
+            self.mapdl.aesize("ALL", 0.05)
+            self.mapdl.asel("S", "LOC", "Z", 0)
+            self.mapdl.asel("A", "LOC", "Z", self.L)
+            self.mapdl.amesh("ALL")
+
+            self.mapdl.run("/SOLU")
+
+            self.mapdl.fk(104, direction, 1)
+            self.mapdl.fk(4, direction, - 1)
     
     def setNormalLoad(self, normalLoadProperties):
         if normalLoadProperties["type"] == "distributed":
@@ -363,6 +390,11 @@ class IProfile:
             self.mapdl.a(4,5,6,2,1,4)
             self.mapdl.a(4,5,7,3,1,4)
 
+            self.mapdl.asel("ALL")
+            self.mapdl.asel("S", "LOC", "Z", 0)
+            self.mapdl.asel("A", "LOC", "Z", self.L)
+            self.mapdl.aatt(100, 4, 1, 0, 4)
+
             self.mapdl.mshkey(2)
             self.mapdl.mshape(0)
             self.mapdl.aesize("ALL", 0.05)
@@ -370,16 +402,14 @@ class IProfile:
             self.mapdl.asel("A", "LOC", "Z", self.L)
             self.mapdl.amesh("ALL")
 
-            self.mapdl.aatt(100, 4, 1, 0, 4)
-
             self.mapdl.run("/SOLU")
 
             self.mapdl.fk(104, "FZ", -1)
-            self.mapdl.fk(104, "MX", ex)
-            self.mapdl.fk(104, "MY", ey)
+            self.mapdl.fk(104, "MX", ey)
+            self.mapdl.fk(104, "MY", ex)
             self.mapdl.fk(4, "FZ", 1)
-            self.mapdl.fk(4, "MX", - ex)
-            self.mapdl.fk(4, "MY", - ey)
+            self.mapdl.fk(4, "MX", - ey)
+            self.mapdl.fk(4, "MY", - ex)
         # self.mapdl.run("/PREP7")
         # self.mapdl.n(50000, 0, self.bw/2, self.L)
         # self.mapdl.run("/SOLU")

@@ -21,10 +21,14 @@ class AngleProfile:
         self.mapdl.sectype(2, "SHELL", "", "flange")
         self.mapdl.secoffset("MID")
         self.mapdl.secdata(self.t, self.materialAssignment[1])
+
+        self.mapdl.sectype(3, "SHELL", "", "plateLoad")
+        self.mapdl.secoffset("MID")
+        self.mapdl.secdata(0.1, 100)
         
     def createProfile(self, loadType, loadProps):
         self.connectionsIsNotRigid = not self.settings["general"]["connections"]["rigid"]
-        if loadType['bending']:
+        if loadType['bending'] and 'points' in loadProps:
             if loadProps['points'] == 3:
                 self.mapdl.k(1, self.bf, 0, 0)
                 self.mapdl.k(2, 0, 0, 0)
@@ -238,12 +242,44 @@ class AngleProfile:
             self.mapdl.run("/SOLU")
 
     def setBendingLoad(self, bendingLoadProperties):
-        if bendingLoadProperties["points"] == 4:
-            self.mapdl.fk(103, "FY", -1)
-            self.mapdl.fk(203, "FY", -1)
+        if 'points' in bendingLoadProperties:
+            if bendingLoadProperties["points"] == 4:
+                self.mapdl.fk(103, "FY", -1)
+                self.mapdl.fk(203, "FY", -1)
 
-        elif bendingLoadProperties["points"] == 3:
-            self.mapdl.fk(103, "FY", -1)
+            elif bendingLoadProperties["points"] == 3:
+                self.mapdl.fk(103, "FY", -1)
+        else:
+            direction = 'M' + bendingLoadProperties["direction"]
+            self.mapdl.run("/PREP7")
+            self.mapdl.k(4, self.xcg, self.ycg, 0)
+            self.mapdl.k(104, self.xcg, self.ycg, self.L)
+
+            self.mapdl.k(5, self.bf, self.bw, 0)
+            self.mapdl.k(105, self.bf, self.bw, self.L)
+
+            self.mapdl.a(104,105,101,102)
+            self.mapdl.a(104,102,103,105)
+
+            self.mapdl.a(4,5,1,2)
+            self.mapdl.a(4,2,3,5)
+
+            self.mapdl.asel("ALL")
+            self.mapdl.asel("S", "LOC", "Z", 0)
+            self.mapdl.asel("A", "LOC", "Z", self.L)
+            self.mapdl.aatt(100, 3, 1, 0, 3)
+
+            self.mapdl.mshkey(0)
+            self.mapdl.mshape(1)
+            self.mapdl.aesize("ALL", 0.05)
+            self.mapdl.asel("S", "LOC", "Z", 0)
+            self.mapdl.asel("A", "LOC", "Z", self.L)
+            self.mapdl.amesh("ALL")
+
+            self.mapdl.run("/SOLU")
+
+            self.mapdl.fk(104, direction, 1)
+            self.mapdl.fk(4, direction, - 1)
     
     def setNormalLoad(self, normalLoadProperties):
         if normalLoadProperties["type"] == "distributed":
@@ -270,19 +306,19 @@ class AngleProfile:
             self.mapdl.a(4,5,1,2)
             self.mapdl.a(4,2,3,5)
 
-            self.mapdl.mshkey(2)
+            self.mapdl.mshkey(0)
             self.mapdl.mshape(1)
-            self.mapdl.aesize("ALL", 0.01)
+            self.mapdl.aesize("ALL", 0.05)
             self.mapdl.nsel("S", "LOC", "Z", 0)
             self.mapdl.nsel("A", "LOC", "Z", self.L)
             self.mapdl.amesh("ALL")
-            self.mapdl.aatt(100, 4, 1, 0, 4)
+            self.mapdl.aatt(100, 3, 1, 0, 3)
 
             self.mapdl.run("/SOLU")
 
             self.mapdl.fk(104, "FZ", -1)
-            self.mapdl.fk(104, "MX", ex)
-            self.mapdl.fk(104, "MY", ey)
+            self.mapdl.fk(104, "MX", ey)
+            self.mapdl.fk(104, "MY", ex)
             self.mapdl.fk(4, "FZ", 1)
-            self.mapdl.fk(4, "MX", - ex)
-            self.mapdl.fk(4, "MY", - ey)
+            self.mapdl.fk(4, "MX", - ey)
+            self.mapdl.fk(4, "MY", - ex)

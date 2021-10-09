@@ -29,9 +29,13 @@ class RackProfile:
         self.mapdl.secoffset("MID")
         self.mapdl.secdata(self.t, self.materialAssignment[2])
 
+        self.mapdl.sectype(4, "SHELL", "", "plateLoad")
+        self.mapdl.secoffset("MID")
+        self.mapdl.secdata(0.1, 100)
+
     def createProfile(self, loadType, loadProps):
         self.connectionsIsNotRigid = not self.settings["general"]["connections"]["rigid"]
-        if loadType['bending']:
+        if loadType['bending'] and 'points' in loadProps:
             if loadProps['points'] == 3:
                 self.mapdl.k(1, self.bf + self.yf, self.zf, 0)
                 self.mapdl.k(2, self.bf, self.zf, 0)
@@ -482,12 +486,41 @@ class RackProfile:
             self.mapdl.run("/SOLU")
     
     def setBendingLoad(self, bendingLoadProperties):
-        if bendingLoadProperties["points"] == 4:
-            self.mapdl.fk(105, "FY", -1)
-            self.mapdl.fk(205, "FY", -1)
+        if 'points' in bendingLoadProperties:
+            if bendingLoadProperties["points"] == 4:
+                self.mapdl.fk(105, "FY", -1)
+                self.mapdl.fk(205, "FY", -1)
 
-        elif bendingLoadProperties["points"] == 3:
-            self.mapdl.fk(105, "FY", -1)
+            elif bendingLoadProperties["points"] == 3:
+                self.mapdl.fk(105, "FY", -1)
+        else:
+            direction = 'M' + bendingLoadProperties["direction"]
+            self.mapdl.run("/PREP7")
+            self.mapdl.k(9, self.xcg, self.ycg, 0)
+            self.mapdl.k(109, self.xcg, self.ycg, self.L)
+
+            self.mapdl.a(109,102,103,104,105,106,107)
+            self.mapdl.a(109,102,101,108,107)
+
+            self.mapdl.a(9,2,3,4,5,6,7)
+            self.mapdl.a(9,2,1,8,7)
+
+            self.mapdl.asel("ALL")
+            self.mapdl.asel("S", "LOC", "Z", 0)
+            self.mapdl.asel("A", "LOC", "Z", self.L)
+            self.mapdl.aatt(100, 4, 1, 0, 4)
+
+            self.mapdl.mshkey(2)
+            self.mapdl.mshape(1)
+            self.mapdl.aesize("ALL", 0.05)
+            self.mapdl.asel("S", "LOC", "Z", 0)
+            self.mapdl.asel("A", "LOC", "Z", self.L)
+            self.mapdl.amesh("ALL")
+
+            self.mapdl.run("/SOLU")
+
+            self.mapdl.fk(109, direction, 1)
+            self.mapdl.fk(9, direction, - 1)
     
     def setNormalLoad(self, normalLoadProperties):
         if normalLoadProperties["type"] == "distributed":
@@ -511,19 +544,23 @@ class RackProfile:
             self.mapdl.a(9,2,3,4,5,6,7)
             self.mapdl.a(9,2,1,8,7)
 
+            self.mapdl.asel("ALL")
+            self.mapdl.asel("S", "LOC", "Z", 0)
+            self.mapdl.asel("A", "LOC", "Z", self.L)
+            self.mapdl.aatt(100, 4, 1, 0, 4)
+
             self.mapdl.mshkey(2)
             self.mapdl.mshape(1)
             self.mapdl.aesize("ALL", 0.01)
             self.mapdl.nsel("S", "LOC", "Z", 0)
             self.mapdl.nsel("A", "LOC", "Z", self.L)
             self.mapdl.amesh("ALL")
-            self.mapdl.aatt(100, 4, 1, 0, 4)
 
             self.mapdl.run("/SOLU")
 
             self.mapdl.fk(109, "FZ", -1)
-            self.mapdl.fk(109, "MX", ex)
-            self.mapdl.fk(109, "MY", ey)
+            self.mapdl.fk(109, "MX", ey)
+            self.mapdl.fk(109, "MY", ex)
             self.mapdl.fk(9, "FZ", 1)
-            self.mapdl.fk(9, "MX", - ex)
-            self.mapdl.fk(9, "MY", - ey)
+            self.mapdl.fk(9, "MX", - ey)
+            self.mapdl.fk(9, "MY", - ex)

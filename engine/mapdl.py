@@ -161,9 +161,6 @@ class Mapdl:
 
         elif self.sectionType["angle"]:
             self.AngleProfile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
-        
-        elif self.sectionType["plate"]:
-            self.PlateProfile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
 
     def setLoad(self, loadData):
         self.loadType = loadData[0]
