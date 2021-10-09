@@ -217,7 +217,7 @@ class Mapdl:
         self.mapdl.solve()
         self.mapdl.finish()
 
-    def runLinearBucklingAnalysi(self):
+    def runBucklingAnalysi(self, analysiType):
         self.mapdl.run("/SOLU")
         self.mapdl.antype("BUCKLE")
         self.mapdl.bucopt("LANB", self.settings["linearAnalysis"]["nmodes"],"","","RANGE")

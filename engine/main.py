@@ -40,7 +40,7 @@ try:
     mapdl.runStaticAnalysi()
     mapdl.open_gui()
     mapdl.exit()
-    mapdl.runLinearBucklingAnalysi()
+    mapdl.runBucklingAnalysi(model.analysiType())
 
 
     # mapdl.open_gui()
