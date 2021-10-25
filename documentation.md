@@ -13,7 +13,7 @@ For the latest features, you will need a copy of ANSYS 2021R1 installed locally,
 #### Verifying Your Installation
 The InstabiliTool app always will automatically verify your Ansys installation in the initialization. If there is a problem with the Ansys installation path, it will prompt a window to the user insert the Ansys binary path.
 
-## Analysi preferences
+## Analysis preferences
 ### General analysis
 `Asnsy binary path`: If the Ansys binary path is not in the default directory, must be defined.
 
