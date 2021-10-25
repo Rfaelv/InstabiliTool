@@ -34,7 +34,9 @@ Shell 181 properties:
 
 ### Non-linear anlysis
 `Load factor`: The critical load of linear analysis is updated with this factor to be applied in nonlinear analysis (default: 1.2).
+
 `Initial deformation factor`: This factor will be applied to the minor tickness of the profile and the result will be applied to the buckling deformation resulting in linear analysis (default: 0.1).
+
 `Steps`: Number of steps used in the analysis (default: 100)
 
 ## Analysi type
