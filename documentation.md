@@ -22,6 +22,7 @@ The InstabiliTool app always will automatically verify your Ansys installation i
 "Connection stiffness": Stiffness value that will be used for the all flange-web connection in the model. 
 
 Shell 181 properties:
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Element stiffness:" (default: 0).
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Integration option": (default: 2).
