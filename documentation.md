@@ -11,9 +11,31 @@ Visit [Ansys](https://www.ansys.com/) for more information on getting a licensed
 For the latest features, you will need a copy of ANSYS 2021R1 installed locally, but this app is compatible with ANSYS 17.0 and newer.
 
 #### Verifying Your Installation
-The InstabiliTool app always will automatically verify your Ansys instalation in the initialization. If there is an problem with the Ansys instalation path, it will promp an window to the user insert the Ansys binary path.
+The InstabiliTool app always will automatically verify your Ansys installation in the initialization. If there is a problem with the Ansys installation path, it will prompt a window to the user insert the Ansys binary path.
 
 ## Analysi preferences
+### General analysis
+"Asnsy binary path": If the Ansys binary path is not in the default directory, must be defined.
+"Connections type": The connections bettwen flange and web geometrys can be "rigid" or "flexible". In case of flexible, you need to inform the "Conection stiffness".
+"Connection stiffness": Stiffness value that will be used for the all flange-web connection in the model. 
+
+Shell 181 properties:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Element stiffness:" (default: 0),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Integration option": (default: 2),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Curved shell formulation: (default: 0)
+
+linearAnalysis: {
+      nmodes: 10
+    },
+    nonlinearAnalysis: {
+      loadFactor: 1.2,
+      initialDeformationFactor: 0.1,
+      steps: 100
+    },
+    general: {
+      
+### Linear analysis
+### Non-linear anlysis
 
 
 ## Analysi type
