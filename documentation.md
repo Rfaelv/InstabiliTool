@@ -15,7 +15,7 @@ The InstabiliTool app always will automatically verify your Ansys installation i
 
 ## Analysi preferences
 ### General analysis
-"Asnsy binary path": If the Ansys binary path is not in the default directory, must be defined.
+`Asnsy binary path`: If the Ansys binary path is not in the default directory, must be defined.
 
 "Connections type": The connections bettwen flange and web geometrys can be "rigid" or "flexible". In case of flexible, you need to inform the "Conection stiffness".
 
