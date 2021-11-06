@@ -4,6 +4,7 @@ from model import Model
 from path import Path
 import sys
 import json
+import numpy as np
 # import pyvista
 # pyvista.Report(gpu=False)
 
@@ -22,30 +23,29 @@ import json
 # BACKBONE
 
 try:
-    # path = Path(sys.argv[1])
-    path = Path('C:/Users/Rfael/AppData/Roaming/InstabiliTool')
+    path = Path(sys.argv[1])
+    # path = Path('C:/Users/Rfael/AppData/Roaming/InstabiliTool')
 
-    mapdl = Mapdl(path)
     model = Model(path.model)
+    mapdl = Mapdl(path)
     mapdl.initialize()
     mapdl.createFiniteElement() # Ao que tudo indica, não é necessário criar um elemento para cada material
-    mapdl.createMaterial(model.materialList())
-    mapdl.createProfile(model.section())
+    mapdl.createMaterial(model.materialList)
+    mapdl.createProfile(model.section)
     mapdl.setMaterial()
-    mapdl.createMesh(model.mesh())
-    mapdl.setBoundaryConditions(model.boundaryConditions())
+    mapdl.createMesh(model.mesh)
+    mapdl.setBoundaryConditions(model.boundaryConditions)
     mapdl.setConnectionsIfAreNotRigid()
-    mapdl.setLoad(model.load())
+    mapdl.setLoad(model.load)
+    mapdl.runStaticAnalysis()
+    mapdl.runBucklingAnalysis(model.analysisType)
 
-    mapdl.runStaticAnalysi()
-    mapdl.open_gui()
-    mapdl.exit()
-    mapdl.runBucklingAnalysi(model.analysiType())
-
+    # mapdl.open_gui()
+    # mapdl.exit()
 
     # mapdl.open_gui()
 
-    result = mapdl.getLinearResult(path.images)
+    result = mapdl.getResults(path.images)
 
     print(json.dumps(result))
 
