@@ -49,10 +49,10 @@ function setMeshAndMaterialAssignment() {
         }
         model.sectionProperties.materialAssignment = materialAssignmentList.length == 0 ? [1,1,1] : materialAssignmentList
         writeData(model, 'model.json')
-        var inputStatus = JSON.parse(localStorage.getItem('input-status'))
-        inputStatus.mesh = true
-        inputStatus.matAssign = true
-        localStorage.setItem('input-status', JSON.stringify(inputStatus))
+        // var inputStatus = JSON.parse(localStorage.getItem('input-status'))
+        // inputStatus.mesh = true
+        // inputStatus.matAssign = true
+        // localStorage.setItem('input-status', JSON.stringify(inputStatus))
     }
     
     ipcRenderer.send('delete-current-window')  
@@ -520,7 +520,7 @@ async function openMeshVisualizer() {
 
         var process
         setTimeout(() => {
-            process = spawn('python', [app.getAppPath() + '/engine/preview.py', pathToModel, pathToLaunchAnsys])
+            process = spawn('python', [app.getAppPath() + '/engine/preview.py', userDataPath])
 
             process.stdout.on('data', (data) => {
                 document.getElementById('visualizeButton').style.display = 'block'

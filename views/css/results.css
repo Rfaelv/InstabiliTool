@@ -23,6 +23,18 @@ html[data-theme='special'] {
     --terciary2: #dfddde;
     --text1: #ffffff;
 }
+html[data-theme='main'] {
+    font-family: 'Segoe UI';
+    font-size: small;
+    font-weight: 400;
+    --bg: #ffffff;
+    --primary: #edf0f371;
+    --secundary: #1E7F9D;
+    --secundary2: #2788a5;
+    --terciary: #dadada;
+    --terciary2: #dfddde;
+    --text1: #ffffff;
+}
 html[data-theme='dark'] {
     font-family: 'Segoe UI';
     --bg: #303841;
@@ -67,7 +79,7 @@ div {
     background-color: var(--primary);
     padding: 20px;
     border-radius: 5px;
-    border: 1px solid rgba(167, 166, 166, 0.158);
+    /* border: 1px solid rgba(167, 166, 166, 0.158); */
     height: 30px;
 }
 button {

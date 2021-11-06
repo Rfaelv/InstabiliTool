@@ -50,6 +50,7 @@ ipcMain.on('create-window', (event, arg) => {
   const newWin = new BrowserWindow({
     width: arg.width,
     height: arg.height,
+    icon: './assets/icons/icon.ico',
     parent: win,
     maximizable: arg.maximizable? true: false,
     minimizable: false,
@@ -63,7 +64,7 @@ ipcMain.on('create-window', (event, arg) => {
   newWin.on('ready-to-show', () => {setTimeout(() =>{newWin.show()}, 200) })
   newWin.on('close', () => {if (arg.hasAnsysInstance) {abortAnsysInstance()}})
   newWin.setMenu(null)
-  newWin.webContents.openDevTools()
+  // newWin.webContents.openDevTools()
 })
 
 ipcMain.on('o', () => {console.log('foi')})
@@ -116,7 +117,8 @@ function createSettings() {
     },
     nonlinearAnalysis: {
       loadFactor: 1.2,
-      initialDeformationFactor: 0.1
+      initialDeformationFactor: 0.1,
+      steps: 100
     },
     general: {
       execFilePath: null,

@@ -242,3 +242,35 @@ class PlateProfile:
             self.mapdl.fk(2, "FZ", 1)
             self.mapdl.fk(2, "MX", - ey)
             self.mapdl.fk(2, "MY", - ex)
+
+    def setNewBendingLoad(self, bendingLoadProperties, newLoad):
+        if 'points' in bendingLoadProperties:
+            if bendingLoadProperties["points"] == 4:
+                self.mapdl.fk(102, "FY", -newLoad)
+                self.mapdl.fk(202, "FY", -newLoad)
+
+            elif bendingLoadProperties["points"] == 3:
+                self.mapdl.fk(102, "FY", -newLoad)
+        else:
+            direction = 'M' + bendingLoadProperties["direction"]
+            self.mapdl.fk(102, direction, newLoad)
+            self.mapdl.fk(2, direction, -newLoad)
+
+    def setNewNormalLoad(self, normalLoadProperties, newLoad):
+        if normalLoadProperties["type"] == "distributed":
+            self.mapdl.nsel("S", "LOC", "Z", 0)
+            self.mapdl.sf("ALL", "PRES", newLoad /self.bw)
+
+            self.mapdl.nsel("S", "LOC", "Z", self.L)
+            self.mapdl.sf("ALL", "PRES", newLoad / self.bw)
+
+        elif normalLoadProperties["type"] == "point":
+            ex = normalLoadProperties["x"]
+            ey = normalLoadProperties["y"]
+
+            self.mapdl.fk(102, "FZ", -newLoad)
+            self.mapdl.fk(102, "MX", ey * newLoad)
+            self.mapdl.fk(102, "MY", ex * newLoad)
+            self.mapdl.fk(2, "FZ", newLoad)
+            self.mapdl.fk(2, "MX", - ey * newLoad)
+            self.mapdl.fk(2, "MY", - ex * newLoad)

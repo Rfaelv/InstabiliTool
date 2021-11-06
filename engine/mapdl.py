@@ -1,4 +1,5 @@
 from ansys.mapdl.core import launch_mapdl
+from numpy.lib import financial
 from mapdl_material import Material
 from mapdl_finiteElement import FiniteElement
 from mapdl_geometry_I import IProfile
@@ -23,10 +24,10 @@ class Mapdl:
     def initialize(self):
         try:  
             # self.mapdl = launch_mapdl(run_location=self.pathToLaunch, override=True,  cleanup_on_exit=True, start_instance=False, clear_on_connect=True, remove_temp_files=True, loglevel='INFO')
-            self.mapdl = launch_mapdl(run_location=self.pathToLaunch, override=True, start_instance=False, clear_on_connect=True, loglevel='INFO', cleanup_on_exit=True)
+            self.mapdl = launch_mapdl(exec_file=self.settings.execFilePath, run_location=self.pathToLaunch, override=True, start_instance=False, clear_on_connect=True, loglevel='WARNING', cleanup_on_exit=True)
         except OSError:
             try:
-                self.mapdl = launch_mapdl(run_location=self.pathToLaunch, override=True,  loglevel='INFO', cleanup_on_exit=True) 
+                self.mapdl = launch_mapdl(exec_file=self.settings.execFilePath, run_location=self.pathToLaunch, override=True,  loglevel='WARNING', cleanup_on_exit=True) 
             except:
                 print('ERROR-launch_mapdl')
                 sys.exit()
@@ -210,14 +211,61 @@ class Mapdl:
             elif self.sectionType["plate"]:
                 self.PlateProfile.setNormalLoad(self.loadProperties)
 
-    def runStaticAnalysi(self):
+    def runStaticAnalysis(self):
         self.mapdl.antype("STATIC")
         self.mapdl.pstres("ON")
         self.mapdl.allsel("ALL")
         self.mapdl.solve()
         self.mapdl.finish()
 
-    def runBucklingAnalysi(self, analysiType):
+    def runBucklingAnalysis(self, analysiType):
+        self.analysisType = analysiType
+
+        def setNewLoad(newLoad):
+            if self.loadType["bending"]:
+                if self.sectionType["I"]:
+                    self.Iprofile.setNewBendingLoad(self.loadProperties, newLoad)
+
+                elif self.sectionType["tubular"]:
+                    self.tubularProfile.setNewBendingLoad(self.loadProperties, newLoad)
+
+                elif self.sectionType["C"]:
+                    self.CProfile.setNewBendingLoad(self.loadProperties, newLoad)
+
+                elif self.sectionType["C2"]:
+                    self.C2Profile.setNewBendingLoad(self.loadProperties, newLoad)
+
+                elif self.sectionType["rack"]:
+                    self.RackProfile.setNewBendingLoad(self.loadProperties, newLoad)
+
+                elif self.sectionType["angle"]:
+                    self.AngleProfile.setNewBendingLoad(self.loadProperties, newLoad)
+                
+                elif self.sectionType["plate"]:
+                    self.PlateProfile.setNewBendingLoad(self.loadProperties, newLoad)
+
+            elif self.loadType["normal"]:
+                if self.sectionType["I"]:
+                    self.Iprofile.setNewNormalLoad(self.loadProperties, newLoad)
+
+                elif self.sectionType["tubular"]:
+                    self.tubularProfile.setNewNormalLoad(self.loadProperties, newLoad)
+
+                elif self.sectionType["C"]:
+                    self.CProfile.setNewNormalLoad(self.loadProperties, newLoad)
+
+                elif self.sectionType["C2"]:
+                    self.C2Profile.setNewNormalLoad(self.loadProperties, newLoad)
+
+                elif self.sectionType["rack"]:
+                    self.RackProfile.setNewNormalLoad(self.loadProperties, newLoad)
+
+                elif self.sectionType["angle"]:
+                    self.AngleProfile.setNewNormalLoad(self.loadProperties, newLoad)
+                
+                elif self.sectionType["plate"]:
+                    self.PlateProfile.setNewNormalLoad(self.loadProperties, newLoad)
+
         self.mapdl.run("/SOLU")
         self.mapdl.antype("BUCKLE")
         self.mapdl.bucopt("LANB", self.settings["linearAnalysis"]["nmodes"],"","","RANGE")
@@ -229,45 +277,169 @@ class Mapdl:
         self.mapdl.solve()
         self.mapdl.finish()
 
-    def getLinearResult(self, path):
-        result = self.mapdl.result
-        resultList = []
-        # print(type(result.n_results))
-        for i in range(result.n_results):
-            # print(f'for {i}')
-            if self.loadType["bending"]:
-                # print('bending')
-                if self.loadProperties["points"] == 4:
-                    # print('4points')
-                    criticalMoment = result.solution_info(i)["timfrq"] * self.loadProperties["Lshear"]
-
-                elif self.loadProperties["points"] == 3:
-                    # print('3points')
-                    criticalMoment = result.solution_info(i)["timfrq"] * self.sectionProperties["L"] / 4
-                
-                criticalLoad = str(round(criticalMoment, 2)) + ' N.m'
-
-            elif self.loadType["normal"]:
-                # print('normal')
-                criticalLoad = str(round(result.solution_info(i)["timfrq"], 2)) + ' N'
-            
-            resultList.append({
-                "value": criticalLoad,
-            })
+        if self.analysisType['nonlinear']:
+            loadFactor = self.settings["nonlinearAnalysis"]["loadFactor"]
+            deformationFactor = self.settings["nonlinearAnalysis"]["initialDeformationFactor"]
+            steps = self.settings["nonlinearAnalysis"]["steps"]
 
             try:
-                cpos = [(1.8178551165619061, 1.2668720677458198, 3.6927581096403452),
-                (0.0762, 0.07302500000000003, 0.9000000000000001),
-                (-0.1329852358128566, 0.9386144670815737, -0.31830458564238795)]
+                t = self.sectionProperties["t"]
+            except:
+                tfs = self.sectionProperties["tfs"]
+                tw = self.sectionProperties["tw"]
+                tfi = self.sectionProperties["tfi"]
+                t = (tfs + tw + tfi) / 2
+            finally:
+                imperfection = deformationFactor * t
 
-                imgPath = path + f'\\img{i}.gif'
+            result = self.mapdl.result 
+            firstEingenValue = result.solution_info(0)["timfrq"]
 
-                result.animate_nodal_solution(i, movie_filename=imgPath, cpos=cpos, loop=False, displacement_factor=2,  off_screen=True, progress_bar=False, add_text=False, background='w', below_color=[256,256,256],show_scalar_bar=False)
+            self.mapdl.post1()
+            self.mapdl.set(1, 0)
+            dispLinear = self.mapdl.post_processing.nodal_displacement('NORM')
+
+            maxDisp = np.amax(dispLinear)    
+
+            self.mapdl.prep7()
+
+            self.mapdl.upgeom(imperfection/maxDisp, 1, 0, 'Profile', 'rst')
+            self.mapdl.allsel('all')
+            self.mapdl.cdwrite('db', 'Profile', 'cdb')
+            self.mapdl.finish()
+
+            self.mapdl.post1()
+            self.mapdl.pldisp(0)
+
+            self.mapdl.run('/SOLU')
+
+            self.mapdl.prep7()
+            self.LOAD = firstEingenValue * loadFactor
+
+            setNewLoad(self.LOAD)
+            self.mapdl.finish()
+
+            self.mapdl.run('/SOLU')
+            self.mapdl.antype('static')
+            self.mapdl.nlgeom('on')
+            self.mapdl.pred('off')
+            self.mapdl.time(1)
+            nsteps = steps 
+            self.mapdl.nsubst(nsteps,10000,nsteps)
+            self.mapdl.rescontrol('define','all',1)
+            self.mapdl.outres('all','all')
+            self.mapdl.solve()
+            self.mapdl.finish()
+            self.mapdl.run('/file,Profile')
+
+    def getResults(self, path):
+        if self.analysisType['linear']:
+            result = self.mapdl.result
+            resultList = []
+            # print(type(result.n_results))
+            for i in range(result.n_results):
+                # print(f'for {i}')
+                if self.loadType["bending"]:
+                    # print('bending')
+                    if self.loadProperties["points"] == 4:
+                        # print('4points')
+                        criticalMoment = result.solution_info(i)["timfrq"] * self.loadProperties["Lshear"]
+
+                    elif self.loadProperties["points"] == 3:
+                        # print('3points')
+                        criticalMoment = result.solution_info(i)["timfrq"] * self.sectionProperties["L"] / 4
+                    
+                    criticalLoad = str(round(criticalMoment, 2)) + ' N.m'
+
+                elif self.loadType["normal"]:
+                    # print('normal')
+                    criticalLoad = str(round(result.solution_info(i)["timfrq"], 2)) + ' N'
+                
+                resultList.append({
+                    "value": criticalLoad,
+                })
+
+                try:
+                    L = self.sectionProperties["L"]
+                    cpos = [(L, 0.6*L, 0.7*L + L),
+                    (0.0, 0.0, L/2),
+                    (0.0, 1, 0.0)]
+
+                    imgPath = path + f'\\movie{i}.gif'
+
+                    result.animate_nodal_solution(i, movie_filename=imgPath, cpos=cpos, loop=False, displacement_factor=2,  off_screen=True, progress_bar=False, add_text=False, background='w', below_color=[256,256,256],show_scalar_bar=False)
+                
+                except Exception:
+                    continue
+
+            return resultList
+        
+        else:
+            nsets = self.mapdl.post_processing.nsets
+            self.mapdl.post1()
+            self.mapdl.set(1, nsets)
+
+            resultsCongif = [{
+                "type": "displacement",
+                "direction": "Y",
+                "coords": [0,0,0]
+            },
+            {
+                "type": "strain",
+                "direction": "Y",
+                "coords": "max"
+            }
+            ]
+            nodesList = []
+            nodesResults = []
+            self.mapdl.run('/SOLU')
+            time = np.array(np.zeros(nsets))
+
+            for item, i in enumerate(resultsCongif):
+                if item["type"] == "displacement" and item["coords"] == "max":
+                    disp = self.mapdl.post_processing.nodal_displacement(item["direction"])
+                    dispmx = np.amax(disp)
+                    nodesList.append(np.whwre(np.isclose(disp, dispmx)))
+
+                elif item["type"] == "strain" and item["coords"] == "max":
+                    disp = self.mapdl.post_processing.nodal_total_component_strain(item["direction"])
+                    dispmx = np.amax(disp)
+                    nodesList.append(np.whwre(np.isclose(disp, dispmx)))
+
+                elif item["type"] == "displacement" or item["type"] == "strain":  
+                    self.mapdl.nsel("S", "LOC", "X", item["coords"][0])
+                    self.mapdl.nsel("R", "LOC", "Y", item["coords"][1])
+                    self.mapdl.nsel("R", "LOC", "Z", item["coords"][2])
+                    self.mapdl.get(f'node{i}', 'NODE', 0, 'NUM', 'MAX')
+                    nodesList.append(int(self.mapdl.parameters[f'node{i}']))
+                
+                nodesResults.append(np.array(np.zeros(nsets)))
+
+            self.mapdl.post1()
+
+            for i in range(nsets):
+                self.mapdl.set(1, i + 1)
+
+                for node, j in enumerate(nodesResults):
+                    if resultsCongif[j]["type"] == "displacement":
+                        node[i] = self.mapdl.post_processing.nodal_displacement(resultsCongif[j]["direction"])[i]
+
+                    elif resultsCongif[j]["type"] == "strain":
+                        node[i] = self.mapdl.post_processing.nodal_total_component_strain(resultsCongif[j]["direction"])[i]
+
+                time[i] = self.mapdl.post_processing.time
             
-            except Exception:
-                continue
+            if self.loadType['bending'] and 'points' in self.loadProperties:
+                if self.loadProperties['points'] == 3:
+                    load = time * self.LOAD * self.sectionProperties["L"] / 4
+                else:
+                    load = time * self.LOAD * self.sectionProperties["Lshear"]
 
-        return resultList
+            else:
+                load = time * self.LOAD
+            
+            # Generate Graph
+            # for 
 
     def open_gui(self):
         self.mapdl.open_gui()

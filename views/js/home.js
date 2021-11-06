@@ -136,12 +136,12 @@ function meshAndMaterialAssignment() {
         hasAnsysInstance: true
     })
 
-    const meshShape = document.getElementsByName('discretize')
-    const userDataPath = ipcRenderer.sendSync('get-user-data')
-    const jsonData = fs.readFileSync(path.join(userDataPath, 'data/analysiData.json'), 'utf8')
-    var analysiData = JSON.parse(jsonData)
-    analysiData.meshShape = meshShape[0].checked ? 1 : 0
-    fs.writeFileSync(path.join(userDataPath, 'data/analysiData.json'), JSON.stringify(analysiData))
+    // const meshShape = document.getElementsByName('discretize')
+    // const userDataPath = ipcRenderer.sendSync('get-user-data')
+    // const jsonData = fs.readFileSync(path.join(userDataPath, 'data/analysiData.json'), 'utf8')
+    // var analysiData = JSON.parse(jsonData)
+    // analysiData.meshShape = meshShape[0].checked ? 1 : 0
+    // fs.writeFileSync(path.join(userDataPath, 'data/analysiData.json'), JSON.stringify(analysiData))
 }
 
 function boundaryConditions() {
@@ -196,12 +196,7 @@ function setAnalysiType() {
 
 function setMeshType() {
     var model = readData('model.json')
-
-    if (meshType[0].checked) { 
-        model.meshProperties.type = 0
-    } else {
-        model.meshProperties.type = 1
-    }
+    model.meshProperties.type = meshType[0].checked ? 0 : 1
 
     writeData(model, 'model.json')
 }
@@ -245,7 +240,7 @@ function startAnalysi() {
     let win = new BrowserWindow({
         width: 750,
         height: 655,
-        icon: './assets/icon.ico',
+        icon: './assets/icons/icon.ico',
         maximizable: false,
         autoHideMenuBar: true,
         modal: true,
@@ -259,16 +254,16 @@ function startAnalysi() {
     if (model.analysiType.linear) {transitionWindowPath = '/views/html/transitionLinearAnalysis.html'}
     if (model.analysiType.nonlinear) {transitionWindowPath = '/views/html/transitionNonLinearAnalysis.html'}
     win.loadFile(electron.app.getAppPath() + transitionWindowPath)
-    win.webContents.openDevTools()
+    // win.webContents.openDevTools()
     win.show()
 
-    return
+    // return
     let app = electron.app ? electron.app : electron.remote.app
     const spawn = require('child_process').spawn
     const userDataPath = ipcRenderer.sendSync('get-user-data')
-    const pathToModel = path.join(userDataPath, 'data/', 'model.json')
+    // const pathToModel = path.join(userDataPath, 'data/', 'model.json')
     // const process = spawn('python', ['../../engine/preview.py', pathToModel])
-    const process = spawn('python', [app.getAppPath() + '/engine/main.py', pathToModel])
+    const process = spawn('python', [app.getAppPath() + '/engine/main.py', userDataPath])
    
     // const process = spawn(path.resolve('engine/dist/main'), props)
 
@@ -276,23 +271,56 @@ function startAnalysi() {
         const output = data.toString()
         var model = readData('model.json')
         resultValues = JSON.parse(output)
-        resultImg = []
-
-        for (let i = 0; i <= resultValues.length; i++) {
-            imgpath = path.join(userDataPath, `data/movie${i}.gif`)
-
-            if (!fs.existsSync(imgpath)) {
-                toDataURL(imgpath, function(dataUrl) {
-                    resultImg.push(dataUrl)
-                })
-            }
+        var img = []
+        for (let i = 0; i < resultValues.length; i++) {
+            img.push("")
         }
         model.result = {
             values: resultValues,
-            img: resultImg
+            img: img
         }
+        // console.log(model)
+        // writeData(model, 'model.json')
+        // resultImg = []
+        
+        // console.log(model)
         writeData(model, 'model.json')
-        win.loadFile(electron.app.getAppPath() + '/views/html/results.html')
+
+        for (let i = 0; i < resultValues.length; i++) {
+            imgpath = path.join(userDataPath, `data/images/movie${i}.gif`)
+            // console.log(imgpath)
+            if (fs.existsSync(imgpath)) {
+                // console.log(i)
+                toDataURL(imgpath, function(dataUrl) {
+                    // resultImg.push(dataUrl)
+                    // console.log(typeof(dataUrl))
+                    var model = readData('model.json')
+                    
+                    model.result.img[i] = dataUrl
+                    // console.log(model)
+                    writeData(model, 'model.json')
+
+                    if (i == resultValues.length - 1) {
+                        win.loadFile(electron.app.getAppPath() + '/views/html/results.html')
+                    }
+                })
+            } else {
+                var model = readData('model.json')
+                    
+                model.result.img[i] = false 
+                // console.log(model)
+                writeData(model, 'model.json')
+
+                if (i == resultValues.length - 1) {
+                    win.loadFile(electron.app.getAppPath() + '/views/html/results.html')
+                }
+            }
+        }
+        // console.log(resultImg)
+        
+
+        
+
     })
 
     function verifyModelData () {
