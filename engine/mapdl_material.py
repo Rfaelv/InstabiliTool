@@ -26,6 +26,7 @@ class Material:
 
         elif self.materialType["anisotropic"]:
             import numpy as np 
+            
             K = np.array(self.materialProperties["stiffnessMatrix"])
             K = K.reshape(6, 6)
 

@@ -23,7 +23,6 @@ class Mapdl:
 
     def initialize(self):
         try:  
-            # self.mapdl = launch_mapdl(run_location=self.pathToLaunch, override=True,  cleanup_on_exit=True, start_instance=False, clear_on_connect=True, remove_temp_files=True, loglevel='INFO')
             self.mapdl = launch_mapdl(exec_file=self.settings.execFilePath, run_location=self.pathToLaunch, override=True, start_instance=False, clear_on_connect=True, loglevel='WARNING', cleanup_on_exit=True)
         except OSError:
             try:
@@ -55,61 +54,62 @@ class Mapdl:
         self.sectionType = profileProps[0]
         self.sectionProperties = profileProps[1]
         if self.sectionType["I"]:
-            self.Iprofile = IProfile(self.mapdl, profileProps[1], self.settings)
-            self.Iprofile.createSection()
-            self.Iprofile.createProfile(profileProps[2], profileProps[3])
+            self.profile = IProfile(self.mapdl, profileProps[1], self.settings)
+            self.profile.createSection()
+            self.profile.createProfile(profileProps[2], profileProps[3])
 
         elif self.sectionType["tubular"]:
-            self.tubularProfile = TubularProfile(self.mapdl, profileProps[1], self.settings)
-            self.tubularProfile.createSection()
-            self.tubularProfile.createProfile(profileProps[2], profileProps[3])
+            self.profile = TubularProfile(self.mapdl, profileProps[1], self.settings)
+            self.profile.createSection()
+            self.profile.createProfile(profileProps[2], profileProps[3])
 
         elif self.sectionType["C"]:
-            self.CProfile = CProfile(self.mapdl, profileProps[1], self.settings)
-            self.CProfile.createSection()
-            self.CProfile.createProfile(profileProps[2], profileProps[3])
+            self.profile = CProfile(self.mapdl, profileProps[1], self.settings)
+            self.profile.createSection()
+            self.profile.createProfile(profileProps[2], profileProps[3])
 
         elif self.sectionType["C2"]:
-            self.C2Profile = C2Profile(self.mapdl, profileProps[1], self.settings)
-            self.C2Profile.createSection()
-            self.C2Profile.createProfile(profileProps[2], profileProps[3])
+            self.profile = C2Profile(self.mapdl, profileProps[1], self.settings)
+            self.profile.createSection()
+            self.profile.createProfile(profileProps[2], profileProps[3])
 
         elif self.sectionType["rack"]:
-            self.RackProfile = RackProfile(self.mapdl, profileProps[1], self.settings)
-            self.RackProfile.createSection()
-            self.RackProfile.createProfile(profileProps[2], profileProps[3])
+            self.profile = RackProfile(self.mapdl, profileProps[1], self.settings)
+            self.profile.createSection()
+            self.profile.createProfile(profileProps[2], profileProps[3])
 
         elif self.sectionType["angle"]:
-            self.AngleProfile = AngleProfile(self.mapdl, profileProps[1], self.settings)
-            self.AngleProfile.createSection()
-            self.AngleProfile.createProfile(profileProps[2], profileProps[3])
+            self.profile = AngleProfile(self.mapdl, profileProps[1], self.settings)
+            self.profile.createSection()
+            self.profile.createProfile(profileProps[2], profileProps[3])
         
         elif self.sectionType["plate"]:
-            self.PlateProfile = PlateProfile(self.mapdl, profileProps[1])
-            self.PlateProfile.createSection()
-            self.PlateProfile.createProfile(profileProps[2], profileProps[3])
+            self.profile = PlateProfile(self.mapdl, profileProps[1])
+            self.profile.createSection()
+            self.profile.createProfile(profileProps[2], profileProps[3])
     
     def setMaterial(self):
-        if self.sectionType["I"]:
-            self.Iprofile.setMaterial()
+        self.profile.setMaterial()
+        # if self.sectionType["I"]:
+        #     self.Iprofile.setMaterial()
 
-        elif self.sectionType["tubular"]:
-            self.tubularProfile.setMaterial()
+        # elif self.sectionType["tubular"]:
+        #     self.tubularProfile.setMaterial()
 
-        elif self.sectionType["C"]:
-            self.CProfile.setMaterial()
+        # elif self.sectionType["C"]:
+        #     self.CProfile.setMaterial()
 
-        elif self.sectionType["C2"]:
-            self.C2Profile.setMaterial()
+        # elif self.sectionType["C2"]:
+        #     self.C2Profile.setMaterial()
 
-        elif self.sectionType["rack"]:
-            self.RackProfile.setMaterial()
+        # elif self.sectionType["rack"]:
+        #     self.RackProfile.setMaterial()
 
-        elif self.sectionType["angle"]:
-            self.AngleProfile.setMaterial()
+        # elif self.sectionType["angle"]:
+        #     self.AngleProfile.setMaterial()
         
-        elif self.sectionType["plate"]:
-            self.PlateProfile.setMaterial()
+        # elif self.sectionType["plate"]:
+        #     self.PlateProfile.setMaterial()
 
     def createMesh(self, meshData):
         self.meshData = meshData
@@ -123,93 +123,97 @@ class Mapdl:
 
     def setBoundaryConditions(self, boundaryConditions):
         self.mapdl.run("/SOLU")
-        if self.sectionType["I"]:
-            self.Iprofile.setBoundaryConditions(boundaryConditions)
+        self.profile.setBoundaryConditions(boundaryConditions)
+        # if self.sectionType["I"]:
+        #     self.Iprofile.setBoundaryConditions(boundaryConditions)
 
-        elif self.sectionType["tubular"]:
-            self.tubularProfile.setBoundaryConditions(boundaryConditions)
+        # elif self.sectionType["tubular"]:
+        #     self.tubularProfile.setBoundaryConditions(boundaryConditions)
 
-        elif self.sectionType["C"]:
-            self.CProfile.setBoundaryConditions(boundaryConditions)
+        # elif self.sectionType["C"]:
+        #     self.CProfile.setBoundaryConditions(boundaryConditions)
 
-        elif self.sectionType["C2"]:
-            self.C2Profile.setBoundaryConditions(boundaryConditions)
+        # elif self.sectionType["C2"]:
+        #     self.C2Profile.setBoundaryConditions(boundaryConditions)
 
-        elif self.sectionType["rack"]:
-            self.RackProfile.setBoundaryConditions(boundaryConditions)
+        # elif self.sectionType["rack"]:
+        #     self.RackProfile.setBoundaryConditions(boundaryConditions)
 
-        elif self.sectionType["angle"]:
-            self.AngleProfile.setBoundaryConditions(boundaryConditions)
+        # elif self.sectionType["angle"]:
+        #     self.AngleProfile.setBoundaryConditions(boundaryConditions)
         
-        elif self.sectionType["plate"]:
-            self.PlateProfile.setBoundaryConditions(boundaryConditions)
+        # elif self.sectionType["plate"]:
+        #     self.PlateProfile.setBoundaryConditions(boundaryConditions)
         
     def setConnectionsIfAreNotRigid(self):
-        if self.sectionType["I"]:
-            self.Iprofile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
+        self.profile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
+        # if self.sectionType["I"]:
+        #     self.Iprofile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
 
-        elif self.sectionType["tubular"]:
-            self.tubularProfile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
+        # elif self.sectionType["tubular"]:
+        #     self.tubularProfile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
 
-        elif self.sectionType["C"]:
-            self.CProfile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
+        # elif self.sectionType["C"]:
+        #     self.CProfile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
 
-        elif self.sectionType["C2"]:
-            self.C2Profile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
+        # elif self.sectionType["C2"]:
+        #     self.C2Profile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
 
-        elif self.sectionType["rack"]:
-            self.RackProfile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
+        # elif self.sectionType["rack"]:
+        #     self.RackProfile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
 
-        elif self.sectionType["angle"]:
-            self.AngleProfile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
+        # elif self.sectionType["angle"]:
+        #     self.AngleProfile.setConnectionsIfAreNotRigid(self.meshData["elementSize"])
 
     def setLoad(self, loadData):
         self.loadType = loadData[0]
         self.loadProperties = loadData[1]
 
         if self.loadType["bending"]:
-            if self.sectionType["I"]:
-                self.Iprofile.setBendingLoad(self.loadProperties)
+            self.profile.setBendingLoad(self.loadProperties)
+            # if self.sectionType["I"]:
+            #     self.Iprofile.setBendingLoad(self.loadProperties)
 
-            elif self.sectionType["tubular"]:
-                self.tubularProfile.setBendingLoad(self.loadProperties)
+            # elif self.sectionType["tubular"]:
+            #     self.tubularProfile.setBendingLoad(self.loadProperties)
 
-            elif self.sectionType["C"]:
-                self.CProfile.setBendingLoad(self.loadProperties)
+            # elif self.sectionType["C"]:
+            #     self.CProfile.setBendingLoad(self.loadProperties)
 
-            elif self.sectionType["C2"]:
-                self.C2Profile.setBendingLoad(self.loadProperties)
+            # elif self.sectionType["C2"]:
+            #     self.C2Profile.setBendingLoad(self.loadProperties)
 
-            elif self.sectionType["rack"]:
-                self.RackProfile.setBendingLoad(self.loadProperties)
+            # elif self.sectionType["rack"]:
+            #     self.RackProfile.setBendingLoad(self.loadProperties)
 
-            elif self.sectionType["angle"]:
-                self.AngleProfile.setBendingLoad(self.loadProperties)
+            # elif self.sectionType["angle"]:
+            #     self.AngleProfile.setBendingLoad(self.loadProperties)
             
-            elif self.sectionType["plate"]:
-                self.PlateProfile.setBendingLoad(self.loadProperties)
+            # elif self.sectionType["plate"]:
+            #     self.PlateProfile.setBendingLoad(self.loadProperties)
 
         elif self.loadType["normal"]:
-            if self.sectionType["I"]:
-                self.Iprofile.setNormalLoad(self.loadProperties)
+            self.profile.setNormalLoad(self.loadProperties)
+            # if self.sectionType["I"]:
+            #     self.Iprofile.setNormalLoad(self.loadProperties)
 
-            elif self.sectionType["tubular"]:
-                self.tubularProfile.setNormalLoad(self.loadProperties)
+            # elif self.sectionType["tubular"]:
+            #     self.tubularProfile.setNormalLoad(self.loadProperties)
 
-            elif self.sectionType["C"]:
-                self.CProfile.setNormalLoad(self.loadProperties)
+            # elif self.sectionType["C"]:
+            #     self.CProfile.setNormalLoad(self.loadProperties)
 
-            elif self.sectionType["C2"]:
-                self.C2Profile.setNormalLoad(self.loadProperties)
+            # elif self.sectionType["C2"]:
+            #     self.C2Profile.setNormalLoad(self.loadProperties)
 
-            elif self.sectionType["rack"]:
-                self.RackProfile.setNormalLoad(self.loadProperties)
+            # elif self.sectionType["rack"]:
+            #     self.RackProfile.setNormalLoad(self.loadProperties)
 
-            elif self.sectionType["angle"]:
-                self.AngleProfile.setNormalLoad(self.loadProperties)
+            # elif self.sectionType["angle"]:
+            #     self.AngleProfile.setNormalLoad(self.loadProperties)
             
-            elif self.sectionType["plate"]:
-                self.PlateProfile.setNormalLoad(self.loadProperties)
+            # elif self.sectionType["plate"]:
+            #     self.PlateProfile.setNormalLoad(self.loadProperties)
 
     def runStaticAnalysis(self):
         self.mapdl.antype("STATIC")
